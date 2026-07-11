@@ -255,6 +255,11 @@
     let currentIsAR = false;
     let currentStoreProfile = null;
 
+    // FUNCION PARA OBTENER IMAGEN COMPATIBLE CON AMBOS
+    function getImg(p) {
+      return p.imgs ? p.imgs[0] : p.img;
+    }
+
     // MIGRAR TUS 10 PRODUCTOS VIEJOS 1 SOLA VEZ
     function migrarProductosIniciales() {
       let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
@@ -262,19 +267,19 @@
       if(productsAR.length > 0 || productsINT.length > 0) return;
 
       const productosARViejos = [
-        {id: 101, name: "Mate Imperial Cuero", price: 15000, imgs: ["https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 102, name: "Bombilla Alpaca", price: 8000, imgs: ["https://images.unsplash.com/photo-1597318181409-cf64d0b87830?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 103, name: "Yerbera de Madera", price: 12000, imgs: ["https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600"], category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 104, name: "Remera MARKET", price: 18000, imgs: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600"], category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 105, name: "Buzo Canguro", price: 35000, imgs: ["https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600"], category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 106, name: "Cuadro Decorativo", price: 22000, imgs: ["https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600"], category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 107, name: "Pulsera Cuero", price: 9500, imgs: ["https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 101, name: "Mate Imperial Cuero", price: 15000, img: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=600", category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 102, name: "Bombilla Alpaca", price: 8000, img: "https://images.unsplash.com/photo-1597318181409-cf64d0b87830?q=80&w=600", category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 103, name: "Yerbera de Madera", price: 12000, img: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600", category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 104, name: "Remera MARKET", price: 18000, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600", category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 105, name: "Buzo Canguro", price: 35000, img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600", category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 106, name: "Cuadro Decorativo", price: 22000, img: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600", category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 107, name: "Pulsera Cuero", price: 9500, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
       ];
 
       const productosINTViejos = [
-        {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, imgs: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-        {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, imgs: ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-        {id: 3, name: "Auriculares Inalambricos", price: 89.99, imgs: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600"], category: "electronics", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+        {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+        {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+        {id: 3, name: "Auriculares Inalambricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
       ];
       localStorage.setItem('marketProductsAR', JSON.stringify(productosARViejos));
       localStorage.setItem('marketProductsINT', JSON.stringify(productosINTViejos));
@@ -302,7 +307,6 @@
     function goToStore() {
       if(currentStoreProfile) {
         alert(`Ir a la tienda: ${currentStoreProfile.storeName}\nCiudad: ${currentStoreProfile.city}`);
-        // Aca despues puedes hacer: window.location.href = `tienda.html?id=${currentStoreProfile.storeId}`
       }
     }
 
@@ -340,7 +344,7 @@
       currentCheckoutProduct = product;
       currentIsAR = isAR;
       currentStoreProfile = {storeName: product.store, storeId: product.storeId, city: product.city};
-      document.getElementById('modalImg').src = product.imgs[0];
+      document.getElementById('modalImg').src = getImg(product);
       document.getElementById('modalTitle').textContent = product.name;
       document.getElementById('modalPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
       document.getElementById('modalPrice').className = isAR? 'modal-price ar' : 'modal-price usd';
@@ -355,7 +359,7 @@
     function openCheckoutModal(product, isAR) {
       currentCheckoutProduct = product;
       currentIsAR = isAR;
-      document.getElementById('checkoutImg').src = product.imgs[0];
+      document.getElementById('checkoutImg').src = getImg(product);
       document.getElementById('checkoutName').textContent = product.name;
       document.getElementById('checkoutPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
       document.getElementById('payBtn').textContent = isAR? 'PAGAR CON MERCADOPAGO' : 'PAGAR CON PAYPAL';
@@ -420,7 +424,7 @@
       filtered.forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.imgs[0]}" onclick='openProductModal(${JSON.stringify(p)}, false)'>
+            <img src="${getImg(p)}" onclick='openProductModal(${JSON.stringify(p)}, false)'>
             <div class="prod-info">
               <div class="prod-store" onclick='currentStoreProfile=${JSON.stringify({storeName:p.store,storeId:p.storeId,city:p.city})}; goToStore()'>📍 ${p.store}</div>
               <span class="badge envio">ENVIO INTERNACIONAL</span>
@@ -446,7 +450,7 @@
       filtered.forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.imgs[0]}" onclick='openProductModal(${JSON.stringify(p)}, true)'>
+            <img src="${getImg(p)}" onclick='openProductModal(${JSON.stringify(p)}, true)'>
             <div class="prod-info">
               <div class="prod-store" onclick='currentStoreProfile=${JSON.stringify({storeName:p.store,storeId:p.storeId,city:p.city})}; goToStore()'>📍 ${p.store}</div>
               <h3>${p.name}</h3>
@@ -518,7 +522,7 @@
       document.querySelector('.cart-float-badge').textContent = totalItems;
       document.getElementById('cartItems').innerHTML = cart.map((item, i) => `
         <div class="cart-item">
-          <img src="${item.imgs[0]}">
+          <img src="${getImg(item)}">
           <div><h4>${item.name}</h4><p>$${item.price.toFixed(2)} USD</p></div>
           <button class="remove-item" onclick="removeItem(${i})">×</button>
         </div>
@@ -533,7 +537,7 @@
       document.querySelector('.cart-float-badge').textContent = totalItems;
       document.getElementById('cartItems').innerHTML = cartAR.map((item, i) => `
         <div class="cart-item">
-          <img src="${item.imgs[0]}">
+          <img src="${getImg(item)}">
           <div><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-AR')} ARS</p></div>
           <button class="remove-item" onclick="removeItem(${i})">×</button>
         </div>
