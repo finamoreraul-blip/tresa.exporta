@@ -2,90 +2,314 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>ADMIN - MARKET</title>
+  <title>ADMIN PRO - MARKET</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
-    :root { --bg: #0A0A0A; --card: #1C1C1C; --text: #F5F5F5; --gold: #D4AF37; --green: #00A650; --red: #E63946; --blue: #3483FA; }
+    :root {
+      --bg: #F5F5F5; --card: #FFFFFF; --text: #1A1A1A; --text-muted: #666;
+      --gold: #D4AF37; --green: #00A650; --red: #E63946; --blue: #3483FA; --border: #E0E0E0;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 20px; }
-    .container { max-width: 1400px; margin: auto; }
-    h1 { color: var(--gold); margin-bottom: 20px; }
-    .pedido-card { background: var(--card); padding: 20px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid var(--green); }
-    .pedido-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
-    .pedido-id { font-size: 18px; font-weight: 900; }
-    .pedido-estado { background: var(--green); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 700; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .info-box { background: #222; padding: 15px; border-radius: 8px; }
-    .info-box h4 { color: var(--gold); margin-bottom: 10px; }
-    .total { font-size: 24px; font-weight: 900; color: var(--green); }
-    .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
-    .btn-enviar { background: var(--blue); color: #fff; }
-    .btn-cancelar { background: var(--red); color: #fff; }
-    @media(max-width:768px){ .grid { grid-template-columns: 1fr; } }
+    body { background: var(--bg); color: var(--text); }
+
+   .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 999; }
+   .login-box { background: var(--card); padding: 40px; border-radius: 15px; width: 400px; }
+   .login-box input { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; }
+
+   .admin-header { background: var(--card); padding: 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+   .logout { float: right; background: var(--red); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; }
+   .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+   .stat-card { background: var(--card); padding: 25px; border-radius: 12px; border: 1px solid var(--border); }
+   .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border); }
+   .tab { padding: 12px 20px; cursor: pointer; font-weight: 700; border-bottom: 3px solid transparent; }
+   .tab.active { border-bottom: 3px solid var(--blue); color: var(--blue); }
+   .tab-content { display: none; }
+   .tab-content.active { display: block; }
+   .btn { padding: 12px 20px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+   .btn-primary { background: var(--blue); color: #fff; }
+   .btn-green { background: var(--green); color: #000; }
+   .btn-red { background: var(--red); color: #fff; }
+
+    /* FORM PRODUCTO */
+   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+   .form-group { margin-bottom: 18px; }
+   .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+   .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
+   .upload-box { border: 2px dashed var(--border); padding: 20px; border-radius: 10px; text-align: center; }
+   .preview-imgs { display: flex; gap: 10px; margin-top: 10px; }
+   .preview-imgs img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; }
+
+    /* VISTA PREVIA CARRUSEL */
+   .preview-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+   .carousel { position: relative; height: 300px; overflow: hidden; }
+   .carousel img { width: 100%; height: 300px; object-fit: cover; position: absolute; opacity: 0; transition: 1s; }
+   .carousel img.active { opacity: 1; }
+   .preview-info { padding: 18px; }
+
+   .table { width: 100%; background: var(--card); border-radius: 12px; border: 1px solid var(--border); }
+   .table th, .table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); }
+   @media(max-width:900px){ .form-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>📦 PANEL ADMIN - PEDIDOS</h1>
-    <div id="pedidosList"></div>
+
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <h2>🔐 ACCESO ADMIN</h2>
+      <input type="password" id="passInput" placeholder="Contraseña">
+      <button class="btn btn-primary" onclick="login()">INGRESAR</button>
+    </div>
   </div>
 
-  <script>
-    let pedidos = JSON.parse(localStorage.getItem('marketPedidos')) || [];
-    const list = document.getElementById('pedidosList');
+  <div id="adminPanel" style="display:none;">
+    <div class="admin-header">
+      <h1>📊 PANEL ADMIN PRO</h1>
+      <button class="logout" onclick="logout()">SALIR</button>
+    </div>
 
-    if(pedidos.length === 0) {
-      list.innerHTML = '<p style="text-align:center; color:#A0A0A0;">No hay pedidos aun</p>';
-    } else {
-      pedidos.forEach(p => {
-        list.innerHTML += `
-          <div class="pedido-card">
-            <div class="pedido-header">
-              <div class="pedido-id">Pedido #${p.id}</div>
-              <div class="pedido-estado">${p.estado.toUpperCase()}</div>
-            </div>
-            <div class="grid">
-              <div class="info-box">
-                <h4>Cliente</h4>
-                <p><b>Nombre:</b> ${p.cliente.nombre}</p>
-                <p><b>DNI:</b> ${p.cliente.dni}</p>
-                <p><b>Email:</b> ${p.cliente.email}</p>
-                <p><b>Tel:</b> ${p.cliente.telefono}</p>
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card"><h4>VENTAS</h4><div style="font-size:32px; font-weight:900; color:var(--green);" id="totalVentas">$0</div></div>
+        <div class="stat-card"><h4>PEDIDOS</h4><div style="font-size:32px; font-weight:900; color:var(--blue);" id="totalPedidos">0</div></div>
+        <div class="stat-card"><h4>PRODUCTOS</h4><div style="font-size:32px; font-weight:900;" id="totalProductos">0</div></div>
+        <div class="stat-card"><h4>CLICKS</h4><div style="font-size:32px; font-weight:900;" id="totalClicks">0</div></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="openTab('publicar')">+ PUBLICAR</div>
+        <div class="tab" onclick="openTab('productos')">MIS PRODUCTOS</div>
+        <div class="tab" onclick="openTab('pedidos')">PEDIDOS</div>
+        <div class="tab" onclick="openTab('estadisticas')">ESTADISTICAS</div>
+      </div>
+
+      <!-- TAB PUBLICAR -->
+      <div class="tab-content active" id="tab-publicar">
+        <div class="form-grid">
+          <div>
+            <h3>Datos del Producto</h3>
+            <form id="productForm">
+              <input type="hidden" id="editId">
+              <div class="form-group">
+                <label>1. Tienda</label>
+                <select id="prodStore">
+                  <option value="international|MARKET">INTERNACIONAL - USD</option>
+                  <option value="argentina|Mi Tienda">ARGENTINA - ARS</option>
+                </select>
               </div>
-              <div class="info-box">
-                <h4>Envío</h4>
-                <p><b>Dirección:</b> ${p.cliente.direccion}</p>
-                <p><b>Ciudad:</b> ${p.cliente.ciudad} - CP ${p.cliente.cp}</p>
-                <p><b>Fecha:</b> ${p.fecha}</p>
+              <div class="form-group"><label>2. Nombre</label><input type="text" id="prodName" required></div>
+              <div class="form-group"><label>3. Precio</label><input type="number" id="prodPrice" required></div>
+              <div class="form-group"><label>4. Categoria</label>
+                <select id="prodCategory">
+                  <option value="artesanias">Artesanias</option>
+                  <option value="home">Hogar</option>
+                  <option value="clothing">Ropa</option>
+                  <option value="electronics">Tecnologia</option>
+                  <option value="jewelry">Joyería</option>
+                </select>
               </div>
-            </div>
-            <div class="info-box" style="margin-top:15px;">
-              <h4>Producto</h4>
-              <p><b>${p.producto}</b></p>
-              <p><b>Vendedor:</b> ${p.vendedor}</p>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-              <div>
-                <p>Subtotal: $${p.subtotal.toLocaleString()} ${p.moneda}</p>
-                <p>Envío: $${p.envio.toLocaleString()} ${p.moneda}</p>
-                <p class="total">Total: $${p.total.toLocaleString()} ${p.moneda}</p>
+              <div class="form-group"><label>5. Stock</label><input type="number" id="prodStock" value="1"></div>
+              <div class="form-group"><label>6. Ciudad</label><input type="text" id="prodCity" value="Miami"></div>
+              
+              <div class="form-group">
+                <label>7. Hasta 3 Fotos</label>
+                <div class="upload-box">
+                  <input type="file" id="prodImgs" accept="image/*" multiple onchange="previewImgs(event)">
+                  <p style="color:var(--text-muted); font-size:12px;">Selecciona 3 imagenes</p>
+                </div>
+                <div class="preview-imgs" id="previewImgs"></div>
               </div>
-              <div style="display:flex; gap:10px;">
-                <button class="btn btn-enviar" onclick="alert('Marcar como enviado')">MARCAR ENVIADO</button>
-                <button class="btn btn-cancelar" onclick="cancelar(${p.id})">CANCELAR</button>
+
+              <button type="submit" class="btn btn-green" id="btnSave">PUBLICAR PRODUCTO</button>
+              <button type="button" class="btn" onclick="resetForm()" style="display:none;" id="btnCancel">CANCELAR</button>
+            </form>
+          </div>
+
+          <div>
+            <h3>Vista Previa</h3>
+            <div class="preview-card">
+              <div class="carousel" id="carouselPreview">
+                <img src="https://via.placeholder.com/400" class="active">
+              </div>
+              <div class="preview-info">
+                <h3 id="prevName">Nombre del producto</h3>
+                <div style="font-size:24px; font-weight:900; color:var(--blue);" id="prevPrice">$0</div>
+                <p style="color:var(--text-muted);" id="prevStore">MARKET</p>
               </div>
             </div>
           </div>
-        `;
+        </div>
+      </div>
+
+      <!-- TAB PRODUCTOS -->
+      <div class="tab-content" id="tab-productos">
+        <table class="table">
+          <thead><tr><th>Foto</th><th>Nombre</th><th>Tienda</th><th>Precio</th><th>Acciones</th></tr></thead>
+          <tbody id="productosTable"></tbody>
+        </table>
+      </div>
+
+      <!-- TAB PEDIDOS -->
+      <div class="tab-content" id="tab-pedidos">
+        <div id="pedidosList"></div>
+      </div>
+
+      <!-- TAB ESTADISTICAS -->
+      <div class="tab-content" id="tab-estadisticas">
+        <div id="estadisticasContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PASSWORD = 'emmafina';
+    let tempImgs = [];
+    let editingId = null;
+
+    function login() {
+      if(document.getElementById('passInput').value === PASSWORD) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadData();
+      } else alert('Contraseña incorrecta');
+    }
+    function logout() { location.reload(); }
+
+    function openTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-'+tab).classList.add('active');
+    }
+
+    function previewImgs(e) {
+      tempImgs = [];
+      document.getElementById('previewImgs').innerHTML = '';
+      document.getElementById('carouselPreview').innerHTML = '';
+      Array.from(e.target.files).slice(0,3).forEach((file, i) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          tempImgs.push(reader.result);
+          document.getElementById('previewImgs').innerHTML += `<img src="${reader.result}">`;
+          document.getElementById('carouselPreview').innerHTML += `<img src="${reader.result}" class="${i===0?'active':''}">`;
+          if(tempImgs.length > 1) startCarousel();
+        }
+        reader.readAsDataURL(file);
       });
     }
 
-    function cancelar(id) {
-      if(confirm('Seguro?')) {
-        pedidos = pedidos.filter(p => p.id !== id);
-        localStorage.setItem('marketPedidos', JSON.stringify(pedidos));
-        location.reload();
+    let carouselInterval;
+    function startCarousel() {
+      clearInterval(carouselInterval);
+      let index = 0;
+      const imgs = document.querySelectorAll('#carouselPreview img');
+      carouselInterval = setInterval(() => {
+        imgs.forEach(img => img.classList.remove('active'));
+        index = (index + 1) % imgs.length;
+        imgs[index].classList.add('active');
+      }, 3000);
+    }
+
+    document.getElementById('prodName').onkeyup = () => document.getElementById('prevName').textContent = document.getElementById('prodName').value;
+    document.getElementById('prodPrice').onkeyup = () => document.getElementById('prevPrice').textContent = '$' + document.getElementById('prodPrice').value;
+
+    document.getElementById('productForm').onsubmit = (e) => {
+      e.preventDefault();
+      const [tienda, storeName] = document.getElementById('prodStore').value.split('|');
+      const producto = {
+        id: editingId || Date.now(),
+        name: document.getElementById('prodName').value,
+        price: parseFloat(document.getElementById('prodPrice').value),
+        imgs: tempImgs.length > 0 ? tempImgs : ["https://via.placeholder.com/400"],
+        category: document.getElementById('prodCategory').value,
+        store: storeName,
+        storeId: tienda === 'international' ? 'market' : 'mi-tienda',
+        city: document.getElementById('prodCity').value,
+        stock: document.getElementById('prodStock').value,
+        tienda: tienda
+      };
+
+      if(tienda === 'international') {
+        let allProducts = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
+        if(editingId) allProducts = allProducts.map(p => p.id === editingId ? producto : p); else allProducts.unshift(producto);
+        localStorage.setItem('marketProductsINT', JSON.stringify(allProducts));
+      } else {
+        let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
+        if(editingId) productsAR = productsAR.map(p => p.id === editingId ? producto : p); else productsAR.unshift(producto);
+        localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
       }
+
+      alert('Producto guardado!');
+      resetForm();
+      loadData();
+    }
+
+    function resetForm() {
+      document.getElementById('productForm').reset();
+      editingId = null;
+      tempImgs = [];
+      document.getElementById('btnSave').textContent = 'PUBLICAR PRODUCTO';
+      document.getElementById('btnCancel').style.display = 'none';
+    }
+
+    function editarProducto(id, tienda) {
+      const key = tienda === 'international' ? 'marketProductsINT' : 'marketProductsAR';
+      const productos = JSON.parse(localStorage.getItem(key)) || [];
+      const p = productos.find(x => x.id === id);
+      editingId = id;
+      document.getElementById('prodName').value = p.name;
+      document.getElementById('prodPrice').value = p.price;
+      document.getElementById('prodCategory').value = p.category;
+      document.getElementById('prodCity').value = p.city;
+      document.getElementById('prodStore').value = tienda === 'international' ? 'international|MARKET' : 'argentina|Mi Tienda';
+      document.getElementById('btnSave').textContent = 'GUARDAR CAMBIOS';
+      document.getElementById('btnCancel').style.display = 'inline-block';
+      openTab('publicar');
+    }
+
+    function eliminarProducto(id, tienda) {
+      if(!confirm('Seguro?')) return;
+      const key = tienda === 'international' ? 'marketProductsINT' : 'marketProductsAR';
+      let productos = JSON.parse(localStorage.getItem(key)) || [];
+      productos = productos.filter(p => p.id !== id);
+      localStorage.setItem(key, JSON.stringify(productos));
+      loadData();
+    }
+
+    function loadData() {
+      const pedidos = JSON.parse(localStorage.getItem('marketPedidos')) || [];
+      const productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
+      const productsINT = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
+      const todosProductos = [...productsAR, ...productsINT];
+
+      document.getElementById('totalVentas').textContent = '$' + pedidos.reduce((a,b)=>a+b.total,0).toLocaleString('es-AR');
+      document.getElementById('totalPedidos').textContent = pedidos.length;
+      document.getElementById('totalProductos').textContent = todosProductos.length;
+
+      // TABLA PRODUCTOS
+      const table = document.getElementById('productosTable');
+      table.innerHTML = '';
+      todosProductos.forEach(p => {
+        table.innerHTML += `
+          <tr>
+            <td><img src="${p.imgs[0]}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;"></td>
+            <td>${p.name}</td>
+            <td>${p.tienda === 'international' ? 'USD' : 'ARS'}</td>
+            <td>$${p.price.toLocaleString()}</td>
+            <td>
+              <button class="btn btn-primary" onclick="editarProducto(${p.id}, '${p.tienda}')">EDITAR</button>
+              <button class="btn btn-red" onclick="eliminarProducto(${p.id}, '${p.tienda}')">ELIMINAR</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      // PEDIDOS
+      const pedidosList = document.getElementById('pedidosList');
+      pedidosList.innerHTML = pedidos.length === 0 ? '<p>No hay pedidos</p>' : '';
+      pedidos.forEach(p => {
+        pedidosList.innerHTML += `<div style="background:var(--card); padding:20px; border-radius:12px; margin-bottom:15px;"><p><b>#${p.id}</b> - ${p.cliente.nombre} - $${p.total.toLocaleString()} ${p.moneda}</p></div>`;
+      });
     }
   </script>
 </body>
