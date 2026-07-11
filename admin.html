@@ -144,10 +144,10 @@
 
       <!-- TAB PRODUCTOS -->
       <div class="tab-content" id="tab-productos">
-        <div class="filtro">
-          <button class="btn btn-ghost" onclick="filtroProd('todos')">TODOS</button>
-          <button class="btn btn-primary" onclick="filtroProd('international')">SOLO USD</button>
-          <button class="btn btn-green" onclick="filtroProd('argentina')">SOLO ARS</button>
+        <div class="filtro" id="filtroButtons">
+          <button class="btn btn-ghost" onclick="filtroProd('todos', this)">TODOS</button>
+          <button class="btn btn-primary" onclick="filtroProd('international', this)">SOLO USD</button>
+          <button class="btn btn-green" onclick="filtroProd('argentina', this)">SOLO ARS</button>
         </div>
         <table class="table">
           <thead><tr><th>Foto</th><th>Nombre</th><th>Tienda</th><th>Tipo</th><th>Precio</th><th>Acciones</th></tr></thead>
@@ -177,6 +177,10 @@
     let editingId = null;
     let pendingAction = null;
     let filtroActual = 'todos';
+
+    function getImg(p) {
+      return p.imgs? p.imgs[0] : 'https://via.placeholder.com/400';
+    }
 
     function login() {
       if(document.getElementById('passInput').value === PASSWORD) {
@@ -272,11 +276,21 @@
       const productos = JSON.parse(localStorage.getItem(key)) || [];
       const p = productos.find(x => x.id === id);
       editingId = id;
+      tempImgs = p.imgs || [];
       document.getElementById('prodName').value = p.name;
       document.getElementById('prodPrice').value = p.price;
       document.getElementById('prodCategory').value = p.category;
       document.getElementById('prodCity').value = p.city;
       document.getElementById('prodStore').value = tienda === 'international'? 'international|MARKET' : 'argentina|Mi Tienda';
+
+      document.getElementById('previewImgs').innerHTML = '';
+      document.getElementById('carouselPreview').innerHTML = '';
+      tempImgs.forEach((src, i) => {
+        document.getElementById('previewImgs').innerHTML += `<img src="${src}">`;
+        document.getElementById('carouselPreview').innerHTML += `<img src="${src}" class="${i===0?'active':''}">`;
+      });
+      if(tempImgs.length > 1) startCarousel();
+
       document.getElementById('btnSave').textContent = 'GUARDAR CAMBIOS';
       document.getElementById('btnCancel').style.display = 'inline-block';
       openTab('publicar');
@@ -308,10 +322,10 @@
       loadData();
     }
 
-    function filtroProd(tipo) {
+    function filtroProd(tipo, btn) {
       filtroActual = tipo;
-      document.querySelectorAll('.filtro.btn').forEach(b => b.style.opacity = '0.6');
-      event.target.style.opacity = '1';
+      document.querySelectorAll('#filtroButtons.btn').forEach(b => b.style.opacity = '0.6');
+      btn.style.opacity = '1';
       loadData();
     }
 
@@ -322,8 +336,8 @@
       const tiendas = JSON.parse(localStorage.getItem('marketUsers')) || [];
 
       let todosProductos = [
-       ...productsAR.map(p=>({...p, tienda:'argentina'})),
-       ...productsINT.map(p=>({...p, tienda:'international'}))
+      ...productsAR.map(p=>({...p, tienda:'argentina'})),
+      ...productsINT.map(p=>({...p, tienda:'international'}))
       ];
       if(filtroActual!== 'todos') todosProductos = todosProductos.filter(p => p.tienda === filtroActual);
 
@@ -339,7 +353,7 @@
       todosProductos.forEach(p => {
         table.innerHTML += `
           <tr>
-            <td><img src="${p.imgs[0]}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;"></td>
+            <td><img src="${getImg(p)}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;"></td>
             <td>${p.name}</td>
             <td>${p.store}</td>
             <td><span class="badge ${p.tienda}">${p.tienda === 'international'? 'USD' : 'ARS'}</span></td>
