@@ -414,7 +414,7 @@
           <div class="prod-card">
             <img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, false)'>
             <div class="prod-info">
-              <div class="prod-store" onclick="alert('Ir a tienda: ${p.store}')">📍 ${p.store}</div>
+              <div class="prod-store" onclick="window.location.href='store.html?store=${p.storeId}'">📍 ${p.store}</div>
               <span class="badge envio">ENVIO A COORDINAR</span>
               <h3>${p.name}</h3>
               <div class="price usd">$${p.price.toFixed(2)}</div>
