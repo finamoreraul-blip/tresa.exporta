@@ -8,7 +8,7 @@
   <style>
     :root {
       --bg: #0A0A0A; --bg-light: #141414; --card: #1C1C1C;
-      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --gold-hover: #B8941F; --red: #E63946;
+      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --red: #E63946; --blue-ar: #75AADB; --green: #2ECC71;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
     body { background: var(--bg); color: var(--text); }
@@ -18,37 +18,27 @@
     header { background: #000; padding: 15px 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; }
     .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; gap: 20px; }
     .logo { font-size: 26px; font-weight: 900; color: var(--gold); }
-    .search-bar { flex: 1; max-width: 600px; }
-    .search-bar input { width: 100%; padding: 12px 20px; background: #222; border: 1px solid #333; border-radius: 50px; color: var(--text); }
-    .header-actions { display: flex; gap: 15px; align-items: center; }
-    .back { color: var(--text-muted); font-size: 14px; }
+    .back { color: var(--text-muted); font-weight: 600; }
     .back:hover { color: var(--gold); }
-    .lang { border: 1px solid #333; padding: 8px 14px; border-radius: 20px; cursor: pointer; background: #222; color: var(--text); font-weight: 600; }
     .cart-btn { position: relative; font-size: 24px; cursor: pointer; }
     .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-    /* CATEGORIAS */
-    .categories-bar { background: var(--bg-light); padding: 15px 20px; border-bottom: 1px solid #222; position: sticky; top: 70px; z-index: 99; }
-    .cat-scroll { max-width: 1400px; margin: auto; display: flex; gap: 12px; overflow-x: auto; }
-    .cat-scroll::-webkit-scrollbar { display: none; }
-    .cat-btn { padding: 10px 22px; background: #222; border: 1px solid #333; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; }
-    .cat-btn.active { background: var(--gold); color: #000; }
-
-    /* CARRITO */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
     .cart-overlay.active { display: block; }
     .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; }
     .cart-sidebar.active { right: 0; }
-    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; }
+    .cart-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+    .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; position: relative; }
     .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
-    .cart-total { font-size: 22px; color: var(--gold); font-weight: 700; margin: 20px 0; }
+    .remove-item { background: none; border: none; color: var(--red); font-size: 18px; cursor: pointer; position: absolute; right: 0; }
+    .cart-total { font-size: 22px; color: var(--gold); font-weight: 700; margin: 20px 0; text-align: center; }
 
-    /* BANNER TIENDA */
     .store-banner { height: 280px; background-size: cover; background-position: center; position: relative; }
-    .store-banner::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .store-banner::after { content: ''; position: absolute; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)); }
     .store-info { position: relative; max-width: 1400px; margin: -60px auto 0; padding: 0 20px; display: flex; gap: 30px; align-items: center; z-index: 2; }
     .store-logo-big { width: 120px; height: 120px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 45px; font-weight: 900; color: #000; border: 4px solid var(--bg); }
-    .store-details h1 { font-size: 36px; }
+    .store-details h1 { font-size: 36px; margin-bottom: 5px; }
     .store-details p { color: var(--text-muted); }
 
     section { padding: 60px 20px; max-width: 1400px; margin: auto; }
@@ -61,48 +51,39 @@
     .prod-info h3 { font-size: 17px; margin-bottom: 10px; min-height: 40px; }
     .price { font-size: 21px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
     .btn { background: var(--gold); color: #000; padding: 12px 20px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; width: 100%; }
+    .btn.added { background: var(--green); }
 
     footer { background: #000; padding: 60px 20px; border-top: 1px solid #222; text-align: center; color: var(--text-muted); }
+
+    @media(max-width: 768px) { .cart-sidebar { width: 100%; } }
   </style>
 </head>
 <body>
 
-  <div class="topbar" data-en="🌍 WORLDWIDE SHIPPING | SECURE PAYMENT" data-es="🌍 ENVÍOS INTERNACIONALES | PAGO SEGURO">🌍 WORLDWIDE SHIPPING | SECURE PAYMENT</div>
+  <div class="topbar">🌍 WORLDWIDE SHIPPING | SECURE PAYMENT</div>
 
   <header>
     <div class="navbar">
       <a href="index.html" class="logo">MARKET</a>
-      <div class="search-bar">
-        <input type="text" id="searchStore" data-en="Search in this store..." data-es="Buscar en esta tienda...">
-      </div>
-      <div class="header-actions">
-        <a href="index.html" class="back" data-en="← Back" data-es="← Volver">← Back</a>
-        <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
-        <button class="lang" id="langBtn">ES</button>
-      </div>
+      <a href="index.html" class="back">← Volver al Inicio</a>
+      <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
     </div>
   </header>
 
-  <div class="categories-bar">
-    <div class="cat-scroll">
-      <a href="index.html" class="cat-btn active" data-en="STORE PRODUCTS" data-es="PRODUCTOS DE LA TIENDA">STORE PRODUCTS</a>
-      <a href="index.html" class="cat-btn" data-en="ALL STORES" data-es="TODAS LAS TIENDAS">ALL STORES</a>
-    </div>
-  </div>
-
-  <!-- CARRITO -->
   <div class="cart-overlay" id="cartOverlay"></div>
   <div class="cart-sidebar" id="cartSidebar">
-    <h3 data-en="Your Cart" data-es="Tu Carrito">Your Cart</h3>
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="clear-cart" id="clearCartBtn">VACIAR</button>
+    </div>
     <div id="cartItems"></div>
     <div class="cart-total" id="cartTotal">Total: $0.00</div>
-    <button class="btn" data-en="CHECKOUT" data-es="FINALIZAR COMPRA">CHECKOUT</button>
+    <button class="btn" style="width:100%;">CHECKOUT</button>
   </div>
 
-  <!-- BANNER TIENDA -->
   <div class="store-banner" id="storeBanner"></div>
   <div class="store-info">
-    <div class="store-logo-big" id="storeLogo">A</div>
+    <div class="store-logo-big" id="storeLogo">R</div>
     <div class="store-details">
       <h1 id="storeName">Loading...</h1>
       <p id="storeDesc">Loading...</p>
@@ -110,43 +91,53 @@
     </div>
   </div>
 
-  <!-- PRODUCTOS DE LA TIENDA -->
   <section id="products">
-    <h2 class="section-title" data-en="PRODUCTS" data-es="PRODUCTOS">PRODUCTS</h2>
+    <h2 class="section-title">PRODUCTOS DE LA TIENDA</h2>
     <div class="prod-grid" id="productGrid"></div>
   </section>
 
   <footer>
-    <p data-en="© 2026 MARKET. All rights reserved." data-es="© 2026 MARKET. Todos los derechos reservados.">© 2026 MARKET. All rights reserved.</p>
+    <p>© 2026 MARKET. All rights reserved.</p>
   </footer>
 
   <script>
     const stores = {
-      artisan: { name: "Artisan Gold", name_es: "Artisan Gold", logo: "A", banner: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2000", desc: "Handmade jewelry from Argentina.", desc_es: "Joyería artesanal de Argentina.", products: [
-        {name: "Golden Thread Bracelet", name_es: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"},
-        {name: "Silver Moon Necklace", name_es: "Collar Luna Plata", price: 45.00, img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600"}
-      ]},
-      tech: { name: "TechWorld", name_es: "TechWorld", logo: "T", banner: "https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=2000", desc: "Latest electronics.", desc_es: "Última tecnología.", products: [
-        {name: "Wireless Headphones", name_es: "Auriculares Inalámbricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600"},
-        {name: "Smart Watch Pro", name_es: "Reloj Inteligente Pro", price: 199.00, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600"}
-      ]},
-      fashion: { name: "Fashion Hub", name_es: "Fashion Hub", logo: "F", banner: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2000", desc: "Trendy clothing.", desc_es: "Ropa de tendencia.", products: [
-        {name: "Summer Dress", name_es: "Vestido de Verano", price: 39.99, img: "https://images.unsplash.com/photo-1489987707025-afc2323ea0eb?q=80&w=600"},
-        {name: "Denim Jacket", name_es: "Campera de Jean", price: 69.00, img: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=600"}
-      ]}
+      raices: { 
+        name: "Raíces Argentinas", 
+        logo: "R", 
+        banner: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=2000", 
+        desc: "Artesanías argentinas auténticas. Cuero, madera y textiles hechos por artesanos.",
+        products: [
+          {id: 101, name: "Set Matero de Cuero", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600"},
+          {id: 102, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"},
+          {id: 103, name: "Cuenco de Madera Tallado", price: 28.50, img: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600"},
+          {id: 104, name: "Mate de Cerámica Pintado", price: 22.99, img: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?q=80&w=600"},
+          {id: 105, name: "Canasta Tejida", price: 31.00, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600"},
+          {id: 106, name: "Bombilla de Alpaca", price: 18.99, img: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?q=80&w=600"}
+        ]
+      },
+      artisan: { 
+        name: "Artisan Gold", 
+        logo: "A", 
+        banner: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2000", 
+        desc: "Joyería artesanal de Argentina.",
+        products: [
+          {id: 201, name: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"},
+          {id: 202, name: "Collar Luna Plata", price: 45.00, img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600"}
+        ]
+      }
     };
 
     const urlParams = new URLSearchParams(window.location.search);
-    const storeId = urlParams.get('id') || 'artisan';
-    const store = stores[storeId] || stores['artisan'];
-    let currentLang = 'en';
+    const storeId = urlParams.get('id') || 'raices';
+    const store = stores[storeId] || stores['raices'];
     let cart = JSON.parse(localStorage.getItem('marketCart')) || [];
 
-    function loadStore(lang) {
-      document.getElementById('storeName').textContent = lang === 'en'? store.name : store.name_es;
-      document.getElementById('storeDesc').textContent = lang === 'en'? store.desc : store.desc_es;
+    function loadStore() {
+      document.getElementById('storeName').textContent = store.name;
+      document.getElementById('storeDesc').textContent = store.desc;
       document.getElementById('storeLogo').textContent = store.logo;
-      document.getElementById('productCount').textContent = `${store.products.length} ${lang === 'en'? 'Products' : 'Productos'}`;
+      document.getElementById('productCount').textContent = `${store.products.length} Products`;
       document.getElementById('pageTitle').textContent = `${store.name} - MARKET`;
       document.getElementById('storeBanner').style.backgroundImage = `url('${store.banner}')`;
       renderProducts();
@@ -155,51 +146,66 @@
 
     function renderProducts() {
       const grid = document.getElementById('productGrid');
-      const searchTerm = document.getElementById('searchStore').value.toLowerCase();
       grid.innerHTML = '';
-      store.products.filter(p => {
-        const name = currentLang === 'en'? p.name : p.name_es;
-        return name.toLowerCase().includes(searchTerm);
-      }).forEach(p => {
+      store.products.forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
             <img src="${p.img}" alt="">
             <div class="prod-info">
-              <h3>${currentLang === 'en'? p.name : p.name_es}</h3>
+              <h3>${p.name}</h3>
               <div class="price">$${p.price.toFixed(2)} USD</div>
-              <button class="btn" onclick='addToCart("${p.name}", ${p.price}, "${p.img}")'>${currentLang === 'en'? 'ADD TO CART' : 'AGREGAR AL CARRITO'}</button>
+              <button class="btn" id="btn-${p.id}" onclick='addToCart(${p.id}, "${p.name}", ${p.price}, "${p.img}")'>AGREGAR AL CARRITO</button>
             </div>
           </div>
         `;
       });
     }
 
-    function addToCart(name, price, img) {
-      cart.push({name, price, img});
+    function addToCart(id, name, price, img) {
+      cart.push({id, name, price, img});
+      localStorage.setItem('marketCart', JSON.stringify(cart));
+      updateCart();
+      showFeedback(`btn-${id}`);
+    }
+
+    function showFeedback(btnId) {
+      const btn = document.getElementById(btnId);
+      btn.classList.add('added');
+      btn.textContent = '✓ AGREGADO';
+      setTimeout(() => {
+        btn.classList.remove('added');
+        btn.textContent = 'AGREGAR AL CARRITO';
+      }, 1500);
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
       localStorage.setItem('marketCart', JSON.stringify(cart));
       updateCart();
     }
+
+    function clearCart() {
+      cart = [];
+      localStorage.setItem('marketCart', JSON.stringify(cart));
+      updateCart();
+    }
+
     function updateCart() {
       document.querySelector('.cart-count').textContent = cart.length;
       let cartHTML = ''; let total = 0;
-      cart.forEach(item => {
+      cart.forEach((item, index) => {
         total += item.price;
-        cartHTML += `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toFixed(2)}</p></div></div>`;
+        cartHTML += `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toFixed(2)} USD</p></div><button class="remove-item" onclick="removeItem(${index})">×</button></div>`;
       });
-      document.getElementById('cartItems').innerHTML = cartHTML || (currentLang === 'en' ? 'Cart is empty' : 'Carrito vacío');
-      document.getElementById('cartTotal').textContent = `Total: $${total.toFixed(2)}`;
+      document.getElementById('cartItems').innerHTML = cartHTML || 'Cart is empty';
+      document.getElementById('cartTotal').textContent = `Total: $${total.toFixed(2)} USD`;
     }
+
     document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
     document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
-    document.getElementById('searchStore').onkeyup = renderProducts;
-    document.getElementById('langBtn').onclick = () => {
-      currentLang = currentLang === 'en'? 'es' : 'en';
-      document.querySelectorAll('[data-en]').forEach(el => el.textContent = el.getAttribute(`data-${currentLang}`));
-      document.getElementById('langBtn').textContent = currentLang === 'en'? 'ES' : 'EN';
-      loadStore(currentLang);
-    };
+    document.getElementById('clearCartBtn').onclick = clearCart;
 
-    loadStore(currentLang);
+    loadStore();
   </script>
 
 </body>
