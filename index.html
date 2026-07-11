@@ -3,59 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-en="MARKET - Global & Argentina Marketplace" data-es="MARKET - Marketplace Global y Argentina">MARKET - Global & Argentina Marketplace</title>
+  <title>MARKET - Global & Argentina Marketplace</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0A0A0A; --bg-light: #141414; --card: #1C1C1C;
-      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --gold-hover: #B8941F; --red: #E63946; --blue-ar: #75AADB; --green: #2ECC71;
+      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --red: #E63946; --blue-ar: #75AADB; --green: #2ECC71;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-    body { background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); }
     a { text-decoration: none; color: inherit; }
-    img { max-width: 100%; display: block; }
 
     .country-selector { background: #000; padding: 12px 20px; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 101; }
-    .country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-    .country-btn { background: #222; border: 2px solid #333; color: var(--text); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: 0.3s; font-size: 14px; }
+    .country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 15px; justify-content: center; }
+    .country-btn { background: #222; border: 2px solid #333; color: var(--text); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700; }
     .country-btn.active.int { border-color: var(--gold); background: var(--gold); color: #000; }
     .country-btn.active.ar { border-color: var(--blue-ar); background: var(--blue-ar); color: #000; }
 
-    .topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 600; letter-spacing: 1px; }
+    .topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 600; }
     .topbar.ar { background: var(--blue-ar); }
     header { background: #000; padding: 15px 20px; position: sticky; top: 55px; z-index: 100; border-bottom: 1px solid #222; }
     .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; gap: 20px; }
-    .logo { font-size: 26px; font-weight: 900; color: var(--gold); letter-spacing: 2px; }
-    .search-bar { flex: 1; position: relative; max-width: 600px; }
-    .search-bar input { width: 100%; padding: 12px 20px; background: #222; border: 1px solid #333; border-radius: 50px; color: var(--text); font-size: 14px; }
-    .header-actions { display: flex; gap: 15px; align-items: center; }
-    .lang { border: 1px solid #333; padding: 8px 14px; border-radius: 20px; cursor: pointer; background: #222; color: var(--text); font-weight: 600; }
+    .logo { font-size: 26px; font-weight: 900; color: var(--gold); }
+    .search-bar { flex: 1; max-width: 600px; }
+    .search-bar input { width: 100%; padding: 12px 20px; background: #222; border: 1px solid #333; border-radius: 50px; color: var(--text); }
     .cart-btn { position: relative; font-size: 24px; cursor: pointer; }
     .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-    .categories-bar { background: var(--bg-light); padding: 15px 20px; border-bottom: 1px solid #222; position: sticky; top: 125px; z-index: 99; }
+    .categories-bar { background: var(--bg-light); padding: 15px 20px; position: sticky; top: 125px; z-index: 99; }
     .cat-scroll { max-width: 1400px; margin: auto; display: flex; gap: 12px; overflow-x: auto; }
-    .cat-btn { padding: 10px 22px; background: #222; border: 1px solid #333; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; }
+    .cat-btn { padding: 10px 22px; background: #222; border: 1px solid #333; border-radius: 50px; cursor: pointer; font-weight: 600; }
     .cat-btn.active { background: var(--gold); color: #000; }
     .cat-btn.ar.active { background: var(--blue-ar); }
+
+    /* MODAL PRODUCTO */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: var(--card); border-radius: 20px; max-width: 900px; width: 100%; display: flex; gap: 30px; padding: 30px; position: relative; }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); }
+    .modal-img { width: 400px; height: 400px; object-fit: cover; border-radius: 15px; }
+    .modal-info h2 { font-size: 28px; margin-bottom: 10px; }
+    .modal-store { color: var(--gold); margin-bottom: 15px; cursor: pointer; }
+    .modal-price { font-size: 32px; color: var(--gold); font-weight: 900; margin: 20px 0; }
+    .modal-price.ar { color: var(--blue-ar); }
+    .modal-desc { color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
 
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
     .cart-overlay.active { display: block; }
     .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; }
     .cart-sidebar.active { right: 0; }
-    .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+    .cart-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+    .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
     .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; position: relative; }
     .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
-    .cart-item-info { flex: 1; }
-    .remove-item { background: none; border: none; color: var(--red); font-size: 18px; cursor: pointer; position: absolute; right: 0; top: 0; }
-    .cart-total { font-size: 22px; color: var(--gold); font-weight: 700; margin: 20px 0; text-align: center; }
+    .remove-item { background: none; border: none; color: var(--red); font-size: 18px; cursor: pointer; position: absolute; right: 0; }
 
     .hero { position: relative; height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; }
     .hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
-    .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: linear-gradient(rgba(10,10,10,0.8), rgba(10,10,10,0.9)); z-index: -1; }
-    .hero-content h1 { font-size: 52px; font-weight: 900; margin-bottom: 15px; }
-    .btn { background: var(--gold); color: #000; padding: 16px 45px; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; transition: 0.3s; font-size: 16px; }
+    .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(10,10,10,0.8); z-index: -1; }
+    .btn { background: var(--gold); color: #000; padding: 16px 45px; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; }
     .btn.ar { background: var(--blue-ar); }
 
     section { padding: 60px 20px; max-width: 1400px; margin: auto; }
@@ -63,31 +69,33 @@
     .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
     .prod-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
     .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-    .prod-card img { width: 100%; height: 260px; object-fit: cover; }
+    .prod-card img { width: 100%; height: 260px; object-fit: cover; cursor: pointer; }
     .prod-info { padding: 20px; }
     .prod-store { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
     .prod-info h3 { font-size: 17px; margin-bottom: 10px; min-height: 40px; }
     .price { font-size: 21px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
     .price.ar { color: var(--blue-ar); }
-    .btn-small { padding: 12px 20px; font-size: 14px; border-radius: 8px; width: 100%; position: relative; }
+    .btn-small { padding: 12px 20px; font-size: 14px; border-radius: 8px; width: 100%; }
     .btn-small.added { background: var(--green); }
-    .btn-small.added::after { content: '✓'; margin-left: 8px; }
 
     #argentina { background: var(--bg-light); display: none; }
-    .ar-header { text-align: center; margin-bottom: 40px; }
-    .ar-badge { display: inline-block; background: var(--blue-ar); color: #000; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 14px; margin-bottom: 15px; }
+    .ar-badge { display: inline-block; background: var(--blue-ar); color: #000; padding: 8px 20px; border-radius: 20px; font-weight: 700; margin-bottom: 15px; }
     .mp-btn { width: 100%; margin-top: 8px; padding: 12px; background: #00B1EA; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
     .envio-tag { font-size: 12px; color: var(--blue-ar); margin-bottom: 5px; font-weight: 600; }
 
-    footer { background: #000; padding: 60px 20px; border-top: 1px solid #222; text-align: center; color: var(--text-muted); }
+    @media(max-width: 768px) { 
+      .modal-content { flex-direction: column; }
+      .modal-img { width: 100%; height: 300px; }
+      .cart-sidebar { width: 100%; } 
+    }
   </style>
 </head>
 <body>
 
   <div class="country-selector">
     <div class="country-buttons">
-      <button class="country-btn int active" id="btnInt" onclick="showStore('international')">🌍 <span data-en="INTERNATIONAL STORE" data-es="TIENDA INTERNACIONAL">TIENDA INTERNACIONAL</span></button>
-      <button class="country-btn ar" id="btnAr" onclick="showStore('argentina')">🇦🇷 <span data-en="ARGENTINA STORE" data-es="TIENDA ARGENTINA">TIENDA ARGENTINA</span></button>
+      <button class="country-btn int active" id="btnInt" onclick="showStore('international')">🌍 TIENDA INTERNACIONAL</button>
+      <button class="country-btn ar" id="btnAr" onclick="showStore('argentina')">🇦🇷 TIENDA ARGENTINA</button>
     </div>
   </div>
 
@@ -102,7 +110,6 @@
       </div>
       <div class="header-actions">
         <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
-        <button class="lang" id="langBtn">ES</button>
       </div>
     </div>
   </header>
@@ -112,7 +119,6 @@
       <div class="cat-btn active" data-cat="all">ALL PRODUCTS</div>
       <div class="cat-btn" data-cat="artesanias">ARTESANÍAS</div>
       <div class="cat-btn" data-cat="jewelry">JOYERÍA</div>
-      <div class="cat-btn" data-cat="electronics">ELECTRÓNICA</div>
     </div>
   </div>
 
@@ -121,6 +127,22 @@
       <div class="cat-btn ar active" data-cat-ar="all">TODOS</div>
       <div class="cat-btn ar" data-cat-ar="artesanias">ARTESANÍAS</div>
       <div class="cat-btn ar" data-cat-ar="food">ALIMENTOS</div>
+    </div>
+  </div>
+
+  <!-- MODAL PRODUCTO -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">×</span>
+      <img class="modal-img" id="modalImg" src="" alt="">
+      <div class="modal-info">
+        <h2 id="modalTitle"></h2>
+        <div class="modal-store" id="modalStore" onclick=""></div>
+        <p class="modal-desc" id="modalDesc">Producto de alta calidad, envío a todo el mundo. Garantía de satisfacción.</p>
+        <div class="modal-price" id="modalPrice"></div>
+        <button class="btn" id="modalAddBtn" style="width:100%;">AGREGAR AL CARRITO</button>
+        <button class="btn ar" id="modalMpBtn" style="width:100%; margin-top:10px; display:none;">PAGAR CON MERCADOPAGO</button>
+      </div>
     </div>
   </div>
 
@@ -150,35 +172,30 @@
   </section>
 
   <section id="argentina">
-    <div class="ar-header">
+    <div style="text-align:center; margin-bottom:40px;">
       <span class="ar-badge">🇦🇷 SOLO ARGENTINA</span>
       <h2>VENTAS DENTRO DE ARGENTINA</h2>
     </div>
     <div class="prod-grid" id="productGridAR"></div>
   </section>
 
-  <footer>
-    <p>© 2026 MARKET. All rights reserved.</p>
-  </footer>
-
   <script>
-    let currentLang = 'en';
     let currentStore = 'international';
     let cart = JSON.parse(localStorage.getItem('marketCart')) || [];
     let cartAR = JSON.parse(localStorage.getItem('marketCartAR')) || [];
     let activeCategory = 'all';
     let activeCatAR = 'all';
+    let currentProduct = null;
 
     const allProducts = [
-      {id: 1, name: "Leather Mate Set", name_es: "Set Matero de Cuero", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raíces Argentinas"},
-      {id: 2, name: "Alpaca Wool Scarf", name_es: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raíces Argentinas"},
-      {id: 3, name: "Golden Thread Bracelet", name_es: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "Artisan Gold"},
-      {id: 4, name: "Wireless Headphones", name_es: "Auriculares Inalámbricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "TechWorld"}
+      {id: 1, name: "Leather Mate Set", name_es: "Set Matero de Cuero", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raíces Argentinas", storeId: "raices"},
+      {id: 2, name: "Alpaca Wool Scarf", name_es: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raíces Argentinas", storeId: "raices"},
+      {id: 3, name: "Golden Thread Bracelet", name_es: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "Artisan Gold", storeId: "artisan"}
     ];
 
     const productsAR = [
-      {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", envio: "Envío Gratis CABA"},
-      {id: 2, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", envio: "Envío a todo el país"},
+      {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", envio: "Envío Gratis CABA", storeId: "raices"},
+      {id: 2, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", envio: "Envío a todo el país", storeId: "raices"},
       {id: 3, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", envio: "Envío 24hs"}
     ];
 
@@ -195,9 +212,6 @@
         document.getElementById('searchAR').style.display = 'none';
         document.getElementById('btnInt').classList.add('active');
         document.getElementById('topbar').className = 'topbar';
-        document.getElementById('topbar').textContent = '🌍 WORLDWIDE SHIPPING | SECURE PAYMENT WITH PAYPAL & STRIPE';
-        document.getElementById('cartTitle').textContent = 'Your Cart';
-        document.getElementById('checkoutBtn').textContent = 'CHECKOUT';
         updateCart();
       } else {
         document.getElementById('international').style.display = 'none';
@@ -208,32 +222,49 @@
         document.getElementById('searchAR').style.display = 'block';
         document.getElementById('btnAr').classList.add('active');
         document.getElementById('topbar').className = 'topbar ar';
-        document.getElementById('topbar').textContent = '🇦🇷 ENVIOS EN 48HS | PAGO CON MERCADOPAGO';
-        document.getElementById('cartTitle').textContent = 'Tu Carrito';
-        document.getElementById('checkoutBtn').textContent = 'FINALIZAR COMPRA';
         updateCartAR();
       }
-      window.scrollTo(0, 0);
     }
+
+    function openModal(product, isAR = false) {
+      currentProduct = { ...product, isAR };
+      document.getElementById('modalImg').src = product.img;
+      document.getElementById('modalTitle').textContent = product.name;
+      document.getElementById('modalPrice').textContent = isAR ? `$${product.price.toLocaleString('es-AR')} ARS` : `$${product.price.toFixed(2)} USD`;
+      document.getElementById('modalPrice').className = isAR ? 'modal-price ar' : 'modal-price';
+      
+      if(product.store) {
+        document.getElementById('modalStore').textContent = `📍 ${product.store}`;
+        document.getElementById('modalStore').onclick = () => window.location.href = `store.html?id=${product.storeId}`;
+      } else {
+        document.getElementById('modalStore').textContent = '';
+      }
+
+      document.getElementById('modalAddBtn').style.display = 'block';
+      document.getElementById('modalMpBtn').style.display = isAR ? 'block' : 'none';
+      document.getElementById('modalAddBtn').onclick = () => isAR ? addToCartAR(product.id) : addToCart(product.id);
+      
+      document.getElementById('productModal').classList.add('active');
+    }
+    function closeModal() { document.getElementById('productModal').classList.remove('active'); }
 
     function renderProducts() {
       const grid = document.getElementById('productGrid');
       const searchTerm = document.getElementById('productSearch').value.toLowerCase();
       grid.innerHTML = '';
       allProducts.filter(p => {
-        const name = currentLang === 'en'? p.name : p.name_es;
         const matchCategory = activeCategory === 'all' || p.category === activeCategory;
-        const matchSearch = name.toLowerCase().includes(searchTerm);
+        const matchSearch = p.name.toLowerCase().includes(searchTerm);
         return matchCategory && matchSearch;
       }).forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.img}" alt="">
+            <img src="${p.img}" onclick='openModal(${JSON.stringify(p).replace(/'/g, "&#39;")}, false)'>
             <div class="prod-info">
               <div class="prod-store">📍 ${p.store}</div>
-              <h3>${currentLang === 'en'? p.name : p.name_es}</h3>
+              <h3>${p.name}</h3>
               <div class="price">$${p.price.toFixed(2)} USD</div>
-              <button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id}, this)'>${currentLang === 'en'? 'ADD TO CART' : 'AGREGAR AL CARRITO'}</button>
+              <button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id})'>ADD TO CART</button>
             </div>
           </div>
         `;
@@ -251,12 +282,12 @@
       }).forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.img}" alt="">
+            <img src="${p.img}" onclick='openModal(${JSON.stringify(p).replace(/'/g, "&#39;")}, true)'>
             <div class="prod-info">
               <div class="envio-tag">${p.envio}</div>
               <h3>${p.name}</h3>
               <div class="price ar">$${p.price.toLocaleString('es-AR')} ARS</div>
-              <button class="btn-small ar" id="btnAR-${p.id}" onclick='addToCartAR(${p.id}, this)'>AGREGAR AL CARRITO</button>
+              <button class="btn-small ar" id="btnAR-${p.id}" onclick='addToCartAR(${p.id})'>AGREGAR AL CARRITO</button>
               <button class="mp-btn" onclick="alert('Pagar: ${p.name}')">PAGAR CON MERCADOPAGO</button>
             </div>
           </div>
@@ -264,30 +295,32 @@
       });
     }
 
-    function addToCart(id, btn) {
+    function addToCart(id) {
       const product = allProducts.find(p => p.id === id);
       cart.push({id, name: product.name, price: product.price, img: product.img});
       localStorage.setItem('marketCart', JSON.stringify(cart));
       updateCart();
-      showFeedback(btn);
+      showFeedback(`btn-${id}`);
     }
 
-    function addToCartAR(id, btn) {
+    function addToCartAR(id) {
       const product = productsAR.find(p => p.id === id);
       cartAR.push({id, name: product.name, price: product.price, img: product.img});
       localStorage.setItem('marketCartAR', JSON.stringify(cartAR));
       updateCartAR();
-      showFeedback(btn);
+      showFeedback(`btnAR-${id}`);
     }
 
-    function showFeedback(btn) {
-      const originalText = btn.textContent;
-      btn.classList.add('added');
-      btn.textContent = '✓ AGREGADO';
-      setTimeout(() => {
-        btn.classList.remove('added');
-        btn.textContent = originalText;
-      }, 1500);
+    function showFeedback(btnId) {
+      const btn = document.getElementById(btnId);
+      if(btn) {
+        btn.classList.add('added');
+        btn.textContent = '✓ AGREGADO';
+        setTimeout(() => {
+          btn.classList.remove('added');
+          btn.textContent = currentStore === 'international' ? 'ADD TO CART' : 'AGREGAR AL CARRITO';
+        }, 1500);
+      }
     }
 
     function removeItem(index) {
@@ -319,16 +352,7 @@
       let cartHTML = ''; let total = 0;
       cart.forEach((item, index) => { 
         total += item.price; 
-        cartHTML += `
-          <div class="cart-item">
-            <img src="${item.img}">
-            <div class="cart-item-info">
-              <h4>${item.name}</h4>
-              <p>$${item.price.toFixed(2)} USD</p>
-            </div>
-            <button class="remove-item" onclick="removeItem(${index})">×</button>
-          </div>
-        `; 
+        cartHTML += `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toFixed(2)} USD</p></div><button class="remove-item" onclick="removeItem(${index})">×</button></div>`; 
       });
       document.getElementById('cartItems').innerHTML = cartHTML || 'Cart is empty';
       document.getElementById('cartTotal').textContent = `Total: $${total.toFixed(2)} USD`;
@@ -339,16 +363,7 @@
       let cartHTML = ''; let total = 0;
       cartAR.forEach((item, index) => { 
         total += item.price; 
-        cartHTML += `
-          <div class="cart-item">
-            <img src="${item.img}">
-            <div class="cart-item-info">
-              <h4>${item.name}</h4>
-              <p>$${item.price.toLocaleString('es-AR')} ARS</p>
-            </div>
-            <button class="remove-item" onclick="removeItem(${index})">×</button>
-          </div>
-        `; 
+        cartHTML += `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-AR')} ARS</p></div><button class="remove-item" onclick="removeItem(${index})">×</button></div>`; 
       });
       document.getElementById('cartItems').innerHTML = cartHTML || 'Carrito vacío';
       document.getElementById('cartTotal').textContent = `Total: $${total.toLocaleString('es-AR')} ARS`;
@@ -362,17 +377,10 @@
         renderProducts();
       });
     });
-    document.querySelectorAll('#catFilterAR .cat-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('#catFilterAR .cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeCatAR = btn.dataset.catAr;
-        renderProductsAR();
-      });
-    });
 
     document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
     document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
+    document.getElementById('productModal').onclick = (e) => { if(e.target.id === 'productModal') closeModal(); }
     document.getElementById('clearCartBtn').onclick = clearCart;
     document.getElementById('productSearch').onkeyup = renderProducts;
     document.getElementById('searchAR').onkeyup = renderProductsAR;
