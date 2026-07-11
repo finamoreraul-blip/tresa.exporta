@@ -14,7 +14,7 @@
     html, body { width: 100%; overflow-x: hidden; background: var(--bg); }
     body { color: var(--text); }
   .container { max-width: 1200px; margin: auto; padding: 20px; width: 100%; }
-    header { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+    header { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
   .logo { font-size: 20px; font-weight: 900; color: var(--blue); }
   .btn { background: var(--blue); color: #fff; padding: 12px 25px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
   .btn:hover { background: var(--blue-dark); }
@@ -53,7 +53,7 @@
   .store-desc { padding: 20px; }
 
   .prod-table { background: var(--card); border-radius: 12px; padding: 15px; border: 1px solid var(--border); overflow-x: auto; }
-  .prod-row { display: grid; grid-template-columns: 50px 1fr 100px 100px 280px; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; min-width: 750px; }
+  .prod-row { display: grid; grid-template-columns: 50px 1fr 100px 100px 230px; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; min-width: 700px; }
   .prod-row.header { font-weight: 700; color: var(--subtext); font-size: 12px; }
   .prod-row img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
   .badge { background: var(--green); color: #fff; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
@@ -348,7 +348,6 @@
             <div><span class="badge ${isInternational? '' : 'off'}">${isInternational? 'PUBLICADO' : 'SOLO ARS'}</span></div>
             <div>
               <button class="btn" style="padding:8px 10px; font-size:12px;" onclick='editarProducto(${p.id})'>EDITAR</button>
-              <button class="btn green" style="padding:8px 10px; font-size:12px;" onclick='comprarProducto(${p.id})'>COMPRAR</button>
               <button class="btn gold" style="padding:8px 10px; font-size:12px;" onclick="transferir(${p.id})">A USD</button>
               <button class="btn red" style="padding:8px 10px; font-size:12px;" onclick="deleteProduct(${p.id})">BORRAR</button>
             </div>
@@ -377,7 +376,6 @@
     }
     function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
 
-    // NUEVA FUNCION EDITAR
     function editarProducto(id) {
       const p = productsAR.find(x => x.id === id);
       document.getElementById('modalTitle').textContent = 'Editar Producto';
@@ -391,17 +389,6 @@
       document.getElementById('previewPrice').textContent = '$' + p.price;
       tempProdImg = p.img;
       document.getElementById('productModal').classList.add('active');
-    }
-
-    // NUEVA FUNCION COMPRAR
-    function comprarProducto(id) {
-      const p = productsAR.find(x => x.id === id);
-      if(p.paymentLink) {
-        window.open(p.paymentLink, '_blank');
-      } else {
-        const msg = `Hola ${currentUser.storeName}! Quiero comprar: ${p.name} - $${p.price.toLocaleString('es-AR')}`;
-        window.open(`https://wa.me/${currentUser.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-      }
     }
 
     document.getElementById('productForm').onsubmit = (e) => {
@@ -419,14 +406,12 @@
       };
 
       if(editId) {
-        // EDITAR
         const index = productsAR.findIndex(p => p.id === parseInt(editId));
         productsAR[index] = nuevo;
         const indexAll = allProducts.findIndex(p => p.id === parseInt(editId));
         if(indexAll > -1) allProducts[indexAll] = nuevo;
         showAlert('Producto actualizado!');
       } else {
-        // NUEVO
         productsAR.unshift(nuevo);
         allProducts.unshift(nuevo);
         showAlert('Producto publicado en MARKET!');
