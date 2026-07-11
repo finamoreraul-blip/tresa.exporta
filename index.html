@@ -236,7 +236,7 @@
 
   <footer><p>© 2026 MARKET. Todos los derechos reservados.</p></footer>
 
-  <script>
+<script>
     let currentStore = 'international';
     let cart = JSON.parse(localStorage.getItem('marketCart')) || [];
     let cartAR = JSON.parse(localStorage.getItem('marketCartAR')) || [];
@@ -274,6 +274,9 @@
         document.getElementById('searchAR').style.display = 'none';
         document.getElementById('btnInt').classList.add('active');
         document.getElementById('topbar').className = 'topbar';
+        activeCategory = 'all'; // resetear filtro
+        document.querySelectorAll('#catFilter .cat-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('#catFilter .cat-btn[data-cat="all"]').classList.add('active');
         renderProducts();
         updateCart();
       } else {
@@ -285,6 +288,9 @@
         document.getElementById('searchAR').style.display = 'block';
         document.getElementById('btnAr').classList.add('active');
         document.getElementById('topbar').className = 'topbar ar';
+        activeCatAR = 'all'; // resetear filtro
+        document.querySelectorAll('#catFilterAR .cat-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('#catFilterAR .cat-btn[data-cat-ar="all"]').classList.add('active');
         renderProductsAR();
         updateCartAR();
       }
@@ -475,8 +481,8 @@
       document.getElementById('cartFloat').style.display = totalItems > 0 ? 'flex' : 'none';
     }
 
-    // FILTROS CORREGIDOS
-    document.addEventListener('DOMContentLoaded', () => {
+    // FILTROS - AHORA SI FUNCIONAN
+    function setupFilters() {
       document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
         btn.onclick = () => { 
           document.querySelectorAll('#catFilter .cat-btn').forEach(b => b.classList.remove('active')); 
@@ -494,7 +500,7 @@
           renderProductsAR(); 
         }
       });
-    });
+    }
 
     document.getElementById('cartBtn').onclick = () => { 
       document.getElementById('cartSidebar').classList.add('active'); 
@@ -514,10 +520,13 @@
     document.getElementById('productSearch').onkeyup = renderProducts;
     document.getElementById('searchAR').onkeyup = renderProductsAR;
 
-    // INICIALIZAR TODO
-    renderProducts();
-    renderProductsAR();
-    showStore('international');
+    // INICIALIZAR TODO DESPUES DE QUE CARGUE EL HTML
+    window.onload = function() {
+      setupFilters();
+      renderProducts();
+      renderProductsAR();
+      showStore('international');
+    }
   </script>
 </body>
 </html>
