@@ -36,9 +36,8 @@
   .price { font-size: 24px; font-weight: 900; color: var(--blue-ar); margin-bottom: 10px; }
   .btn-group { display: flex; gap: 8px; flex-direction: column; }
   .btn-small { padding: 12px; font-size: 14px; border-radius: 8px; width: 100%; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
-  .btn-small.comprar { background: var(--blue-ar); color: #fff; }
+  .btn-small.comprar { background: var(--green); color: #000; }
   .btn-small.agregar { background: var(--gold); color: #000; }
-  .btn-small.consultar { background: var(--green); color: #fff; }
   .btn-small:hover { opacity: 0.8; }
   .btn-small.added { background: var(--green); color: #fff; }
 
@@ -51,7 +50,13 @@
   .modal-info h2 { font-size: 26px; margin-bottom: 10px; }
   .modal-price { font-size: 38px; font-weight: 900; color: var(--blue-ar); margin: 15px 0; }
   .seller-box { background: #222; padding: 15px; border-radius: 10px; margin: 15px 0; }
-  .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; }
+
+  .modal-content-checkout { background: var(--card); border-radius: 15px; max-width: 700px; width: 100%; padding: 30px; }
+  .checkout-form { display: flex; flex-direction: column; gap: 15px; }
+  .checkout-form input { padding: 14px; background: #111; border: 1px solid #333; border-radius: 8px; color: var(--text); }
+  .form-row { display: flex; gap: 15px; }
+  .shipping-result { background: #222; padding: 15px; border-radius: 8px; margin-top: 10px; display: none; }
+  .btn-pay { background: var(--green); color: #000; padding: 16px; border: none; border-radius: 8px; font-weight: 900; font-size: 16px; cursor: pointer; width: 100%; }
 
   .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
   .cart-overlay.active { display: block; }
@@ -68,6 +73,7 @@
     .modal-img { width: 100%; height: 300px; }
     .cart-sidebar { width: 100%; } 
     .store-header { flex-direction: column; align-items: center; text-align: center; margin-top: -80px; }
+    .form-row { flex-direction: column; gap: 0; }
   }
   </style>
 </head>
@@ -113,10 +119,39 @@
           <p><b>Vendido por:</b> <span id="modalStore"></span></p>
           <p style="font-size:12px; color:#A0A0A0;">Ubicación: <span id="modalCity"></span></p>
         </div>
-        <button class="contact-seller" id="contactBtn">CONSULTAR POR WHATSAPP</button>
+        <button class="btn-small comprar" id="modalComprarBtn">COMPRAR</button>
         <button class="btn-small agregar" id="modalAddBtn" style="margin-top:10px;">AGREGAR AL CARRITO</button>
-        <button class="btn-small comprar" id="modalMpBtn">COMPRAR</button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL CHECKOUT NUEVO -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-content-checkout">
+      <span class="modal-close" onclick="closeCheckoutModal()">×</span>
+      <h2>Finalizar Compra</h2>
+      <p style="color:#A0A0A0; margin-bottom:20px;">Completa tus datos para cotizar el envío</p>
+      <div style="display:flex; gap:20px; margin-bottom:20px;">
+        <img id="checkoutImg" src="" style="width:100px; height:100px; border-radius:8px; object-fit:cover;">
+        <div>
+          <h3 id="checkoutName"></h3>
+          <div class="price" id="checkoutPrice"></div>
+        </div>
+      </div>
+      <form class="checkout-form" id="checkoutForm">
+        <input type="text" id="buyerName" placeholder="Nombre y Apellido *" required>
+        <input type="text" id="buyerDni" placeholder="DNI *" required>
+        <input type="email" id="buyerEmail" placeholder="Email *" required>
+        <input type="tel" id="buyerPhone" placeholder="Telefono *" required>
+        <input type="text" id="buyerAddress" placeholder="Dirección *" required>
+        <div class="form-row">
+          <input type="text" id="buyerCity" placeholder="Ciudad *" required>
+          <input type="text" id="buyerZip" placeholder="Código Postal *" required>
+        </div>
+        <button type="button" class="btn-small" style="background:var(--blue-ar);" onclick="cotizarEnvio()">COTIZAR ENVIO</button>
+        <div class="shipping-result" id="shippingResult"></div>
+        <button type="submit" class="btn-pay">PAGAR CON MERCADOPAGO</button>
+      </form>
     </div>
   </div>
 
@@ -129,13 +164,13 @@
     </div>
     <div id="cartItems"></div>
     <div style="font-size:24px; font-weight:900; margin:20px 0; text-align:center;" id="cartTotal">Total: $0</div>
-    <button class="btn-small agregar" id="finalizeBtn">FINALIZAR COMPRA POR WHATSAPP</button>
   </div>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const storeId = urlParams.get('store');
     let cart = JSON.parse(localStorage.getItem('marketCartStore')) || [];
+    let currentCheckoutProduct = null;
 
     let USERS = JSON.parse(localStorage.getItem('marketUsers')) || [];
     let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
@@ -144,7 +179,6 @@
     if(!store) {
       document.body.innerHTML = '<h1 style="text-align:center; margin-top:100px;">Tienda no encontrada</h1>';
     } else {
-      // SUMAR VISITA REAL
       const today = new Date().toISOString().split('T')[0];
       if(store.lastVisitDate !== today) { store.visitsToday = 0; store.lastVisitDate = today; }
       store.visits = (store.visits || 0) + 1; 
@@ -152,7 +186,6 @@
       USERS[USERS.findIndex(u => u.storeId === storeId)] = store;
       localStorage.setItem('marketUsers', JSON.stringify(USERS));
 
-      // CARGAR DATOS TIENDA
       document.getElementById('storeName').textContent = store.storeName;
       document.getElementById('storeCity').textContent = store.city;
       document.getElementById('storeDescText').textContent = store.desc || 'Esta tienda aun no tiene descripción.';
@@ -174,9 +207,8 @@
               <h3>${p.name}</h3>
               <div class="price">$${p.price.toLocaleString('es-AR')}</div>
               <div class="btn-group">
-                <button class="btn-small comprar" onclick='comprarProducto(${JSON.stringify(p).replace(/'/g,"&apos;")})'>COMPRAR</button>
+                <button class="btn-small comprar" onclick='openCheckoutModal(${JSON.stringify(p).replace(/'/g,"&apos;")})'>COMPRAR</button>
                 <button class="btn-small agregar" id="btn-${p.id}" onclick='addToCart(${p.id})'>AGREGAR</button>
-                <button class="btn-small consultar" onclick="window.open('https://wa.me/${p.whatsapp}?text=Hola ${store.storeName}, consulto por: ${p.name}','_blank')">CONSULTAR</button>
               </div>
             </div>
           </div>`;
@@ -191,22 +223,68 @@
       document.getElementById('modalPrice').textContent = `$${product.price.toLocaleString('es-AR')}`;
       document.getElementById('modalStore').textContent = product.store;
       document.getElementById('modalCity').textContent = product.city;
-      document.getElementById('contactBtn').onclick = () => window.open(`https://wa.me/${product.whatsapp}?text=Hola ${store.storeName}, consulto por: ${product.name}`,'_blank');
+      document.getElementById('modalComprarBtn').onclick = () => openCheckoutModal(product);
       document.getElementById('modalAddBtn').onclick = () => addToCart(product.id);
-      document.getElementById('modalMpBtn').onclick = () => comprarProducto(product);
       document.getElementById('productModal').classList.add('active');
     }
     function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
 
-    // NUEVA FUNCION COMPRAR
-    function comprarProducto(product) {
-      if(product.paymentLink && product.paymentLink !== '') {
-        window.open(product.paymentLink, '_blank');
-      } else {
-        const msg = `Hola ${store.storeName}! Quiero comprar: ${product.name} - $${product.price.toLocaleString('es-AR')}`;
-        window.open(`https://wa.me/${product.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-      }
+    function openCheckoutModal(product) {
+      currentCheckoutProduct = product;
+      document.getElementById('checkoutImg').src = product.img;
+      document.getElementById('checkoutName').textContent = product.name;
+      document.getElementById('checkoutPrice').textContent = `$${product.price.toLocaleString('es-AR')}`;
+      document.getElementById('checkoutModal').classList.add('active');
       closeProductModal();
+    }
+    function closeCheckoutModal() { document.getElementById('checkoutModal').classList.remove('active'); }
+
+    function cotizarEnvio() {
+      const cp = document.getElementById('buyerZip').value;
+      if(!cp) return alert('Pone tu CP');
+      let costoAndreani = 4500;
+      let costoCorreo = 3200;
+      document.getElementById('shippingResult').style.display = 'block';
+      document.getElementById('shippingResult').innerHTML = `
+        <b>Elige tu envío:</b><br><br>
+        <label><input type="radio" name="envio" value="${costoAndreani}"> Andreani - $${costoAndreani.toLocaleString('es-AR')} - 48hs</label><br>
+        <label><input type="radio" name="envio" value="${costoCorreo}"> Correo Argentino - $${costoCorreo.toLocaleString('es-AR')} - 5 a 7 días</label>
+      `;
+    }
+
+    document.getElementById('checkoutForm').onsubmit = (e) => {
+      e.preventDefault();
+      const envio = document.querySelector('input[name="envio"]:checked');
+      if(!envio) return alert('Elegi un método de envío');
+      
+      const pedido = {
+        id: Date.now(),
+        fecha: new Date().toLocaleString(),
+        tienda: store.storeName,
+        cliente: {
+          nombre: document.getElementById('buyerName').value,
+          dni: document.getElementById('buyerDni').value,
+          email: document.getElementById('buyerEmail').value,
+          telefono: document.getElementById('buyerPhone').value,
+          direccion: document.getElementById('buyerAddress').value,
+          ciudad: document.getElementById('buyerCity').value,
+          cp: document.getElementById('buyerZip').value,
+        },
+        producto: currentCheckoutProduct.name,
+        vendedor: store.storeName,
+        subtotal: currentCheckoutProduct.price,
+        envio: parseFloat(envio.value),
+        total: currentCheckoutProduct.price + parseFloat(envio.value),
+        moneda: 'ARS',
+        estado: 'pagado'
+      };
+      
+      let pedidos = JSON.parse(localStorage.getItem('marketPedidos')) || [];
+      pedidos.unshift(pedido);
+      localStorage.setItem('marketPedidos', JSON.stringify(pedidos));
+      
+      alert(`Pedido #${pedido.id} creado!\nTotal: $${pedido.total.toLocaleString('es-AR')}\n\nLa plata queda retenida en MARKET.`);
+      closeCheckoutModal();
     }
 
     function addToCart(id) {
@@ -240,17 +318,8 @@
     document.getElementById('clearCartBtn').onclick = () => { cart = []; localStorage.setItem('marketCartStore', JSON.stringify(cart)); updateCart(); }
     document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
     document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
-    
-    // FINALIZAR COMPRA POR WHATSAPP
-    document.getElementById('finalizeBtn').onclick = () => {
-      if(cart.length === 0) return alert('Tu carrito esta vacio');
-      let mensaje = `Hola ${store.storeName}! Quiero comprar:%0A%0A`;
-      cart.forEach(item => {
-        mensaje += `- ${item.name} x${item.quantity} = $${(item.price * item.quantity).toLocaleString('es-AR')}%0A`;
-      });
-      mensaje += `%0ATotal: $${cart.reduce((a,b)=>a+b.price*b.quantity,0).toLocaleString('es-AR')}`;
-      window.open(`https://wa.me/${store.whatsapp}?text=${mensaje}`, '_blank');
-    }
+    document.getElementById('productModal').onclick = (e) => { if(e.target.id === 'productModal') closeProductModal(); }
+    document.getElementById('checkoutModal').onclick = (e) => { if(e.target.id === 'checkoutModal') closeCheckoutModal(); }
 
     updateCart();
   </script>
