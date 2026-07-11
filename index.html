@@ -32,7 +32,6 @@
   .header-actions { display: flex; gap: 20px; align-items: center; }
   .btn-publish { background: var(--green); color: #000; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: 0.3s; }
   .btn-publish:hover { opacity: 0.8; }
-  .btn-admin { background: var(--red); color: #fff; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: 0.3s; }
   .cart-btn { position: relative; font-size: 26px; cursor: pointer; }
   .cart-count { position: absolute; top: -6px; right: -6px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
@@ -153,11 +152,10 @@
         <input type="text" id="productSearch" placeholder="Buscar productos, marcas...">
         <input type="text" id="searchAR" placeholder="Buscar en Argentina..." style="display:none;">
       </div>
-      <div class="header-actions">
-       <button class="btn-publish" onclick="window.location.href='panel.html'">+ VENDER-PANEL</button>
-        <button class="btn-admin" onclick="window.location.href='admin.html'">ADMIN</button>
-        <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
-      </div>
+     <div class="header-actions" id="headerActions">
+  <button class="btn-publish" id="btnVender">+ VENDER-PANEL</button>
+  <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
+</div>
     </div>
   </header>
 
@@ -326,31 +324,40 @@
 
     let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
 
-    function showStore(store) {
-      currentStore = store;
-      document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
-      if(store === 'international') {
-        document.getElementById('international').style.display = 'block';
-        document.getElementById('argentina').style.display = 'none';
-        document.getElementById('catBarInt').style.display = 'block';
-        document.getElementById('catBarAr').style.display = 'none';
-        document.getElementById('productSearch').style.display = 'block';
-        document.getElementById('searchAR').style.display = 'none';
-        document.getElementById('btnInt').classList.add('active');
-        document.getElementById('topbar').className = 'topbar';
-        renderProducts(); updateCart();
-      } else {
-        document.getElementById('international').style.display = 'none';
-        document.getElementById('argentina').style.display = 'block';
-        document.getElementById('catBarInt').style.display = 'none';
-        document.getElementById('catBarAr').style.display = 'block';
-        document.getElementById('productSearch').style.display = 'none';
-        document.getElementById('searchAR').style.display = 'block';
-        document.getElementById('btnAr').classList.add('active');
-        document.getElementById('topbar').className = 'topbar ar';
-        renderProductsAR(); updateCartAR();
-      }
-    }
+ function showStore(store) {
+  currentStore = store;
+  document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+  if(store === 'international') {
+    document.getElementById('international').style.display = 'block';
+    document.getElementById('argentina').style.display = 'none';
+    document.getElementById('catBarInt').style.display = 'block';
+    document.getElementById('catBarAr').style.display = 'none';
+    document.getElementById('productSearch').style.display = 'block';
+    document.getElementById('searchAR').style.display = 'none';
+    document.getElementById('btnInt').classList.add('active');
+    document.getElementById('topbar').className = 'topbar';
+    
+    // NUEVO: Ocultar VENDER-PANEL en internacional
+    document.getElementById('btnVender').style.display = 'none';
+    
+    renderProducts(); updateCart();
+  } else {
+    document.getElementById('international').style.display = 'none';
+    document.getElementById('argentina').style.display = 'block';
+    document.getElementById('catBarInt').style.display = 'none';
+    document.getElementById('catBarAr').style.display = 'block';
+    document.getElementById('productSearch').style.display = 'none';
+    document.getElementById('searchAR').style.display = 'block';
+    document.getElementById('btnAr').classList.add('active');
+    document.getElementById('topbar').className = 'topbar ar';
+    
+    // NUEVO: Mostrar VENDER-PANEL solo en Argentina
+    document.getElementById('btnVender').style.display = 'block';
+    document.getElementById('btnVender').onclick = () => window.location.href='panel.html';
+    
+    renderProductsAR(); updateCartAR();
+  }
+}
 
     function openProductModal(product, isAR = false) {
       currentCheckoutProduct = product;
