@@ -2,131 +2,135 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>MARKET - El Marketplace Global y Argentina</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0A0A0A; --bg-light: #141414; --card: #1C1C1C;
-      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --red: #E63946; --blue-ar: #3483FA; --green: #00A650;
+      --bg: #FFFFFF; 
+      --bg-light: #EB; 
+      --card: #FFFFFF;
+      --text: #333333; 
+      --text-muted: #666666; 
+      --blue-ar: #3483FA; 
+      --green: #00A650; 
+      --yellow-ml: #FFE600; 
+      --red: #FF3B30;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-    body { background: var(--bg); color: var(--text); }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg-light); color: var(--text); }
     a { text-decoration: none; color: inherit; }
 
-    .country-selector { background: #000; padding: 10px 20px; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 101; }
-    .country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 15px; justify-content: center; }
-    .country-btn { background: #222; border: 2px solid #333; color: var(--text); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.3s; }
-    .country-btn:hover { border-color: #555; }
-    .country-btn.active.int { border-color: var(--gold); background: var(--gold); color: #000; }
-    .country-btn.active.ar { border-color: var(--blue-ar); background: var(--blue-ar); color: #000; }
+    .country-selector { background: #FFF; padding: 8px 12px; border-bottom: 1px solid #E5E5E5; position: sticky; top: 0; z-index: 101; }
+    .country-buttons { display: flex; gap: 8px; max-width: 1200px; margin: auto; }
+    .country-btn { background: #F5F5F5; border: 1px solid #DDD; color: var(--text); padding: 8px 12px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 12px; flex: 1; text-align: center; transition: 0.3s; }
+    .country-btn:hover { background: #E5E5E5; }
+    .country-btn.active.int { border-color: var(--blue-ar); background: var(--blue-ar); color: #FFF; }
+    .country-btn.active.ar { border-color: var(--blue-ar); background: var(--blue-ar); color: #FFF; }
 
-    .topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
-    .topbar.ar { background: var(--blue-ar); color: #fff; }
-    header { background: #000; padding: 15px 20px; position: sticky; top: 55px; z-index: 100; border-bottom: 1px solid #222; }
-    .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; gap: 20px; }
-    .logo { font-size: 28px; font-weight: 900; color: var(--gold); letter-spacing: 1px; }
-    .search-bar { flex: 1; max-width: 600px; }
-    .search-bar input { width: 100%; padding: 12px 20px; background: #222; border: 2px solid #333; border-radius: 8px; color: var(--text); font-size: 15px; }
-    .search-bar input:focus { border-color: var(--gold); outline: none; }
-    .header-actions { display: flex; gap: 20px; align-items: center; }
-    .btn-publish { background: var(--green); color: #000; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: 0.3s; }
+    .topbar { background: var(--blue-ar); color: #fff; text-align: center; padding: 8px; font-size: 11px; font-weight: 600; }
+
+    header { background: var(--yellow-ml); padding: 10px 12px; position: sticky; top: 45px; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .navbar { display: flex; flex-direction: column; gap: 10px; max-width: 1200px; margin: auto; }
+    .nav-row { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 22px; font-weight: 900; color: #333; }
+    .search-bar { width: 100%; }
+    .search-bar input { width: 100%; padding: 10px 12px; background: #FFF; border: none; border-radius: 4px; color: var(--text); font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+    .header-actions { display: flex; gap: 15px; align-items: center; }
+    .btn-publish { background: var(--green); color: #FFF; padding: 8px 12px; border-radius: 4px; font-weight: 700; font-size: 12px; cursor: pointer; border: none; transition: 0.3s; }
     .btn-publish:hover { opacity: 0.8; }
-    .cart-btn { position: relative; font-size: 26px; cursor: pointer; }
-    .cart-count { position: absolute; top: -6px; right: -6px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .cart-btn { position: relative; font-size: 22px; cursor: pointer; }
+    .cart-count { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-    .categories-bar { background: var(--bg-light); padding: 15px 20px; position: sticky; top: 130px; z-index: 99; border-bottom: 1px solid #222; }
-    .cat-scroll { max-width: 1400px; margin: auto; display: flex; gap: 12px; overflow-x: auto; }
-    .cat-scroll::-webkit-scrollbar { height: 4px; }
-    .cat-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-    .cat-btn { padding: 10px 20px; background: #222; border: 1px solid #333; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; transition: 0.3s; }
-    .cat-btn:hover { border-color: var(--gold); }
-    .cat-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
-    .cat-btn.ar.active { background: var(--blue-ar); border-color: var(--blue-ar); }
+    .categories-bar { background: #FFF; padding: 10px 12px; position: sticky; top: 115px; z-index: 99; overflow-x: auto; border-bottom: 1px solid #E5E5E5; }
+    .cat-scroll { display: flex; gap: 8px; max-width: 1200px; margin: auto; }
+    .cat-scroll::-webkit-scrollbar { height: 3px; }
+    .cat-scroll::-webkit-scrollbar-thumb { background: #CCC; border-radius: 10px; }
+    .cat-btn { padding: 8px 14px; background: #F5F5F5; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px; white-space: nowrap; transition: 0.3s; }
+    .cat-btn:hover { background: #E5E5E5; }
+    .cat-btn.active { background: var(--blue-ar); color: #FFF; }
 
-    .badge { display: inline-block; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; margin-right: 5px; margin-bottom: 5px; }
-    .badge.envio { background: var(--green); color: #000; }
-    .badge.full { background: var(--blue-ar); color: #fff; }
-    .badge.nuevo { background: var(--gold); color: #000; }
+    .badge { display: inline-block; padding: 3px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; margin-right: 4px; }
+    .badge.envio { background: var(--green); color: #FFF; }
+    .badge.full { background: var(--blue-ar); color: #FFF; }
+    .badge.nuevo { background: var(--yellow-ml); color: #000; }
 
-    /* MODAL PRODUCTO */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 300; display: none; align-items: center; justify-content: center; padding: 0; overflow-y: auto; }
     .modal-overlay.active { display: flex; }
-    .modal-content { background: var(--card); border-radius: 15px; max-width: 1000px; width: 100%; display: flex; gap: 30px; padding: 30px; position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+    .modal-content { background: var(--card); border-radius: 0; max-width: 100%; width: 100%; height: 100vh; display: flex; flex-direction: column; gap: 15px; padding: 15px; position: relative; overflow-y: auto; }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 30px; cursor: pointer; color: var(--text-muted); z-index: 10; transition: 0.3s; }
     .modal-close:hover { color: var(--text); }
-    .modal-img { width: 400px; height: 400px; object-fit: cover; border-radius: 10px; }
+    .modal-img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
     .modal-info { flex: 1; }
-    .modal-info h2 { font-size: 26px; margin-bottom: 10px; }
-    .modal-price { font-size: 38px; font-weight: 900; margin: 15px 0; }
-    .modal-price.ar { color: var(--blue-ar); }
-    .modal-price.usd { color: var(--gold); }
-    .seller-box { background: #222; padding: 15px; border-radius: 10px; margin: 15px 0; }
-    .store-link { color: var(--gold); cursor: pointer; text-decoration: underline; font-weight: 700; }
-    .store-link:hover { color: #fff; }
-    .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; transition: 0.3s; }
+    .modal-info h2 { font-size: 20px; margin-bottom: 10px; }
+    .modal-price { font-size: 28px; font-weight: 900; margin: 15px 0; color: var(--text); }
+    .seller-box { background: #F5F5F5; padding: 12px; border-radius: 8px; margin: 15px 0; }
+    .store-link { color: var(--blue-ar); cursor: pointer; text-decoration: underline; font-weight: 700; }
+    .store-link:hover { color: #000; }
+    .contact-seller { background: var(--green); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 15px; transition: 0.3s; }
     .contact-seller:hover { opacity: 0.8; }
 
-    /* MODAL PUBLICAR */
-    .modal-content-publish { background: var(--card); border-radius: 15px; max-width: 850px; width: 100%; padding: 30px; }
-    .form-preview { display: flex; gap: 20px; background: #222; padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed #333; }
-    .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
+    .modal-content-publish { background: var(--card); border-radius: 0; max-width: 100%; width: 100%; height: 100vh; padding: 15px; overflow-y: auto; }
+    .form-preview { display: flex; flex-direction: column; gap: 15px; background: #F5F5F5; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px dashed #DDD; }
+    .form-preview img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; }
     .form-preview-info { flex: 1; }
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
-    .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: var(--text); font-size: 15px; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); outline: none; }
-    .form-row { display: flex; gap: 15px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; }
+    .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 10px; background: #FFF; border: 1px solid #DDD; border-radius: 4px; color: var(--text); font-size: 14px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--blue-ar); outline: none; }
+    .form-row { display: flex; flex-direction: column; gap: 0; }
     .form-row .form-group { flex: 1; }
 
-    /* CARRITO */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
     .cart-overlay.active { display: block; }
-    .cart-sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; }
+    .cart-sidebar { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 15px; overflow-y: auto; }
     .cart-sidebar.active { right: 0; }
     .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; position: relative; }
-    .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+    .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px; }
+    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #E5E5E5; position: relative; }
+    .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; }
     .remove-item { background: none; border: none; color: var(--red); font-size: 20px; cursor: pointer; position: absolute; right: 0; top: 0; }
 
-    .hero { position: relative; height: 55vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .hero { position: relative; height: 35vh; display: flex; align-items: center; justify-content: center; text-align: center; }
     .hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
-    .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(10,10,10,0.75); z-index: -1; }
-    .hero-content h1 { font-size: 52px; margin-bottom: 20px; }
-    .btn { background: var(--gold); color: #000; padding: 16px 45px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 16px; transition: 0.3s; }
-    .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: -1; }
+    .hero-content h1 { font-size: 24px; margin-bottom: 15px; color: #FFF; }
+    .btn { background: var(--blue-ar); color: #FFF; padding: 12px 30px; border-radius: 4px; font-weight: 700; border: none; cursor: pointer; font-size: 14px; transition: 0.3s; }
+    .btn:hover { opacity: 0.9; }
 
-    section { padding: 60px 20px; max-width: 1400px; margin: auto; }
-    .section-title { font-size: 32px; font-weight: 900; margin-bottom: 30px; }
-    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-    .prod-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
-    .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-    .prod-card img { width: 100%; height: 240px; object-fit: cover; cursor: pointer; }
-    .prod-info { padding: 18px; }
-    .prod-store { font-size: 12px; color: var(--text-muted); cursor: pointer; margin-bottom: 5px; }
-    .prod-store:hover { color: var(--gold); }
-    .prod-info h3 { font-size: 16px; margin-bottom: 8px; min-height: 40px; }
-    .price { font-size: 24px; font-weight: 900; margin-bottom: 10px; }
-    .price.ar { color: var(--blue-ar); }
-    .price.usd { color: var(--gold); }
-    .btn-small { padding: 12px; font-size: 14px; border-radius: 8px; width: 100%; background: var(--gold); color: #000; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
+    section { padding: 15px 12px; max-width: 1200px; margin: auto; }
+    .section-title { font-size: 20px; font-weight: 700; margin-bottom: 15px; }
+    .prod-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .prod-card { background: #FFF; border-radius: 4px; overflow: hidden; border: 1px solid #E5E5E5; transition: 0.3s; }
+    .prod-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .prod-card img { width: 100%; height: 180px; object-fit: cover; cursor: pointer; }
+    .prod-info { padding: 10px; }
+    .prod-store { font-size: 11px; color: var(--blue-ar); cursor: pointer; margin-bottom: 4px; }
+    .prod-store:hover { text-decoration: underline; }
+    .prod-info h3 { font-size: 13px; margin-bottom: 6px; height: 34px; overflow: hidden; line-height: 1.3; }
+    .price { font-size: 18px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+    .btn-small { padding: 8px; font-size: 12px; border-radius: 4px; width: 100%; background: var(--blue-ar); color: #FFF; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
     .btn-small:hover { opacity: 0.8; }
     .btn-small.added { background: var(--green); }
-    .mp-btn { width: 100%; margin-top: 8px; padding: 12px; background: #00B1EA; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    .mp-btn { width: 100%; margin-top: 6px; padding: 8px; background: #00B1EA; color: #FFF; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 12px; }
+    .envio-tag { font-size: 11px; color: var(--green); margin-bottom: 5px; font-weight: 600; }
 
-    #argentina { background: var(--bg-light); display: none; }
-    .envio-tag { font-size: 12px; color: var(--green); margin-bottom: 5px; font-weight: 600; }
+    #international { display: none; }
+    #argentina { background: var(--bg-light); display: block; }
 
-    footer { background: #000; padding: 40px 20px; text-align: center; border-top: 1px solid #222; color: var(--text-muted); }
+    footer { background: #FFF; padding: 30px 12px; text-align: center; border-top: 1px solid #E5E5E5; color: var(--text-muted); font-size: 12px; }
 
-    @media(max-width: 768px) { 
-      .modal-content { flex-direction: column; }
-      .modal-img { width: 100%; height: 300px; }
-      .form-preview { flex-direction: column; }
-      .cart-sidebar { width: 100%; } 
-      .hero-content h1 { font-size: 36px; }
-      .form-row { flex-direction: column; gap: 0; }
+    @media(min-width: 768px) {
+      .prod-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+      .prod-card img { height: 240px; }
+      .navbar { flex-direction: row; }
+      .modal-content { flex-direction: row; border-radius: 15px; height: auto; max-width: 1000px; }
+      .modal-img { width: 400px; height: 400px; }
+      .cart-sidebar { width: 400px; right: -400px; }
+      .form-preview { flex-direction: row; }
+      .form-row { flex-direction: row; gap: 15px; }
+      .hero-content h1 { font-size: 42px; }
+      .section-title { font-size: 26px; }
     }
   </style>
 </head>
@@ -134,28 +138,30 @@
 
   <div class="country-selector">
     <div class="country-buttons">
-      <button class="country-btn int active" id="btnInt" onclick="showStore('international')">🌍 INTERNACIONAL USD</button>
-      <button class="country-btn ar" id="btnAr" onclick="showStore('argentina')">🇦🇷 ARGENTINA ARS</button>
+      <button class="country-btn int" id="btnInt" onclick="showStore('international')">🌍 INTERNACIONAL USD</button>
+      <button class="country-btn ar active" id="btnAr" onclick="showStore('argentina')">🇦🇷 ARGENTINA ARS</button>
     </div>
   </div>
 
-  <div class="topbar" id="topbar">ENVIO A COORDINAR CON EL VENDEDOR | PAGO SEGURO CON PAYPAL Y MERCADOPAGO</div>
+  <div class="topbar" id="topbar">ENVIO A COORDINAR CON EL VENDEDOR | PAGO SEGURO CON MERCADOPAGO</div>
 
   <header>
     <div class="navbar">
-      <div class="logo">MARKET</div>
-      <div class="search-bar">
-        <input type="text" id="productSearch" placeholder="Buscar productos, marcas...">
-        <input type="text" id="searchAR" placeholder="Buscar en Argentina..." style="display:none;">
+      <div class="nav-row">
+        <div class="logo">MARKET</div>
+        <div class="header-actions">
+          <button class="btn-publish" onclick="openPublishModal()">+ VENDER</button>
+          <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
+        </div>
       </div>
-      <div class="header-actions">
-        <button class="btn-publish" onclick="openPublishModal()">+ VENDER</button>
-        <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
+      <div class="search-bar">
+        <input type="text" id="productSearch" placeholder="Buscar productos, marcas..." style="display:none;">
+        <input type="text" id="searchAR" placeholder="Buscar en Argentina...">
       </div>
     </div>
   </header>
 
-  <div class="categories-bar" id="catBarInt">
+  <div class="categories-bar" id="catBarInt" style="display:none;">
     <div class="cat-scroll" id="catFilter">
       <div class="cat-btn active" data-cat="all">TODOS</div>
       <div class="cat-btn" data-cat="artesanias">ARTESANIAS</div>
@@ -166,17 +172,17 @@
     </div>
   </div>
 
-  <div class="categories-bar" id="catBarAr" style="display:none;">
+  <div class="categories-bar" id="catBarAr">
     <div class="cat-scroll" id="catFilterAR">
       <div class="cat-btn ar active" data-cat-ar="all">TODOS</div>
       <div class="cat-btn ar" data-cat-ar="artesanias">ARTESANIAS</div>
       <div class="cat-btn ar" data-cat-ar="food">ALIMENTOS</div>
       <div class="cat-btn ar" data-cat-ar="home">HOGAR</div>
       <div class="cat-btn ar" data-cat-ar="clothing">ROPA</div>
+      <div class="cat-btn ar" data-cat-ar="electronics">TECNOLOGIA</div>
     </div>
   </div>
 
-  <!-- MODAL VER PRODUCTO -->
   <div class="modal-overlay" id="productModal">
     <div class="modal-content">
       <span class="modal-close" onclick="closeProductModal()">×</span>
@@ -200,23 +206,20 @@
     </div>
   </div>
 
-  <!-- MODAL PUBLICAR -->
   <div class="modal-overlay" id="publishModal">
     <div class="modal-content-publish">
       <span class="modal-close" onclick="closePublishModal()">×</span>
       <h2 style="margin-bottom:20px;">PUBLICAR MI PRODUCTO AHORA</h2>
       <p style="color:var(--text-muted);margin-bottom:20px">Completa y aparece en la tienda al instante</p>
-
       <div class="form-preview" id="previewCard">
-        <img id="previewImg" src="https://via.placeholder.com/150/222/FFFFFF?text=Foto">
+        <img id="previewImg" src="https://via.placeholder.com/150/EB/666?text=Foto">
         <div class="form-preview-info">
           <p style="font-size:12px;color:var(--text-muted)">VISTA PREVIA</p>
           <h3 id="previewTitle">Nombre del producto</h3>
-          <div class="price ar" id="previewPrice">$0</div>
+          <div class="price" id="previewPrice">$0</div>
           <p style="font-size:12px" id="previewEnvio">Envio a coordinar</p>
         </div>
       </div>
-
       <form id="publishForm">
         <div class="form-group">
           <label>1. Foto Principal del Producto</label>
@@ -280,7 +283,7 @@
   </footer>
 
   <script>
-    let currentStore = 'international';
+    let currentStore = 'argentina';
     let cart = JSON.parse(localStorage.getItem('marketCart')) || [];
     let cartAR = JSON.parse(localStorage.getItem('marketCartAR')) || [];
     let activeCategory = 'all';
@@ -319,7 +322,7 @@
         document.getElementById('productSearch').style.display = 'block';
         document.getElementById('searchAR').style.display = 'none';
         document.getElementById('btnInt').classList.add('active');
-        document.getElementById('topbar').className = 'topbar';
+        document.getElementById('topbar').textContent = 'ENVIO INTERNACIONAL | PAGO SEGURO CON PAYPAL';
         updateCart();
       } else {
         document.getElementById('international').style.display = 'none';
@@ -329,7 +332,7 @@
         document.getElementById('productSearch').style.display = 'none';
         document.getElementById('searchAR').style.display = 'block';
         document.getElementById('btnAr').classList.add('active');
-        document.getElementById('topbar').className = 'topbar ar';
+        document.getElementById('topbar').textContent = 'ENVIO A COORDINAR | PAGO SEGURO CON MERCADOPAGO';
         updateCartAR();
       }
     }
@@ -338,7 +341,6 @@
       document.getElementById('modalImg').src = product.img;
       document.getElementById('modalTitle').textContent = product.name;
       document.getElementById('modalPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
-      document.getElementById('modalPrice').className = isAR? 'modal-price ar' : 'modal-price usd';
       document.getElementById('modalStoreLink').textContent = product.store;
       document.getElementById('modalStoreLink').onclick = () => { alert('Ir a tienda: ' + product.store + ' ID: ' + product.storeId); closeProductModal(); }
       let envioText = 'Coordinar envio con el vendedor';
@@ -391,7 +393,7 @@
       alert(`¡Producto publicado!\n${nuevoProducto.name}`);
       closePublishModal();
       document.getElementById('publishForm').reset();
-      document.getElementById('previewImg').src = "https://via.placeholder.com/150/222/FFFFFF?text=Foto";
+      document.getElementById('previewImg').src = "https://via.placeholder.com/150/EB/666?text=Foto";
       renderProductsAR();
       showStore('argentina');
     }
@@ -408,7 +410,7 @@
               <div class="prod-store" onclick="alert('Ir a tienda: ${p.store}')">📍 ${p.store}</div>
               <span class="badge envio">ENVIO A COORDINAR</span>
               <h3>${p.name}</h3>
-              <div class="price usd">$${p.price.toFixed(2)}</div>
+              <div class="price">$${p.price.toFixed(2)}</div>
               <button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id})'>AGREGAR</button>
             </div>
           </div>
@@ -428,8 +430,8 @@
               <div class="prod-store" onclick="alert('Ir a tienda: ${p.store}')">📍 ${p.store}</div>
               <span class="badge full">CONSULTAR ENVIO</span>
               <h3>${p.name}</h3>
-              <div class="price ar">$${p.price.toLocaleString('es-AR')}</div>
-              <button class="btn-small" style="background:var(--blue-ar);" id="btnAR-${p.id}" onclick='addToCartAR(${p.id})'>AGREGAR</button>
+              <div class="price">$${p.price.toLocaleString('es-AR')}</div>
+              <button class="btn-small" id="btnAR-${p.id}" onclick='addToCartAR(${p.id})'>AGREGAR</button>
               <button class="mp-btn">MERCADOPAGO</button>
             </div>
           </div>
@@ -444,6 +446,7 @@
       updateCart();
       showFeedback(`btn-${id}`);
     }
+    
     function addToCartAR(id) {
       const product = productsAR.find(p => p.id === id);
       cartAR.push(product);
@@ -452,7 +455,7 @@
       showFeedback(`btnAR-${id}`);
     }
 
-  function showFeedback(btnId) {
+    function showFeedback(btnId) {
       const btn = document.getElementById(btnId);
       if(btn){
         btn.classList.add('added');
@@ -554,7 +557,7 @@
     // INICIALIZAR TODO
     renderProducts();
     renderProductsAR();
-    showStore('international');
+    showStore('argentina');
   </script>
 </body>
 </html>
