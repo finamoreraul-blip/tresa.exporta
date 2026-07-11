@@ -13,63 +13,62 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
     html, body { width: 100%; overflow-x: hidden; background: var(--bg); }
     body { color: var(--text); }
-   .container { max-width: 1200px; margin: auto; padding: 20px; width: 100%; }
-    header { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
-   .logo { font-size: 20px; font-weight: 900; color: var(--blue); }
-   .btn { background: var(--blue); color: #fff; padding: 12px 25px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-   .btn:hover { background: var(--blue-dark); }
-   .btn.green { background: var(--green); }
-   .btn.red { background: var(--red); color: #fff; }
-   .btn.gray { background: #E5E7EB; color: var(--text); }
-   .btn.gold { background: var(--gold); color: #000; }
+  .container { max-width: 1200px; margin: auto; padding: 20px; width: 100%; }
+    header { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .logo { font-size: 20px; font-weight: 900; color: var(--blue); }
+  .btn { background: var(--blue); color: #fff; padding: 12px 25px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+  .btn:hover { background: var(--blue-dark); }
+  .btn.green { background: var(--green); }
+  .btn.red { background: var(--red); color: #fff; }
+  .btn.gray { background: #E5E7EB; color: var(--text); }
+  .btn.gold { background: var(--gold); color: #000; }
 
-   .auth-box { background: var(--card); padding: 30px 20px; border-radius: 12px; max-width: 500px; margin: 40px auto; border: 1px solid var(--border); }
-   .tabs { display: flex; gap: 10px; margin-bottom: 30px; background: #F3F4F6; padding: 5px; border-radius: 10px; }
-   .tab-btn { flex: 1; padding: 12px; background: transparent; border: none; color: var(--subtext); border-radius: 8px; font-weight: 700; cursor: pointer; }
-   .tab-btn.active { background: var(--card); color: var(--blue); }
-   .form-group { margin-bottom: 20px; }
-   .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
-   .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 14px; background: #F9FAFB; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; }
+  .auth-box { background: var(--card); padding: 30px 20px; border-radius: 12px; max-width: 500px; margin: 40px auto; border: 1px solid var(--border); }
+  .tabs { display: flex; gap: 10px; margin-bottom: 30px; background: #F3F4F6; padding: 5px; border-radius: 10px; }
+  .tab-btn { flex: 1; padding: 12px; background: transparent; border: none; color: var(--subtext); border-radius: 8px; font-weight: 700; cursor: pointer; }
+  .tab-btn.active { background: var(--card); color: var(--blue); }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+  .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 14px; background: #F9FAFB; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; }
 
-   .dashboard-nav { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid var(--border); overflow-x: auto; }
-   .nav-btn { padding: 15px 20px; background: none; border: none; color: var(--subtext); font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
-   .nav-btn.active { color: var(--blue); border-color: var(--blue); }
+  .dashboard-nav { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid var(--border); overflow-x: auto; }
+  .nav-btn { padding: 15px 20px; background: none; border: none; color: var(--subtext); font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .nav-btn.active { color: var(--blue); border-color: var(--blue); }
 
-    /* ARREGLO IMPORTANTE: SOLO MUESTRA LA SECCION ACTIVA */
-   .dashboard-section { display: none; }
-   .dashboard-section.active { display: block; }
+  .dashboard-section { display: none; }
+  .dashboard-section.active { display: block; }
 
-   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
-   .stat-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
-   .stat-card h3 { font-size: 12px; color: var(--subtext); margin-bottom: 10px; text-transform: uppercase; }
-   .stat-card p { font-size: 28px; font-weight: 900; color: var(--blue); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+  .stat-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
+  .stat-card h3 { font-size: 12px; color: var(--subtext); margin-bottom: 10px; text-transform: uppercase; }
+  .stat-card p { font-size: 28px; font-weight: 900; color: var(--blue); }
 
-   .store-preview { background: var(--card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
-   .store-cover { height: 180px; background: #E5E7EB; position: relative; background-size: cover; background-position: center; }
-   .store-cover input,.store-avatar input { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
-   .store-header { padding: 20px; display: flex; gap: 15px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-   .store-avatar { width: 80px; height: 80px; border-radius: 50%; background: #E5E7EB; background-size: cover; background-position: center; border: 3px solid var(--blue); flex-shrink: 0; position: relative; }
-   .store-info h2 { font-size: 22px; }
-   .store-info p { color: var(--subtext); font-size: 14px; }
-   .store-desc { padding: 20px; }
+  .store-preview { background: var(--card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+  .store-cover { height: 180px; background: #E5E7EB; position: relative; background-size: cover; background-position: center; }
+  .store-cover input,.store-avatar input { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+  .store-header { padding: 20px; display: flex; gap: 15px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .store-avatar { width: 80px; height: 80px; border-radius: 50%; background: #E5E7EB; background-size: cover; background-position: center; border: 3px solid var(--blue); flex-shrink: 0; position: relative; }
+  .store-info h2 { font-size: 22px; }
+  .store-info p { color: var(--subtext); font-size: 14px; }
+  .store-desc { padding: 20px; }
 
-   .prod-table { background: var(--card); border-radius: 12px; padding: 15px; border: 1px solid var(--border); overflow-x: auto; }
-   .prod-row { display: grid; grid-template-columns: 50px 1fr 100px 100px 180px; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; min-width: 650px; }
-   .prod-row.header { font-weight: 700; color: var(--subtext); font-size: 12px; }
-   .prod-row img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
-   .badge { background: var(--green); color: #fff; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
-   .badge.off { background: #D1D5DB; color: #333; }
+  .prod-table { background: var(--card); border-radius: 12px; padding: 15px; border: 1px solid var(--border); overflow-x: auto; }
+  .prod-row { display: grid; grid-template-columns: 50px 1fr 100px 100px 280px; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; min-width: 750px; }
+  .prod-row.header { font-weight: 700; color: var(--subtext); font-size: 12px; }
+  .prod-row img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+  .badge { background: var(--green); color: #fff; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+  .badge.off { background: #D1D5DB; color: #333; }
 
-   .form-preview { display: flex; gap: 15px; background: #F9FAFB; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed var(--border); }
-   .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
-   .price { font-size: 24px; font-weight: 900; color: var(--blue); }
+  .form-preview { display: flex; gap: 15px; background: #F9FAFB; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed var(--border); }
+  .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
+  .price { font-size: 24px; font-weight: 900; color: var(--blue); }
 
-   .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
-   .modal.active { display: flex; }
-   .modal-content { background: var(--card); padding: 25px 20px; border-radius: 12px; width: 100%; max-width: 600px; }
-   .alert { background: var(--green); color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 700; display: none; }
-   .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-   .saved-badge { color: var(--green); font-size: 12px; font-weight: 600; display: none; }
+  .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
+  .modal.active { display: flex; }
+  .modal-content { background: var(--card); padding: 25px 20px; border-radius: 12px; width: 100%; max-width: 600px; }
+  .alert { background: var(--green); color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 700; display: none; }
+  .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .saved-badge { color: var(--green); font-size: 12px; font-weight: 600; display: none; }
     #dashboard { display: none; }
   </style>
 </head>
@@ -125,7 +124,7 @@
       <button class="nav-btn" onclick="showSection('productos', event)">PRODUCTOS</button>
     </div>
 
-    <!-- 1. SECCION RESUMEN: SOLO ESTADISTICAS -->
+    <!-- 1. RESUMEN -->
     <div class="dashboard-section active" id="resumen">
       <h2 style="margin-bottom:20px;">Resumen de tu tienda</h2>
       <div class="stats">
@@ -139,7 +138,7 @@
       </div>
     </div>
 
-    <!-- 2. SECCION MI TIENDA: SOLO PARA EDITAR PORTADA, AVATAR Y DESCRIPCION -->
+    <!-- 2. MI TIENDA -->
     <div class="dashboard-section" id="tienda">
       <h2 style="margin-bottom:20px;">Personaliza tu Tienda</h2>
       <div class="store-preview">
@@ -157,12 +156,12 @@
         </div>
         <div class="store-desc">
           <label style="font-weight:700;">Descripción de la tienda</label>
-          <textarea id="storeDesc" rows="4" onkeyup="debounceSave()" placeholder="Cuéntale a la gente sobre tu tienda, que vendes, envios, etc..."></textarea>
+          <textarea id="storeDesc" rows="4" onkeyup="debounceSave()" placeholder="Cuéntale a la gente sobre tu tienda..."></textarea>
         </div>
       </div>
     </div>
 
-    <!-- 3. SECCION PRODUCTOS: SOLO PARA AGREGAR/VER/BORRAR PRODUCTOS -->
+    <!-- 3. PRODUCTOS -->
     <div class="dashboard-section" id="productos">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h2>Mis Productos</h2>
@@ -177,7 +176,7 @@
     </div>
   </div>
 
-  <!-- MODAL PUBLICAR -->
+  <!-- MODAL PUBLICAR/EDITAR -->
   <div class="modal" id="productModal">
     <div class="modal-content">
       <h2 id="modalTitle">Publicar Producto</h2>
@@ -193,9 +192,10 @@
 
       <form id="productForm">
         <input type="hidden" id="editId">
-        <div class="form-group"><label>Foto del Producto</label><input type="file" id="pImgFile" accept="image/*" onchange="previewProdImg(event)" required></div>
+        <div class="form-group"><label>Foto del Producto</label><input type="file" id="pImgFile" accept="image/*" onchange="previewProdImg(event)"></div>
         <div class="form-group"><label>Nombre</label><input type="text" id="pName" onkeyup="updateProdPreview()" required></div>
         <div class="form-group"><label>Precio ARS</label><input type="number" id="pPrice" onkeyup="updateProdPreview()" required></div>
+        <div class="form-group"><label>Link de Pago MercadoPago</label><input type="text" id="pPaymentLink" placeholder="https://mpago.la/... opcional"></div>
         <div class="form-group"><label>Categoria</label>
           <select id="pCategory"><option value="artesanias">Artesanias</option><option value="food">Alimentos</option><option value="home">Hogar</option><option value="clothing">Ropa</option></select>
         </div>
@@ -347,6 +347,8 @@
             <img src="${p.img}"><div>${p.name}</div><div>$${p.price.toLocaleString('es-AR')}</div>
             <div><span class="badge ${isInternational? '' : 'off'}">${isInternational? 'PUBLICADO' : 'SOLO ARS'}</span></div>
             <div>
+              <button class="btn" style="padding:8px 10px; font-size:12px;" onclick='editarProducto(${p.id})'>EDITAR</button>
+              <button class="btn green" style="padding:8px 10px; font-size:12px;" onclick='comprarProducto(${p.id})'>COMPRAR</button>
               <button class="btn gold" style="padding:8px 10px; font-size:12px;" onclick="transferir(${p.id})">A USD</button>
               <button class="btn red" style="padding:8px 10px; font-size:12px;" onclick="deleteProduct(${p.id})">BORRAR</button>
             </div>
@@ -366,24 +368,73 @@
     }
 
     function openProductModal() {
+      document.getElementById('modalTitle').textContent = 'Publicar Producto';
       document.getElementById('productModal').classList.add('active');
       document.getElementById('productForm').reset();
+      document.getElementById('editId').value = '';
       document.getElementById('previewImg').src = "https://via.placeholder.com/150/E5E7EB/6B7280?text=Foto";
+      tempProdImg = "";
     }
     function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
 
+    // NUEVA FUNCION EDITAR
+    function editarProducto(id) {
+      const p = productsAR.find(x => x.id === id);
+      document.getElementById('modalTitle').textContent = 'Editar Producto';
+      document.getElementById('editId').value = p.id;
+      document.getElementById('pName').value = p.name;
+      document.getElementById('pPrice').value = p.price;
+      document.getElementById('pCategory').value = p.category;
+      document.getElementById('pPaymentLink').value = p.paymentLink || '';
+      document.getElementById('previewImg').src = p.img;
+      document.getElementById('previewTitle').textContent = p.name;
+      document.getElementById('previewPrice').textContent = '$' + p.price;
+      tempProdImg = p.img;
+      document.getElementById('productModal').classList.add('active');
+    }
+
+    // NUEVA FUNCION COMPRAR
+    function comprarProducto(id) {
+      const p = productsAR.find(x => x.id === id);
+      if(p.paymentLink) {
+        window.open(p.paymentLink, '_blank');
+      } else {
+        const msg = `Hola ${currentUser.storeName}! Quiero comprar: ${p.name} - $${p.price.toLocaleString('es-AR')}`;
+        window.open(`https://wa.me/${currentUser.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+      }
+    }
+
     document.getElementById('productForm').onsubmit = (e) => {
       e.preventDefault();
+      const editId = document.getElementById('editId').value;
       const nuevo = {
-        id: Date.now(), name: document.getElementById('pName').value, price: parseFloat(document.getElementById('pPrice').value),
-        img: tempProdImg, category: document.getElementById('pCategory').value,
-        store: currentUser.storeName, storeId: currentUser.storeId, city: currentUser.city, whatsapp: currentUser.whatsapp, currency: 'ARS'
+        id: editId? parseInt(editId) : Date.now(),
+        name: document.getElementById('pName').value,
+        price: parseFloat(document.getElementById('pPrice').value),
+        img: tempProdImg || document.getElementById('previewImg').src,
+        category: document.getElementById('pCategory').value,
+        store: currentUser.storeName, storeId: currentUser.storeId, city: currentUser.city, whatsapp: currentUser.whatsapp,
+        currency: 'ARS',
+        paymentLink: document.getElementById('pPaymentLink').value
       };
-      productsAR.unshift(nuevo);
-      allProducts.unshift(nuevo);
+
+      if(editId) {
+        // EDITAR
+        const index = productsAR.findIndex(p => p.id === parseInt(editId));
+        productsAR[index] = nuevo;
+        const indexAll = allProducts.findIndex(p => p.id === parseInt(editId));
+        if(indexAll > -1) allProducts[indexAll] = nuevo;
+        showAlert('Producto actualizado!');
+      } else {
+        // NUEVO
+        productsAR.unshift(nuevo);
+        allProducts.unshift(nuevo);
+        showAlert('Producto publicado en MARKET!');
+      }
+
       localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
       localStorage.setItem('allProducts', JSON.stringify(allProducts));
-      closeProductModal(); loadMyProducts(); loadStats(); showAlert('Producto publicado en MARKET!');
+      closeProductModal(); loadMyProducts(); loadStats();
     }
 
     function deleteProduct(id) {
