@@ -8,16 +8,15 @@
   <style>
     :root {
       --bg: #EB; --bg-light: #FFF; --card: #FFF;
-      --text: #333; --text-muted: #666; --green: #00A650; --red: #E63946; --blue-ar: #3483FA; --border: #E5E5E5;
+      --text: #333; --text-muted: #666; --green: #00A650; --red: #E63946; --blue-ar: #3483FA; --border: #E5E5E5; --dorado: #D4AF37;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-    body { background: var(--bg); color: var(--text); }
+    body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
     a { text-decoration: none; color: inherit; }
 
     .country-selector { background: #FFF; padding: 10px 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 101; }
     .country-buttons { max-width: 1200px; margin: auto; display: flex; gap: 15px; justify-content: center; }
     .country-btn { background: #F5F5F5; border: 1px solid var(--border); color: var(--text); padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; }
-    .country-btn:hover { border-color: #CCC; }
     .country-btn.active.int { border-color: var(--green); background: var(--green); color: #FFF; }
     .country-btn.active.ar { border-color: var(--blue-ar); background: var(--blue-ar); color: #FFF; }
 
@@ -30,34 +29,33 @@
     
     .search-row { flex: 1; max-width: 700px; display: flex; gap: 10px; align-items: center; }
     .search-bar { flex: 1; }
-    .search-bar input { width: 100%; padding: 12px 20px; background: #FFF; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-    .search-bar input:focus { border-color: var(--green); outline: none; box-shadow: 0 0 0 2px rgba(0,166,80,0.1); }
-    .btn-publish { background: var(--green); color: #FFF; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; white-space: nowrap; transition: 0.2s; }
-    .btn-publish:hover { background: #009245; }
+    .search-bar input { width: 100%; padding: 12px 20px; background: #FFF; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 15px; }
+    .search-bar input:focus { border-color: var(--green); outline: none; }
+    .btn-publish { background: var(--green); color: #FFF; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; white-space: nowrap; }
 
     .header-actions { display: flex; gap: 20px; align-items: center; }
     .cart-btn { position: relative; font-size: 26px; cursor: pointer; color: var(--text); }
     .cart-count { position: absolute; top: -6px; right: -6px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
+    /* CARRITO FLOTANTE */
+    .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--green); color: #FFF; padding: 15px 20px; border-radius: 50px; display: none; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,166,80,0.4); z-index: 150; transition: 0.3s; }
+    .cart-float:hover { transform: scale(1.05); }
+    .cart-float-badge { background: #FFF; color: var(--green); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+
     .categories-bar { background: #FFF; padding: 15px 20px; position: sticky; top: 130px; z-index: 99; border-bottom: 1px solid var(--border); }
     .cat-scroll { max-width: 1200px; margin: auto; display: flex; gap: 12px; overflow-x: auto; }
-    .cat-scroll::-webkit-scrollbar { height: 4px; }
-    .cat-scroll::-webkit-scrollbar-thumb { background: #CCC; border-radius: 10px; }
-    .cat-btn { padding: 10px 20px; background: #F5F5F5; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; transition: 0.2s; color: var(--text-muted); }
-    .cat-btn:hover { border-color: #CCC; }
+    .cat-btn { padding: 10px 20px; background: #F5F5F5; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; color: var(--text-muted); }
     .cat-btn.active { background: var(--green); color: #FFF; border-color: var(--green); }
     .cat-btn.ar.active { background: var(--blue-ar); border-color: var(--blue-ar); }
 
     .badge { display: inline-block; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-right: 5px; margin-bottom: 5px; }
     .badge.envio { background: var(--green); color: #FFF; }
     .badge.full { background: var(--blue-ar); color: #fff; }
-    .badge.nuevo { background: #FFF0C7; color: #735B00; border: 1px solid #FFE082; }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
     .modal-content { background: var(--card); border-radius: 8px; max-width: 1000px; width: 100%; display: flex; gap: 30px; padding: 30px; position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
-    .modal-close:hover { color: var(--text); }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); }
     .modal-img { width: 400px; height: 400px; object-fit: cover; border-radius: 8px; }
     .modal-info { flex: 1; }
     .modal-info h2 { font-size: 26px; margin-bottom: 10px; font-weight: 600; }
@@ -65,25 +63,19 @@
     .modal-price.ar { color: var(--blue-ar); }
     .modal-price.usd { color: var(--green); }
     .seller-box { background: #F5F5F5; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid var(--border); }
-    .store-link { color: var(--green); cursor: pointer; text-decoration: none; font-weight: 600; }
-    .store-link:hover { text-decoration: underline; }
-    .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 15px; transition: 0.3s; }
-    .contact-seller:hover { opacity: 0.8; }
+    .store-link { color: var(--green); cursor: pointer; font-weight: 600; }
+    .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 15px; }
 
     .modal-content-publish { background: var(--card); border-radius: 8px; max-width: 850px; width: 100%; padding: 30px; }
     .form-preview { display: flex; gap: 20px; background: #F5F5F5; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px dashed var(--border); }
     .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
-    .form-preview-info { flex: 1; }
     .form-group { margin-bottom: 18px; }
     .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
-    .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 12px; background: #FFF; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 15px; }
-    .form-group input:focus, .form-group select:focus { border-color: var(--green); outline: none; }
-    .form-row { display: flex; gap: 15px; }
-    .form-row .form-group { flex: 1; }
+    .form-group input,.form-group select { width: 100%; padding: 12px; background: #FFF; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 15px; }
 
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 199; display: none; }
     .cart-overlay.active { display: block; }
-    .cart-sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; box-shadow: -2px 0 10px rgba(0,0,0,0.1); }
+    .cart-sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; }
     .cart-sidebar.active { right: 0; }
     .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
@@ -95,30 +87,32 @@
     .hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
     .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: -1; }
     .hero-content h1 { font-size: 52px; margin-bottom: 20px; color: #FFF; font-weight: 900; }
-    .btn { background: var(--green); color: #FFF; padding: 16px 45px; border-radius: 6px; font-weight: 700; border: none; cursor: pointer; font-size: 16px; transition: 0.2s; }
-    .btn:hover { background: #009245; transform: translateY(-2px); }
+    .btn { background: var(--green); color: #FFF; padding: 16px 45px; border-radius: 6px; font-weight: 700; border: none; cursor: pointer; font-size: 16px; }
 
     section { padding: 60px 20px; max-width: 1200px; margin: auto; }
     .section-title { font-size: 28px; font-weight: 700; margin-bottom: 30px; }
     .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-    .prod-card { background: var(--card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .prod-card:hover { border-color: #CCC; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .prod-card { background: var(--card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: 0.2s; }
+    .prod-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-3px); }
     .prod-card img { width: 100%; height: 240px; object-fit: cover; cursor: pointer; }
     .prod-info { padding: 18px; }
     .prod-store { font-size: 12px; color: var(--text-muted); cursor: pointer; margin-bottom: 5px; }
-    .prod-store:hover { color: var(--green); }
     .prod-info h3 { font-size: 16px; margin-bottom: 8px; min-height: 40px; font-weight: 400; }
     .price { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
     .price.ar { color: var(--blue-ar); }
     .price.usd { color: var(--green); }
-    .btn-small { padding: 12px; font-size: 14px; border-radius: 6px; width: 100%; background: var(--green); color: #FFF; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    
+    .btn-group { display: flex; gap: 8px; }
+    .btn-small { padding: 10px; font-size: 13px; border-radius: 6px; width: 100%; background: var(--green); color: #FFF; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
     .btn-small:hover { background: #009245; }
-    .btn-small.added { background: var(--blue-ar); }
-    .mp-btn { width: 100%; margin-top: 8px; padding: 12px; background: #00B1EA; color: #FFF; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
+    .btn-small.consultar { background: var(--blue-ar); }
+    .btn-small.consultar:hover { background: #2A75E8; }
+    .btn-small.transferir { background: var(--dorado); color: #000; }
+    .btn-small.transferir:hover { background: #C19B2E; }
+    .btn-small.added { background: #999; }
+    .mp-btn { width: 100%; margin-top: 8px; padding: 10px; background: #00B1EA; color: #FFF; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
 
     #argentina { display: none; }
-    .envio-tag { font-size: 12px; color: var(--green); margin-bottom: 5px; font-weight: 600; }
-
     footer { background: #FFF; padding: 40px 20px; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); }
 
     @media(max-width: 768px) { 
@@ -126,10 +120,10 @@
       .search-row { order: 3; width: 100%; max-width: 100%; }
       .modal-content { flex-direction: column; }
       .modal-img { width: 100%; height: 300px; }
-      .form-preview { flex-direction: column; }
       .cart-sidebar { width: 100%; } 
       .hero-content h1 { font-size: 36px; }
-      .form-row { flex-direction: column; gap: 0; }
+      .cart-float { bottom: 15px; right: 15px; padding: 12px 16px; font-size: 12px; }
+      .btn-group { flex-direction: column; }
     }
   </style>
 </head>
@@ -160,6 +154,11 @@
     </div>
   </header>
 
+  <!-- CARRITO FLOTANTE -->
+  <div class="cart-float" id="cartFloat" onclick="document.getElementById('cartBtn').click()">
+    🛒 <span class="cart-float-badge">0</span> Ver Carrito
+  </div>
+
   <div class="categories-bar" id="catBarInt">
     <div class="cat-scroll" id="catFilter">
       <div class="cat-btn active" data-cat="all">TODOS</div>
@@ -181,18 +180,16 @@
     </div>
   </div>
 
-  <!-- MODAL VER PRODUCTO -->
   <div class="modal-overlay" id="productModal">
     <div class="modal-content">
       <span class="modal-close" onclick="closeProductModal()">×</span>
       <img class="modal-img" id="modalImg" src="" alt="">
       <div class="modal-info">
-        <span class="badge nuevo">NUEVO</span>
+        <span class="badge envio">NUEVO</span>
         <h2 id="modalTitle"></h2>
         <div class="modal-price" id="modalPrice"></div>
         <div class="seller-box">
           <p><b>Vendido por:</b> <span class="store-link" id="modalStoreLink"></span></p>
-          <p style="font-size:12px; color:var(--text-muted);">Ver mas productos de esta tienda</p>
         </div>
         <div class="seller-box">
           <p><b>Envío:</b> <span id="modalEnvioEstimado"></span></p>
@@ -205,49 +202,21 @@
     </div>
   </div>
 
-  <!-- MODAL PUBLICAR -->
   <div class="modal-overlay" id="publishModal">
     <div class="modal-content-publish">
       <span class="modal-close" onclick="closePublishModal()">×</span>
       <h2 style="margin-bottom:20px;">PUBLICAR MI PRODUCTO AHORA</h2>
-      <p style="color:var(--text-muted);margin-bottom:20px">Completa y aparece en la tienda al instante</p>
-
       <div class="form-preview" id="previewCard">
         <img id="previewImg" src="https://via.placeholder.com/150/F5F5F5/666?text=Foto">
-        <div class="form-preview-info">
-          <p style="font-size:12px;color:var(--text-muted)">VISTA PREVIA</p>
-          <h3 id="previewTitle">Nombre del producto</h3>
-          <div class="price ar" id="previewPrice">$0</div>
-          <p style="font-size:12px" id="previewEnvio">Envio a coordinar</p>
-        </div>
+        <div><p style="font-size:12px;color:var(--text-muted)">VISTA PREVIA</p><h3 id="previewTitle">Nombre del producto</h3><div class="price ar" id="previewPrice">$0</div></div>
       </div>
-
       <form id="publishForm">
-        <div class="form-group">
-          <label>1. Foto Principal del Producto</label>
-          <input type="file" id="prodImg" accept="image/*" onchange="previewImage(event)" required>
-        </div>
+        <div class="form-group"><label>1. Foto Principal</label><input type="file" id="prodImg" accept="image/*" onchange="previewImage(event)" required></div>
         <div class="form-group"><label>2. Nombre del Producto</label><input type="text" id="prodName" onkeyup="updatePreview()" required></div>
         <div class="form-group"><label>3. Precio ARS</label><input type="number" id="prodPrice" onkeyup="updatePreview()" required></div>
-        <div class="form-group"><label>4. Categoria</label>
-          <select id="prodCategory">
-            <option value="artesanias">Artesanias</option>
-            <option value="food">Alimentos</option>
-            <option value="home">Hogar</option>
-            <option value="clothing">Ropa</option>
-            <option value="electronics">Tecnologia</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>5. Tu Ciudad</label>
-            <select id="sellerCity">
-              <option>Tres Arroyos</option><option>Adolfo Gonzales Chaves</option><option>Bahia Blanca</option><option>CABA</option><option>La Plata</option>
-            </select>
-          </div>
-          <div class="form-group"><label>6. Stock</label><input type="number" id="prodStock" value="1"></div>
-        </div>
-        <div class="form-group"><label>7. Tu WhatsApp</label><input type="text" id="prodWhatsapp" placeholder="549387XXXXXXX" required></div>
+        <div class="form-group"><label>4. Categoria</label><select id="prodCategory"><option value="artesanias">Artesanias</option><option value="food">Alimentos</option><option value="home">Hogar</option><option value="clothing">Ropa</option></select></div>
+        <div class="form-group"><label>5. Tu Ciudad</label><select id="sellerCity"><option>Tres Arroyos</option><option>Adolfo Gonzales Chaves</option><option>Bahia Blanca</option></select></div>
+        <div class="form-group"><label>6. Tu WhatsApp</label><input type="text" id="prodWhatsapp" placeholder="549387XXXXXXX" required></div>
         <button type="submit" class="btn" style="width:100%;">PUBLICAR AHORA</button>
       </form>
     </div>
@@ -255,24 +224,15 @@
 
   <div class="cart-overlay" id="cartOverlay"></div>
   <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-      <h3 id="cartTitle">Tu Carrito</h3>
-      <button class="clear-cart" id="clearCartBtn">VACIAR</button>
-    </div>
+    <div class="cart-header"><h3>Tu Carrito</h3><button class="clear-cart" id="clearCartBtn">VACIAR</button></div>
     <div id="cartItems"></div>
     <div style="font-size:24px; font-weight:700; margin:20px 0; text-align:center;" id="cartTotal">Total: $0</div>
     <button class="btn" style="width:100%;">FINALIZAR COMPRA</button>
   </div>
 
   <section id="international">
-    <section class="hero">
-      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2000" alt="">
-      <div class="hero-content"><h1>THE GLOBAL MARKETPLACE</h1><a href="#products" class="btn">COMPRAR AHORA</a></div>
-    </section>
-    <section id="products">
-      <h2 class="section-title">Ofertas</h2>
-      <div class="prod-grid" id="productGrid"></div>
-    </section>
+    <section class="hero"><img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2000"><div class="hero-content"><h1>THE GLOBAL MARKETPLACE</h1><a href="#products" class="btn">COMPRAR AHORA</a></div></section>
+    <section id="products"><h2 class="section-title">Ofertas</h2><div class="prod-grid" id="productGrid"></div></section>
   </section>
 
   <section id="argentina">
@@ -280,9 +240,7 @@
     <div class="prod-grid" id="productGridAR"></div>
   </section>
 
-  <footer>
-    <p>© 2026 MARKET. Todos los derechos reservados.</p>
-  </footer>
+  <footer><p>© 2026 MARKET. Todos los derechos reservados.</p></footer>
 
   <script>
     let currentStore = 'international';
@@ -302,16 +260,13 @@
       {id: 6, name: "Lampara de Sal", price: 25.50, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=600", category: "home", store: "Deco Home", storeId: "deco", city: "La Plata"},
     ];
 
-    let productsAR = [
+    let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [
       {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
       {id: 2, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", store: "Dulceria Don Juan", storeId: "dulce", city: "Adolfo Gonzales Chaves", whatsapp: TU_WHATSAPP},
       {id: 3, name: "Manta Polar", price: 22000, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600", category: "home", store: "Hogar Confort", storeId: "hogar", city: "Bahia Blanca", whatsapp: TU_WHATSAPP},
       {id: 4, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
       {id: 5, name: "Remera Basica", price: 12000, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600", category: "clothing", store: "Moda Urbana", storeId: "moda", city: "CABA", whatsapp: TU_WHATSAPP},
     ];
-
-    const savedAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
-    productsAR = [...savedAR,...productsAR];
 
     function showStore(store) {
       currentStore = store;
@@ -345,13 +300,8 @@
       document.getElementById('modalPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
       document.getElementById('modalPrice').className = isAR? 'modal-price ar' : 'modal-price usd';
       document.getElementById('modalStoreLink').textContent = product.store;
-      document.getElementById('modalStoreLink').onclick = () => { alert('Ir a tienda: ' + product.store + ' ID: ' + product.storeId); closeProductModal(); }
-      let envioText = 'Coordinar envio con el vendedor';
+      let envioText = product.city === userCity? 'RETIRO EN ' + userCity : 'Coordinar envio con el vendedor';
       let detalle = 'El vendedor se contactara contigo por WhatsApp';
-      if(product.city === userCity) {
-        envioText = 'RETIRO EN ' + userCity;
-        detalle = 'Vendedor y comprador en la misma ciudad. Envio economico disponible';
-      }
       document.getElementById('modalEnvioEstimado').textContent = envioText;
       document.getElementById('modalEnvioDetalle').textContent = detalle;
       document.getElementById('contactBtn').onclick = () => window.open(`https://wa.me/${product.whatsapp || TU_WHATSAPP}?text=Hola, soy de ${userCity} y quiero consultar por: ${product.name}`,'_blank');
@@ -360,81 +310,60 @@
       document.getElementById('productModal').classList.add('active');
     }
     function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
-
     function openPublishModal() { document.getElementById('publishModal').classList.add('active'); }
     function closePublishModal() { document.getElementById('publishModal').classList.remove('active'); }
+
     let tempImage = "";
-    function previewImage(event) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        tempImage = reader.result;
-        document.getElementById('previewImg').src = reader.result;
-      }
-      reader.readAsDataURL(event.target.files[0]);
-    }
-    function updatePreview() {
-      document.getElementById('previewTitle').textContent = document.getElementById('prodName').value || 'Nombre del producto';
-      document.getElementById('previewPrice').textContent = '$' + (document.getElementById('prodPrice').value || '0');
-    }
+    function previewImage(event) { const reader = new FileReader(); reader.onload = () => { tempImage = reader.result; document.getElementById('previewImg').src = reader.result; } reader.readAsDataURL(event.target.files[0]); }
+    function updatePreview() { document.getElementById('previewTitle').textContent = document.getElementById('prodName').value || 'Nombre del producto'; document.getElementById('previewPrice').textContent = '$' + (document.getElementById('prodPrice').value || '0'); }
 
     document.getElementById('publishForm').onsubmit = (e) => {
       e.preventDefault();
       const nuevoId = Date.now();
-      const nuevoProducto = {
-        id: nuevoId,
-        name: document.getElementById('prodName').value,
-        price: parseFloat(document.getElementById('prodPrice').value),
-        img: tempImage || "https://via.placeholder.com/300",
-        category: document.getElementById('prodCategory').value,
-        store: "Mi Tienda",
-        storeId: "mi-tienda",
-        city: document.getElementById('sellerCity').value,
-        whatsapp: document.getElementById('prodWhatsapp').value
-      };
+      const nuevoProducto = {id: nuevoId, name: document.getElementById('prodName').value, price: parseFloat(document.getElementById('prodPrice').value), img: tempImage || "https://via.placeholder.com/300", category: document.getElementById('prodCategory').value, store: "Mi Tienda", storeId: "mi-tienda", city: document.getElementById('sellerCity').value, whatsapp: document.getElementById('prodWhatsapp').value};
       productsAR.unshift(nuevoProducto);
       localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
       alert(`¡Producto publicado!\n${nuevoProducto.name}`);
-      closePublishModal();
-      document.getElementById('publishForm').reset();
-      document.getElementById('previewImg').src = "https://via.placeholder.com/150/F5F5F5/666?text=Foto";
-      renderProductsAR();
-      showStore('argentina');
+      closePublishModal(); document.getElementById('publishForm').reset(); renderProductsAR(); showStore('argentina');
     }
 
     function renderProducts() {
-      const grid = document.getElementById('productGrid');
-      const search = document.getElementById('productSearch').value.toLowerCase();
-      grid.innerHTML = '';
+      const grid = document.getElementById('productGrid'); const search = document.getElementById('productSearch').value.toLowerCase(); grid.innerHTML = '';
       allProducts.filter(p => (activeCategory === 'all' || p.category === activeCategory) && p.name.toLowerCase().includes(search)).forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
             <img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, false)'>
             <div class="prod-info">
-              <div class="prod-store" onclick="alert('Ir a tienda: ${p.store}')">📍 ${p.store}</div>
+              <div class="prod-store">📍 ${p.store}</div>
               <span class="badge envio">ENVIO A COORDINAR</span>
               <h3>${p.name}</h3>
               <div class="price usd">$${p.price.toFixed(2)}</div>
-              <button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id})'>AGREGAR</button>
+              <div class="btn-group">
+                <button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id})'>COMPRAR</button>
+                <button class="btn-small consultar" onclick='window.open("https://wa.me/?text=Hola consulto por: ${p.name}","_blank")'>CONSULTAR</button>
+              </div>
             </div>
           </div>
         `;
       });
     }
 
-     function renderProductsAR() {
-      const grid = document.getElementById('productGridAR');
-      const search = document.getElementById('searchAR').value.toLowerCase();
-      grid.innerHTML = '';
+    function renderProductsAR() {
+      const grid = document.getElementById('productGridAR'); const search = document.getElementById('searchAR').value.toLowerCase(); grid.innerHTML = '';
       productsAR.filter(p => (activeCatAR === 'all' || p.category === activeCatAR) && p.name.toLowerCase().includes(search)).forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
             <img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, true)'>
             <div class="prod-info">
-              <div class="prod-store" onclick="alert('Ir a tienda: ${p.store}')">📍 ${p.store}</div>
+              <div class="prod-store">📍 ${p.store}</div>
               <span class="badge full">CONSULTAR ENVIO</span>
               <h3>${p.name}</h3>
               <div class="price ar">$${p.price.toLocaleString('es-AR')}</div>
-              <button class="btn-small" style="background:var(--blue-ar);" id="btnAR-${p.id}" onclick='addToCartAR(${p.id})'>AGREGAR</button>
+              <div class="btn-group">
+                <button class="btn-small" id="btnAR-${p.id}" onclick='addToCartAR(${p.id})'>COMPRAR</button>
+                <button class="btn-small consultar" onclick='window.open("https://wa.me/${p.whatsapp}?text=Hola consulto por: ${p.name}","_blank")'>CONSULTAR</button>
+              </div>
+              <button class="btn-small transferir" onclick='transferirAInternacional(${p.id})'>🌍 TRANSFERIR A INTERNACIONAL</button>
               <button class="mp-btn">MERCADOPAGO</button>
             </div>
           </div>
@@ -442,40 +371,61 @@
       });
     }
 
-    function addToCart(id) {
-      const product = allProducts.find(p => p.id === id);
-      cart.push(product);
-      localStorage.setItem('marketCart', JSON.stringify(cart));
-      updateCart();
-      showFeedback(`btn-${id}`);
-    }
-    function addToCartAR(id) {
+    function addToCart(id) { const product = allProducts.find(p => p.id === id); cart.push(product); localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); showFeedback(`btn-${id}`); }
+    function addToCartAR(id) { const product = productsAR.find(p => p.id === id); cartAR.push(product); localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); showFeedback(`btnAR-${id}`); }
+    
+        async function transferirAInternacional(id) {
       const product = productsAR.find(p => p.id === id);
-      cartAR.push(product);
-      localStorage.setItem('marketCartAR', JSON.stringify(cartAR));
-      updateCartAR();
-      showFeedback(`btnAR-${id}`);
+      if(!product) return;
+
+      let dolar = 1500;
+      try {
+        const res = await fetch('https://dolarapi.com/v1/dolares/oficial');
+        const data = await res.json();
+        dolar = data.venta;
+      } catch(e) { console.log("No se pudo traer dolar, usando 1500") }
+
+      const precioUSD = (product.price / dolar).toFixed(2);
+
+      const nuevoId = Date.now();
+      const nuevoProducto = {
+        id: nuevoId,
+        name: product.name,
+        price: parseFloat(precioUSD),
+        img: product.img,
+        category: product.category,
+        store: product.store,
+        storeId: product.storeId,
+        city: product.city
+      };
+
+      allProducts.unshift(nuevoProducto);
+      
+      alert(`✅ Producto transferido a Internacional\n${product.name}\n$${product.price.toLocaleString('es-AR')} ARS = $${precioUSD} USD\nDolar usado: $${dolar}`);
+
+      showStore('international');
+      renderProducts();
     }
 
-    function showFeedback(btnId) {
-      const btn = document.getElementById(btnId);
-      if(btn){
-        btn.classList.add('added');
-        btn.textContent = '✓ AGREGADO';
-        setTimeout(() => { btn.classList.remove('added'); btn.textContent = 'AGREGAR'; }, 1500);
-      }
+    function showFeedback(btnId) { 
+      const btn = document.getElementById(btnId); 
+      if(btn){ 
+        btn.classList.add('added'); 
+        btn.textContent = '✓ AGREGADO'; 
+        setTimeout(() => { btn.classList.remove('added'); btn.textContent = 'COMPRAR'; }, 1500); 
+      } 
     }
 
-    function removeItem(index) {
-      if(currentStore === 'international') {
-        cart.splice(index, 1);
-        localStorage.setItem('marketCart', JSON.stringify(cart));
-        updateCart();
-      } else {
-        cartAR.splice(index, 1);
-        localStorage.setItem('marketCartAR', JSON.stringify(cartAR));
-        updateCartAR();
-      }
+    function removeItem(index) { 
+      if(currentStore === 'international') { 
+        cart.splice(index, 1); 
+        localStorage.setItem('marketCart', JSON.stringify(cart)); 
+        updateCart(); 
+      } else { 
+        cartAR.splice(index, 1); 
+        localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); 
+        updateCartAR(); 
+      } 
     }
 
     function clearCart() {
@@ -491,7 +441,10 @@
     }
 
     function updateCart() {
-      document.querySelector('.cart-count').textContent = cart.length;
+      const totalItems = cart.length;
+      document.querySelector('.cart-count').textContent = totalItems;
+      document.querySelector('.cart-float-badge').textContent = totalItems;
+      
       document.getElementById('cartItems').innerHTML = cart.map((item, i) => `
         <div class="cart-item">
           <img src="${item.img}">
@@ -502,11 +455,16 @@
           <button class="remove-item" onclick="removeItem(${i})">×</button>
         </div>
       `).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>';
+      
       document.getElementById('cartTotal').textContent = `Total: $${cart.reduce((a,b)=>a+b.price,0).toFixed(2)} USD`;
+      document.getElementById('cartFloat').style.display = totalItems > 0 ? 'flex' : 'none';
     }
     
     function updateCartAR() {
-      document.querySelector('.cart-count').textContent = cartAR.length;
+      const totalItems = cartAR.length;
+      document.querySelector('.cart-count').textContent = totalItems;
+      document.querySelector('.cart-float-badge').textContent = totalItems;
+
       document.getElementById('cartItems').innerHTML = cartAR.map((item, i) => `
         <div class="cart-item">
           <img src="${item.img}">
@@ -517,7 +475,9 @@
           <button class="remove-item" onclick="removeItem(${i})">×</button>
         </div>
       `).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>';
+      
       document.getElementById('cartTotal').textContent = `Total: $${cartAR.reduce((a,b)=>a+b.price,0).toLocaleString('es-AR')} ARS`;
+      document.getElementById('cartFloat').style.display = totalItems > 0 ? 'flex' : 'none';
     }
 
     document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
