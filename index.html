@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOUR BRAND - Premium Handmade Products Worldwide</title>
+  <meta name="description" content="Premium handmade products. Worldwide shipping. Secure payments with PayPal & Stripe.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A0A;
+      --bg-light: #141414;
+      --card: #1C1C1C;
+      --text: #F5F5F5;
+      --text-muted: #A0A0A0;
+      --gold: #D4AF37;
+      --gold-hover: #B8941F;
+      --red: #E63946;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+    body { background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* TOPBAR */
+    .topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 600; letter-spacing: 1px; }
+
+    /* HEADER */
+    header { background: rgba(10,10,10,0.8); backdrop-filter: blur(10px); padding: 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; }
+    .logo { font-size: 28px; font-weight: 900; letter-spacing: 3px; color: var(--gold); }
+    .menu { display: flex; gap: 30px; }
+    .menu a { font-weight: 600; font-size: 14px; transition: 0.3s; }
+    .menu a:hover { color: var(--gold); }
+    .header-actions { display: flex; gap: 20px; align-items: center; }
+    .lang { border: 1px solid #333; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+    .cart { position: relative; cursor: pointer; }
+    .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+
+    /* HERO BANNER WITH PHOTO */
+    .hero { position: relative; height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+    .hero img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+    .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.95) 100%); z-index: -1; }
+    .hero-content h1 { font-size: 64px; font-weight: 900; margin-bottom: 20px; }
+    .hero-content p { font-size: 20px; color: var(--text-muted); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .btn { background: var(--gold); color: #000; padding: 18px 50px; border-radius: 50px; font-weight: 700; font-size: 15px; display: inline-block; transition: 0.3s; border: none; cursor: pointer; }
+    .btn:hover { background: var(--gold-hover); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--text); border: 2px solid var(--text); margin-left: 15px; }
+    .btn-outline:hover { background: var(--text); color: #000; }
+
+    /* SECTION */
+    section { padding: 100px 20px; max-width: 1400px; margin: auto; }
+    .section-title { text-align: center; font-size: 42px; font-weight: 900; margin-bottom: 20px; }
+    .section-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 60px; }
+
+    /* BENEFITS */
+    .benefits { background: var(--bg-light); }
+    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
+    .benefit { text-align: center; padding: 30px; background: var(--card); border-radius: 15px; border: 1px solid #222; }
+    .benefit .icon { font-size: 40px; margin-bottom: 15px; }
+    .benefit h3 { margin-bottom: 10px; }
+
+    /* CATEGORIES */
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .cat-card { position: relative; border-radius: 20px; overflow: hidden; height: 350px; }
+    .cat-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+    .cat-card:hover img { transform: scale(1.1); }
+    .cat-card .overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px; background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 100%); }
+    .cat-card h3 { font-size: 24px; margin-bottom: 10px; }
+
+    /* PRODUCTS */
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .prod-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
+    .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+    .prod-card img { height: 300px; width: 100%; object-fit: cover; }
+    .prod-info { padding: 20px; }
+    .prod-info h3 { margin-bottom: 10px; }
+    .price { font-size: 24px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
+
+    /* SELL WITH US FORM */
+    .sell { background: var(--bg-light); }
+    .form-container { max-width: 800px; margin: auto; background: var(--card); padding: 50px; border-radius: 20px; border: 1px solid #222; }
+    input, textarea, select { width: 100%; padding: 15px; margin: 10px 0 20px; background: #0A0A0A; border: 1px solid #333; border-radius: 8px; color: var(--text); font-size: 15px; }
+    label { font-weight: 600; font-size: 14px; }
+
+    /* FOOTER */
+    footer { background: #000; padding: 80px 20px 30px; border-top: 1px solid #222; }
+    .footer-grid { max-width: 1400px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 50px; }
+    .footer-col h4 { color: var(--gold); margin-bottom: 20px; }
+    .footer-col a { display: block; color: var(--text-muted); margin-bottom: 12px; font-size: 14px; }
+    .footer-col a:hover { color: var(--text); }
+    .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #222; color: var(--text-muted); font-size: 13px; }
+
+    @media(max-width: 768px) {
+      .hero-content h1 { font-size: 40px; }
+      .menu { display: none; }
+      .btn-outline { margin-left: 0; margin-top: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    🌍 WORLDWIDE SHIPPING | SECURE PAYMENT WITH PAYPAL & STRIPE | 30 DAYS RETURNS
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar">
+      <div class="logo">YOUR BRAND</div>
+      <nav class="menu">
+        <a href="#shop">SHOP</a>
+        <a href="#categories">CATEGORIES</a>
+        <a href="#bestsellers">BESTSELLERS</a>
+        <a href="#sell">BECOME A SELLER</a>
+        <a href="#about">ABOUT</a>
+      </nav>
+      <div class="header-actions">
+        <div class="lang">EN / ES</div>
+        <div class="cart">🛒<span class="cart-count">0</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO BANNER -->
+  <section class="hero">
+    <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2000" alt="Hero">
+    <div class="hero-content">
+      <h1>CRAFTED FOR THE WORLD</h1>
+      <p>Premium handmade products. Each piece tells a story. Shipped to 180+ countries.</p>
+      <a href="#shop" class="btn">SHOP COLLECTION</a>
+      <a href="#sell" class="btn btn-outline">SELL WITH US</a>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="benefits">
+    <div class="benefits-grid">
+      <div class="benefit">
+        <div class="icon">🌍</div>
+        <h3>Worldwide Shipping</h3>
+        <p>Fast & tracked delivery to 180+ countries</p>
+      </div>
+      <div class="benefit">
+        <div class="icon">🔒</div>
+        <h3>Secure Payments</h3>
+        <p>PayPal, Stripe, Credit Cards. 100% Safe</p>
+      </div>
+      <div class="benefit">
+        <div class="icon">✋</div>
+        <h3>100% Handmade</h3>
+        <p>Unique pieces crafted by artisans</p>
+      </div>
+      <div class="benefit">
+        <div class="icon">📦</div>
+        <h3>Free Shipping</h3>
+        <p>On all orders over $100 USD</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section id="categories">
+    <h2 class="section-title">SHOP BY CATEGORY</h2>
+    <p class="section-subtitle">Discover our curated collections</p>
+    <div class="cat-grid">
+      <a href="#" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800" alt="Bracelets">
+        <div class="overlay"><h3>BRACELETS</h3><p>Shop Now →</p></div>
+      </a>
+      <a href="#" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800" alt="Necklaces">
+        <div class="overlay"><h3>NECKLACES</h3><p>Shop Now →</p></div>
+      </a>
+      <a href="#" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800" alt="Sets">
+        <div class="overlay"><h3>SETS</h3><p>Shop Now →</p></div>
+      </a>
+      <a href="#" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800" alt="Gifts">
+        <div class="overlay"><h3>GIFTS</h3><p>Shop Now →</p></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- BESTSELLERS -->
+  <section id="bestsellers">
+    <h2 class="section-title">BESTSELLERS</h2>
+    <p class="section-subtitle">Our most loved products</p>
+    <div class="prod-grid">
+      <div class="prod-card">
+        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600" alt="Product">
+        <div class="prod-info">
+          <h3>Golden Thread Bracelet</h3>
+          <div class="price">$29.99 USD</div>
+          <button class="btn" style="width:100%; padding:14px;">ADD TO CART</button>
+        </div>
+      </div>
+      <div class="prod-card">
+        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600" alt="Product">
+        <div class="prod-info">
+          <h3>Boho Necklace Set</h3>
+          <div class="price">$45.00 USD</div>
+          <button class="btn" style="width:100%; padding:14px;">ADD TO CART</button>
+        </div>
+      </div>
+      <div class="prod-card">
+        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600" alt="Product">
+        <div class="prod-info">
+          <h3>Premium Gift Box</h3>
+          <div class="price">$59.99 USD</div>
+          <button class="btn" style="width:100%; padding:14px;">ADD TO CART</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELL WITH US -->
+  <section class="sell" id="sell">
+    <h2 class="section-title">BECOME A SELLER</h2>
+    <p class="section-subtitle">Join our global marketplace. We handle shipping & payments.</p>
+    <div class="form-container">
+      <form id="sellerForm">
+        <label>Full Name</label>
+        <input type="text" placeholder="John Doe" required>
+        
+        <label>Email</label>
+        <input type="email" placeholder="john@email.com" required>
+        
+        <label>Product Name</label>
+        <input type="text" placeholder="Handmade Bracelet" required>
+        
+        <label>Category</label>
+        <select required>
+          <option value="">Select Category</option>
+          <option>Bracelets</option>
+          <option>Necklaces</option>
+          <option>Sets</option>
+          <option>Gifts</option>
+        </select>
+        
+        <label>Price USD</label>
+        <input type="number" step="0.01" placeholder="29.99" required>
+        
+        <label>Product Description</label>
+        <textarea rows="4" placeholder="Describe your product..." required></textarea>
+        
+        <label>Upload Photo</label>
+        <input type="file" accept="image/*" required>
+        
+        <button type="submit" class="btn" style="width:100%;">SUBMIT FOR REVIEW</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="about">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>YOUR BRAND</h4>
+        <p style="color: var(--text-muted); font-size: 14px;">Premium handmade products shipped worldwide. Quality and authenticity guaranteed.</p>
+      </div>
+      <div class="footer-col">
+        <h4>SHOP</h4>
+        <a href="#">All Products</a>
+        <a href="#">Bestsellers</a>
+        <a href="#">New Arrivals</a>
+        <a href="#">Gift Cards</a>
+      </div>
+      <div class="footer-col">
+        <h4>SUPPORT</h4>
+        <a href="#">Contact Us</a>
+        <a href="#">Shipping Policy</a>
+        <a href="#">Returns</a>
+        <a href="#">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>LEGAL</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Seller Agreement</a>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2026 YOUR BRAND. All rights reserved. | We Accept: PayPal, Stripe, Visa, Mastercard
+    </div>
+  </footer>
+
+  <script>
+    // Simple cart counter
+    document.querySelectorAll('.prod-card .btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        let count = document.querySelector('.cart-count');
+        count.textContent = parseInt(count.textContent) + 1;
+        alert('Added to cart!');
+      });
+    });
+    
+    // Form submit
+    document.getElementById('sellerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you! We will review your product in 24-48 hours.');
+    });
+  </script>
+
+</body>
+</html>
