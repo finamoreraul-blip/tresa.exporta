@@ -253,17 +253,37 @@
     let currentCheckoutProduct = null;
     let currentIsAR = false;
 
-    // PRODUCTOS DEMO + LOS QUE VIENEN DEL ADMIN
-    let allProducts = [
-      {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, imgs: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-      {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, imgs: ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-      {id: 3, name: "Auriculares Inalambricos", price: 89.99, imgs: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600"], category: "electronics", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-    ];
+    // MIGRAR TUS 10 PRODUCTOS VIEJOS 1 SOLA VEZ
+    function migrarProductosIniciales() {
+      let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
+      let productsINT = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
+      if(productsAR.length > 0 || productsINT.length > 0) return;
+
+      const productosARViejos = [
+        {id: 101, name: "Mate Imperial Cuero", price: 15000, imgs: ["https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 102, name: "Bombilla Alpaca", price: 8000, imgs: ["https://images.unsplash.com/photo-1597318181409-cf64d0b87830?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 103, name: "Yerbera de Madera", price: 12000, imgs: ["https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600"], category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 104, name: "Remera MARKET", price: 18000, imgs: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600"], category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 105, name: "Buzo Canguro", price: 35000, imgs: ["https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600"], category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 106, name: "Cuadro Decorativo", price: 22000, imgs: ["https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600"], category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 107, name: "Pulsera Cuero", price: 9500, imgs: ["https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+      ];
+
+      const productosINTViejos = [
+        {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, imgs: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+        {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, imgs: ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+        {id: 3, name: "Auriculares Inalambricos", price: 89.99, imgs: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600"], category: "electronics", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+      ];
+      localStorage.setItem('marketProductsAR', JSON.stringify(productosARViejos));
+      localStorage.setItem('marketProductsINT', JSON.stringify(productosINTViejos));
+    }
+    migrarProductosIniciales();
 
     let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
     let productsINT = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
-    let allProductsINT = [...allProducts, ...productsINT]; // junta demo + admin
+    let allProductsINT = [...productsINT]; // ya no usa demo quemado
 
+    // TIEMPO REAL: AVISA CADA 5 SEG QUE ESTA ONLINE
     function saveStoreLogin(store) {
       let tiendas = JSON.parse(localStorage.getItem('marketUsers')) || [];
       const storeData = {
@@ -279,10 +299,11 @@
       else tiendas.push(storeData);
       localStorage.setItem('marketUsers', JSON.stringify(tiendas));
     }
+    setInterval(() => saveStoreLogin(currentStore), 5000); // LATIDO CADA 5 SEG
 
     function showStore(store) {
       currentStore = store;
-      saveStoreLogin(store); // GUARDA QUE LA TIENDA ESTA ONLINE
+      saveStoreLogin(store); 
       document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
       if(store === 'international') {
         document.getElementById('international').style.display = 'block';
@@ -293,7 +314,7 @@
         document.getElementById('searchAR').style.display = 'none';
         document.getElementById('btnInt').classList.add('active');
         document.getElementById('topbar').className = 'topbar';
-        document.getElementById('btnVender').style.display = 'none'; // OCULTO EN USD
+        document.getElementById('btnVender').style.display = 'none'; 
         renderProductsINT(); updateCart();
       } else {
         document.getElementById('international').style.display = 'none';
@@ -304,8 +325,8 @@
         document.getElementById('searchAR').style.display = 'block';
         document.getElementById('btnAr').classList.add('active');
         document.getElementById('topbar').className = 'topbar ar';
-        document.getElementById('btnVender').style.display = 'block'; // VISIBLE EN ARS
-        document.getElementById('btnVender').onclick = () => window.location.href='panel.html'; // VA A PANEL
+        document.getElementById('btnVender').style.display = 'block'; 
+        document.getElementById('btnVender').onclick = () => window.location.href='panel.html'; 
         renderProductsAR(); updateCartAR();
       }
     }
@@ -383,6 +404,8 @@
     }
 
     function renderProductsINT() {
+      productsINT = JSON.parse(localStorage.getItem('marketProductsINT')) || []; // RECARGAR DEL LOCALSTORAGE
+      allProductsINT = [...productsINT];
       const grid = document.getElementById('productGrid');
       const search = document.getElementById('productSearch').value.toLowerCase();
       grid.innerHTML = '';
@@ -408,6 +431,7 @@
     }
 
     function renderProductsAR() {
+      productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || []; // RECARGAR DEL LOCALSTORAGE
       const grid = document.getElementById('productGridAR');
       const search = document.getElementById('searchAR').value.toLowerCase();
       grid.innerHTML = '';
@@ -469,8 +493,15 @@
     }
 
     function clearCart() {
-      if(currentStore === 'international') { cart = []; localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); } 
-      else { cartAR = []; localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); }
+      if(currentStore === 'international') { 
+        cart = []; 
+        localStorage.setItem('marketCart', JSON.stringify(cart)); 
+        updateCart(); 
+      } else { 
+        cartAR = []; 
+        localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); 
+        updateCartAR(); 
+      }
     }
 
     function updateCart() {
@@ -488,7 +519,7 @@
       document.getElementById('cartFloat').style.display = totalItems > 0 ? 'flex' : 'none';
     }
     
-      function updateCartAR() {
+    function updateCartAR() {
       const totalItems = cartAR.length;
       document.querySelector('.cart-count').textContent = totalItems;
       document.querySelector('.cart-float-badge').textContent = totalItems;
