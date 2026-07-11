@@ -32,10 +32,10 @@
   .header-actions { display: flex; gap: 20px; align-items: center; }
   .btn-publish { background: var(--green); color: #000; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: 0.3s; }
   .btn-publish:hover { opacity: 0.8; }
+  .btn-admin { background: var(--red); color: #fff; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: 0.3s; }
   .cart-btn { position: relative; font-size: 26px; cursor: pointer; }
   .cart-count { position: absolute; top: -6px; right: -6px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-    /* CARRITO FLOTANTE */
   .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--gold); color: #000; padding: 15px 20px; border-radius: 50px; display: none; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(212,175,55,0.4); z-index: 150; transition: 0.3s; }
   .cart-float:hover { transform: scale(1.05); }
   .cart-float-badge { background: #000; color: var(--gold); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
@@ -68,8 +68,15 @@
   .seller-box { background: #222; padding: 15px; border-radius: 10px; margin: 15px 0; }
   .store-link { color: var(--gold); cursor: pointer; text-decoration: underline; font-weight: 700; }
   .store-link:hover { color: #fff; }
-  .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; transition: 0.3s; }
-  .contact-seller:hover { opacity: 0.8; }
+
+  .modal-content-checkout { background: var(--card); border-radius: 15px; max-width: 700px; width: 100%; padding: 30px; }
+  .checkout-form { display: flex; flex-direction: column; gap: 15px; }
+  .checkout-form input,.checkout-form select { padding: 14px; background: #111; border: 1px solid #333; border-radius: 8px; color: var(--text); }
+  .checkout-form input:focus { border-color: var(--gold); outline: none; }
+  .form-row { display: flex; gap: 15px; }
+  .shipping-result { background: #222; padding: 15px; border-radius: 8px; margin-top: 10px; display: none; }
+  .btn-pay { background: var(--green); color: #000; padding: 16px; border: none; border-radius: 8px; font-weight: 900; font-size: 16px; cursor: pointer; width: 100%; }
+  .btn-pay.paypal { background: #0070BA; color: #fff; }
 
   .modal-content-publish { background: var(--card); border-radius: 15px; max-width: 850px; width: 100%; padding: 30px; }
   .form-preview { display: flex; gap: 20px; background: #222; padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed #333; }
@@ -109,9 +116,9 @@
   .btn-group { display: flex; gap: 8px; flex-direction: column; }
   .btn-small { padding: 12px; font-size: 14px; border-radius: 8px; width: 100%; background: var(--gold); color: #000; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
   .btn-small:hover { opacity: 0.8; }
+  .btn-small.comprar { background: var(--green); color: #000; }
   .btn-small.consultar { background: var(--blue-ar); color: #fff; }
   .btn-small.added { background: var(--green); color: #fff; }
-  .mp-btn { width: 100%; margin-top: 8px; padding: 12px; background: #00B1EA; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
 
     #argentina { background: var(--bg-light); display: none; }
   .envio-tag { font-size: 12px; color: var(--green); margin-bottom: 5px; font-weight: 600; }
@@ -137,7 +144,7 @@
     </div>
   </div>
 
-  <div class="topbar" id="topbar">ENVIO A COORDINAR CON EL VENDEDOR | PAGO SEGURO CON PAYPAL Y MERCADOPAGO</div>
+  <div class="topbar" id="topbar">PAGO SEGURO | RETENCION HASTA ENTREGA</div>
 
   <header>
     <div class="navbar">
@@ -147,13 +154,13 @@
         <input type="text" id="searchAR" placeholder="Buscar en Argentina..." style="display:none;">
       </div>
       <div class="header-actions">
-     <button class="btn-publish" onclick="window.location.href='panel.html'">+ VENDER-PANEL</button>
+        <button class="btn-publish" onclick="openPublishModal()">+ VENDER-PANEL</button>
+        <button class="btn-admin" onclick="window.location.href='admin.html'">ADMIN</button>
         <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
       </div>
     </div>
   </header>
 
-  <!-- CARRITO FLOTANTE -->
   <div class="cart-float" id="cartFloat" onclick="document.getElementById('cartBtn').click()">
     🛒 <span class="cart-float-badge">0</span> Ver Carrito
   </div>
@@ -178,6 +185,7 @@
     </div>
   </div>
 
+  <!-- MODAL DETALLE PRODUCTO -->
   <div class="modal-overlay" id="productModal">
     <div class="modal-content">
       <span class="modal-close" onclick="closeProductModal()">×</span>
@@ -188,19 +196,44 @@
         <div class="modal-price" id="modalPrice"></div>
         <div class="seller-box">
           <p><b>Vendido por:</b> <span class="store-link" id="modalStoreLink"></span></p>
-          <p style="font-size:12px; color:var(--text-muted);">Ver mas productos de esta tienda</p>
         </div>
-        <div class="seller-box">
-          <p><b>Envío:</b> <span id="modalEnvioEstimado"></span></p>
-          <p style="font-size:12px; color:var(--text-muted);" id="modalEnvioDetalle"></p>
-          <button class="contact-seller" id="contactBtn">CONSULTAR ENVIO POR WHATSAPP</button>
-        </div>
-        <button class="btn" id="modalAddBtn" style="width:100%; margin-top:10px; background:var(--gold); color:#000; padding:16px; border:none; border-radius:8px; font-weight:700;">AGREGAR AL CARRITO</button>
-        <button class="btn" id="modalMpBtn" style="width:100%; margin-top:10px; background:#00B1EA; color:#000; padding:16px; border:none; border-radius:8px; font-weight:700; display:none;">PAGAR CON MERCADOPAGO</button>
+        <button class="btn-small comprar" id="modalComprarBtn">COMPRAR</button>
+        <button class="btn-small" id="modalAddBtn">AGREGAR AL CARRITO</button>
       </div>
     </div>
   </div>
 
+  <!-- MODAL CHECKOUT TIPO ML NUEVO -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-content-checkout">
+      <span class="modal-close" onclick="closeCheckoutModal()">×</span>
+      <h2>Finalizar Compra</h2>
+      <p style="color:var(--text-muted); margin-bottom:20px;">Completa tus datos para cotizar el envío</p>
+      <div style="display:flex; gap:20px; margin-bottom:20px;">
+        <img id="checkoutImg" src="" style="width:100px; height:100px; border-radius:8px; object-fit:cover;">
+        <div>
+          <h3 id="checkoutName"></h3>
+          <div class="price" id="checkoutPrice"></div>
+        </div>
+      </div>
+      <form class="checkout-form" id="checkoutForm">
+        <input type="text" id="buyerName" placeholder="Nombre y Apellido *" required>
+        <input type="text" id="buyerDni" placeholder="DNI *" required>
+        <input type="email" id="buyerEmail" placeholder="Email *" required>
+        <input type="tel" id="buyerPhone" placeholder="Telefono *" required>
+        <input type="text" id="buyerAddress" placeholder="Dirección *" required>
+        <div class="form-row">
+          <input type="text" id="buyerCity" placeholder="Ciudad *" required>
+          <input type="text" id="buyerZip" placeholder="Código Postal *" required>
+        </div>
+        <button type="button" class="btn-small" style="background:var(--blue-ar);" onclick="cotizarEnvio()">COTIZAR ENVIO</button>
+        <div class="shipping-result" id="shippingResult"></div>
+        <button type="submit" class="btn-pay" id="payBtn">PAGAR</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL PUBLICAR -->
   <div class="modal-overlay" id="publishModal">
     <div class="modal-content-publish">
       <span class="modal-close" onclick="closePublishModal()">×</span>
@@ -255,7 +288,6 @@
     </div>
     <div id="cartItems"></div>
     <div style="font-size:24px; font-weight:900; margin:20px 0; text-align:center;" id="cartTotal">Total: $0</div>
-    <button class="btn" style="width:100%; background:var(--gold); color:#000; padding:16px; border:none; border-radius:8px; font-weight:700;">FINALIZAR COMPRA</button>
   </div>
 
   <section id="international">
@@ -279,26 +311,20 @@
     let activeCategory = 'all';
     let activeCatAR = 'all';
     let userCity = 'Tres Arroyos';
+    let currentCheckoutProduct = null;
+    let currentIsAR = false;
     const TU_WHATSAPP = '54911XXXXXXXX';
 
     let allProducts = [
-      {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos"},
-      {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos"},
-      {id: 3, name: "Auriculares Inalambricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "TechWorld", storeId: "tech", city: "CABA"},
-      {id: 4, name: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "Artisan Gold", storeId: "artisan", city: "Bahia Blanca"},
-      {id: 5, name: "Campera de Cuero", price: 120.00, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600", category: "clothing", store: "Moda Urbana", storeId: "moda", city: "CABA"},
-      {id: 6, name: "Lampara de Sal", price: 25.50, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=600", category: "home", store: "Deco Home", storeId: "deco", city: "La Plata"},
+      {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "MARKET", storeId: "market", city: "Miami"},
+      {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "MARKET", storeId: "market", city: "Miami"},
+      {id: 3, name: "Auriculares Inalambricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "MARKET", storeId: "market", city: "Miami"},
+      {id: 4, name: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "MARKET", storeId: "market", city: "Miami"},
+      {id: 5, name: "Campera de Cuero", price: 120.00, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600", category: "clothing", store: "MARKET", storeId: "market", city: "Miami"},
+      {id: 6, name: "Lampara de Sal", price: 25.50, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=600", category: "home", store: "MARKET", storeId: "market", city: "Miami"},
     ];
 
-    let productsAR = [
-      {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
-      {id: 3, name: "Manta Polar", price: 22000, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600", category: "home", store: "Hogar Confort", storeId: "hogar", city: "Bahia Blanca", whatsapp: TU_WHATSAPP},
-      {id: 4, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
-      {id: 5, name: "Remera Basica", price: 12000, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600", category: "clothing", store: "Moda Urbana", storeId: "moda", city: "CABA", whatsapp: TU_WHATSAPP},
-    ];
-
-    const savedAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
-    productsAR = [...savedAR,...productsAR];
+    let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
 
     function showStore(store) {
       currentStore = store;
@@ -312,11 +338,7 @@
         document.getElementById('searchAR').style.display = 'none';
         document.getElementById('btnInt').classList.add('active');
         document.getElementById('topbar').className = 'topbar';
-        activeCategory = 'all';
-        document.querySelectorAll('#catFilter.cat-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector('#catFilter.cat-btn[data-cat="all"]').classList.add('active');
-        renderProducts();
-        updateCart();
+        renderProducts(); updateCart();
       } else {
         document.getElementById('international').style.display = 'none';
         document.getElementById('argentina').style.display = 'block';
@@ -326,36 +348,86 @@
         document.getElementById('searchAR').style.display = 'block';
         document.getElementById('btnAr').classList.add('active');
         document.getElementById('topbar').className = 'topbar ar';
-        activeCatAR = 'all';
-        document.querySelectorAll('#catFilterAR.cat-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector('#catFilterAR.cat-btn[data-cat-ar="all"]').classList.add('active');
-        renderProductsAR();
-        updateCartAR();
+        renderProductsAR(); updateCartAR();
       }
     }
 
     function openProductModal(product, isAR = false) {
+      currentCheckoutProduct = product;
+      currentIsAR = isAR;
       document.getElementById('modalImg').src = product.img;
       document.getElementById('modalTitle').textContent = product.name;
       document.getElementById('modalPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
       document.getElementById('modalPrice').className = isAR? 'modal-price ar' : 'modal-price usd';
       document.getElementById('modalStoreLink').textContent = product.store;
-      document.getElementById('modalStoreLink').onclick = () => { window.location.href = `store.html?store=${product.storeId}`; }
-      let envioText = 'Coordinar envio con el vendedor';
-      let detalle = 'El vendedor se contactara contigo por WhatsApp';
-      if(product.city === userCity) {
-        envioText = 'RETIRO EN ' + userCity;
-        detalle = 'Vendedor y comprador en la misma ciudad. Envio economico disponible';
-      }
-      document.getElementById('modalEnvioEstimado').textContent = envioText;
-      document.getElementById('modalEnvioDetalle').textContent = detalle;
-      document.getElementById('contactBtn').onclick = () => window.open(`https://wa.me/${product.whatsapp || TU_WHATSAPP}?text=Hola, soy de ${userCity} y quiero consultar por: ${product.name}`,'_blank');
-      document.getElementById('modalMpBtn').style.display = isAR? 'block' : 'none';
-      document.getElementById('modalMpBtn').onclick = () => comprarProducto(product);
+      document.getElementById('modalComprarBtn').onclick = () => openCheckoutModal(product, isAR);
       document.getElementById('modalAddBtn').onclick = () => isAR? addToCartAR(product.id) : addToCart(product.id);
       document.getElementById('productModal').classList.add('active');
     }
     function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
+
+    function openCheckoutModal(product, isAR) {
+      currentCheckoutProduct = product;
+      currentIsAR = isAR;
+      document.getElementById('checkoutImg').src = product.img;
+      document.getElementById('checkoutName').textContent = product.name;
+      document.getElementById('checkoutPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
+      document.getElementById('payBtn').textContent = isAR? 'PAGAR CON MERCADOPAGO' : 'PAGAR CON PAYPAL';
+      document.getElementById('payBtn').className = isAR? 'btn-pay' : 'btn-pay paypal';
+      document.getElementById('checkoutModal').classList.add('active');
+      closeProductModal();
+    }
+    function closeCheckoutModal() { document.getElementById('checkoutModal').classList.remove('active'); }
+
+    function cotizarEnvio() {
+      const cp = document.getElementById('buyerZip').value;
+      if(!cp) return alert('Pone tu CP');
+      
+      let costoAndreani = currentIsAR? 4500 : 25;
+      let costoCorreo = currentIsAR? 3200 : 20;
+      let moneda = currentIsAR? 'ARS' : 'USD';
+      
+      document.getElementById('shippingResult').style.display = 'block';
+      document.getElementById('shippingResult').innerHTML = `
+        <b>Elige tu envío:</b><br><br>
+        <label><input type="radio" name="envio" value="${costoAndreani}"> Andreani - ${costoAndreani.toLocaleString('es-AR')} ${moneda} - 48hs</label><br>
+        <label><input type="radio" name="envio" value="${costoCorreo}"> Correo Argentino - ${costoCorreo.toLocaleString('es-AR')} ${moneda} - 5 a 7 días</label>
+      `;
+    }
+
+    document.getElementById('checkoutForm').onsubmit = (e) => {
+      e.preventDefault();
+      const envio = document.querySelector('input[name="envio"]:checked');
+      if(!envio) return alert('Elegi un método de envío');
+      
+      const pedido = {
+        id: Date.now(),
+        fecha: new Date().toLocaleString(),
+        cliente: {
+          nombre: document.getElementById('buyerName').value,
+          dni: document.getElementById('buyerDni').value,
+          email: document.getElementById('buyerEmail').value,
+          telefono: document.getElementById('buyerPhone').value,
+          direccion: document.getElementById('buyerAddress').value,
+          ciudad: document.getElementById('buyerCity').value,
+          cp: document.getElementById('buyerZip').value,
+        },
+        producto: currentCheckoutProduct.name,
+        vendedor: currentCheckoutProduct.store,
+        subtotal: currentCheckoutProduct.price,
+        envio: parseFloat(envio.value),
+        total: currentCheckoutProduct.price + parseFloat(envio.value),
+        moneda: currentIsAR? 'ARS' : 'USD',
+        estado: 'pagado'
+      };
+      
+      let pedidos = JSON.parse(localStorage.getItem('marketPedidos')) || [];
+      pedidos.unshift(pedido);
+      localStorage.setItem('marketPedidos', JSON.stringify(pedidos));
+      
+      alert(`Pedido #${pedido.id} creado!\nTotal: ${pedido.total.toLocaleString()} ${pedido.moneda}\n\nLa plata queda retenida en MARKET hasta que el vendedor envie.`);
+      closeCheckoutModal();
+    }
 
     function openPublishModal() { document.getElementById('publishModal').classList.add('active'); }
     function closePublishModal() { document.getElementById('publishModal').classList.remove('active'); }
@@ -397,7 +469,7 @@
       showStore('argentina');
     }
 
-    function renderProducts() {
+function renderProducts() {
       const grid = document.getElementById('productGrid');
       const search = document.getElementById('productSearch').value.toLowerCase();
       grid.innerHTML = '';
@@ -410,13 +482,13 @@
           <div class="prod-card">
             <img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, false)'>
             <div class="prod-info">
-              <div class="prod-store" onclick="window.location.href='store.html?store=${p.storeId}'">📍 ${p.store}</div>
-              <span class="badge envio">ENVIO A COORDINAR</span>
+              <div class="prod-store">📍 ${p.store}</div>
+              <span class="badge envio">ENVIO INTERNACIONAL</span>
               <h3>${p.name}</h3>
               <div class="price usd">$${p.price.toFixed(2)}</div>
               <div class="btn-group">
+                <button class="btn-small comprar" onclick='openCheckoutModal(${JSON.stringify(p)}, false)'>COMPRAR</button>
                 <button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id})'>AGREGAR</button>
-                <button class="btn-small consultar" onclick='window.open("https://wa.me/?text=Hola consulto por: ${p.name}","_blank")'>CONSULTAR</button>
               </div>
             </div>
           </div>
@@ -424,43 +496,30 @@
       });
     }
 
-  function renderProductsAR() {
+    function renderProductsAR() {
       const grid = document.getElementById('productGridAR');
       const search = document.getElementById('searchAR').value.toLowerCase();
       grid.innerHTML = '';
       let filtered = productsAR.filter(p => (activeCatAR === 'all' || p.category === activeCatAR) && p.name.toLowerCase().includes(search));
 
-      if(filtered.length === 0) grid.innerHTML = '<p style="grid-column:1/-</p>';
+      if(filtered.length === 0) grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted)">No hay productos en esta categoria</p>';
 
       filtered.forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
             <img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, true)'>
             <div class="prod-info">
-              <div class="prod-store" onclick="window.location.href='store.html?store=${p.storeId}'">📍 ${p.store}</div>
-              <span class="badge full">CONSULTAR ENVIO</span>
+              <div class="prod-store">📍 ${p.store}</div>
               <h3>${p.name}</h3>
               <div class="price ar">$${p.price.toLocaleString('es-AR')}</div>
               <div class="btn-group">
-                <button class="btn-small" style="background:var(--blue-ar);" id="btnAR-${p.id}" onclick='comprarProducto(${JSON.stringify(p).replace(/"/g, '&quot;')})'>COMPRAR</button>
-                <button class="btn-small" id="btnAddAR-${p.id}" onclick='addToCartAR(${p.id})'>AGREGAR</button>
-                <button class="btn-small consultar" onclick='window.open("https://wa.me/${p.whatsapp}?text=Hola consulto por: ${p.name}","_blank")'>CONSULTAR</button>
+                <button class="btn-small comprar" onclick='openCheckoutModal(${JSON.stringify(p)}, true)'>COMPRAR</button>
+                <button class="btn-small" id="btnAR-${p.id}" onclick='addToCartAR(${p.id})'>AGREGAR</button>
               </div>
             </div>
           </div>
         `;
       });
-    }
-
-    // NUEVA FUNCION COMPRAR CON MP O WHATSAPP
-    function comprarProducto(product) {
-      if(product.paymentLink && product.paymentLink !== '') {
-        window.open(product.paymentLink, '_blank');
-      } else {
-        const msg = `Hola! Quiero comprar: ${product.name} - $${product.price.toLocaleString('es-AR')}`;
-        window.open(`https://wa.me/${product.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-      }
-      closeProductModal();
     }
 
     function addToCart(id) {
@@ -470,12 +529,13 @@
       updateCart();
       showFeedback(`btn-${id}`);
     }
+    
     function addToCartAR(id) {
       const product = productsAR.find(p => p.id === id);
       cartAR.push(product);
       localStorage.setItem('marketCartAR', JSON.stringify(cartAR));
       updateCartAR();
-      showFeedback(`btnAddAR-${id}`);
+      showFeedback(`btnAR-${id}`);
     }
 
     function showFeedback(btnId) {
@@ -485,7 +545,7 @@
         btn.textContent = '✓ AGREGADO';
         setTimeout(() => { 
           btn.classList.remove('added'); 
-          btn.textContent = btnId.includes('Add') ? 'AGREGAR' : 'COMPRAR'; 
+          btn.textContent = 'AGREGAR'; 
         }, 1500);
       }
     }
@@ -550,7 +610,7 @@
       document.getElementById('cartFloat').style.display = totalItems > 0 ? 'flex' : 'none';
     }
 
-    // FILTROS
+    // FILTROS Y EVENTOS
     window.onload = function() {
       document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
         btn.onclick = () => { 
@@ -580,6 +640,9 @@
       }
       document.getElementById('productModal').onclick = (e) => { 
         if(e.target.id === 'productModal') closeProductModal(); 
+      }
+      document.getElementById('checkoutModal').onclick = (e) => { 
+        if(e.target.id === 'checkoutModal') closeCheckoutModal(); 
       }
       document.getElementById('publishModal').onclick = (e) => { 
         if(e.target.id === 'publishModal') closePublishModal(); 
