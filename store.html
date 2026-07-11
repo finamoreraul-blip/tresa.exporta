@@ -4,183 +4,202 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="pageTitle">Store - MARKET</title>
-  <meta name="description" content="Shop from this store. Handmade products. Worldwide shipping.">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0A0A0A; --bg-light: #141414; --card: #1C1C1C;
-      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --gold-hover: #B8941F;
+      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --gold-hover: #B8941F; --red: #E63946;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
     body { background: var(--bg); color: var(--text); }
     a { text-decoration: none; color: inherit; }
 
-    /* HEADER */
-    header { background: #000; padding: 15px 20px; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 10; }
-   .navbar { max-width: 1400px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
-   .logo { color: var(--gold); font-weight: 900; font-size: 24px; letter-spacing: 2px; }
-   .back { color: var(--text-muted); font-size: 14px; }
-   .back:hover { color: var(--gold); }
-   .lang { background: #222; border: 1px solid #333; color: var(--text); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; }
+    .topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 600; }
+    header { background: #000; padding: 15px 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; gap: 20px; }
+    .logo { font-size: 26px; font-weight: 900; color: var(--gold); }
+    .search-bar { flex: 1; max-width: 600px; }
+    .search-bar input { width: 100%; padding: 12px 20px; background: #222; border: 1px solid #333; border-radius: 50px; color: var(--text); }
+    .header-actions { display: flex; gap: 15px; align-items: center; }
+    .back { color: var(--text-muted); font-size: 14px; }
+    .back:hover { color: var(--gold); }
+    .lang { border: 1px solid #333; padding: 8px 14px; border-radius: 20px; cursor: pointer; background: #222; color: var(--text); font-weight: 600; }
+    .cart-btn { position: relative; font-size: 24px; cursor: pointer; }
+    .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-    /* HERO TIENDA */
-   .store-hero { background: var(--bg-light); padding: 70px 20px; text-align: center; border-bottom: 1px solid #222; }
-   .store-logo-big { width: 120px; height: 120px; border-radius: 50%; background: var(--gold); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 45px; font-weight: 900; color: #000; }
-   .store-hero h1 { font-size: 42px; margin-bottom: 10px; }
-   .store-hero p { color: var(--text-muted); font-size: 16px; max-width: 600px; margin: 0 auto; }
-   .store-stats { display: flex; justify-content: center; gap: 30px; margin-top: 25px; color: var(--text-muted); font-size: 14px; }
+    /* CATEGORIAS */
+    .categories-bar { background: var(--bg-light); padding: 15px 20px; border-bottom: 1px solid #222; position: sticky; top: 70px; z-index: 99; }
+    .cat-scroll { max-width: 1400px; margin: auto; display: flex; gap: 12px; overflow-x: auto; }
+    .cat-scroll::-webkit-scrollbar { display: none; }
+    .cat-btn { padding: 10px 22px; background: #222; border: 1px solid #333; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; }
+    .cat-btn.active { background: var(--gold); color: #000; }
 
-    /* CATÁLOGO */
-    section { max-width: 1400px; margin: auto; padding: 60px 20px; }
-   .section-title { text-align: center; font-size: 34px; font-weight: 900; margin-bottom: 40px; }
-   .prod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-   .prod-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
-   .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-   .prod-card img { width: 100%; height: 280px; object-fit: cover; }
-   .prod-info { padding: 20px; }
-   .prod-info h3 { font-size: 18px; margin-bottom: 10px; }
-   .price { font-size: 22px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
-   .btn { background: var(--gold); color: #000; padding: 14px 25px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
-   .btn:hover { background: var(--gold-hover); }
+    /* CARRITO */
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
+    .cart-overlay.active { display: block; }
+    .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; }
+    .cart-sidebar.active { right: 0; }
+    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; }
+    .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+    .cart-total { font-size: 22px; color: var(--gold); font-weight: 700; margin: 20px 0; }
 
-    /* FOOTER */
-    footer { background: #000; padding: 40px 20px; border-top: 1px solid #222; text-align: center; color: var(--text-muted); font-size: 13px; }
+    /* BANNER TIENDA */
+    .store-banner { height: 280px; background-size: cover; background-position: center; position: relative; }
+    .store-banner::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .store-info { position: relative; max-width: 1400px; margin: -60px auto 0; padding: 0 20px; display: flex; gap: 30px; align-items: center; z-index: 2; }
+    .store-logo-big { width: 120px; height: 120px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 45px; font-weight: 900; color: #000; border: 4px solid var(--bg); }
+    .store-details h1 { font-size: 36px; }
+    .store-details p { color: var(--text-muted); }
 
-    @media(max-width: 768px) {
-     .store-hero h1 { font-size: 32px; }
-     .store-stats { flex-direction: column; gap: 10px; }
-    }
+    section { padding: 60px 20px; max-width: 1400px; margin: auto; }
+    .section-title { font-size: 32px; font-weight: 900; margin-bottom: 30px; }
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+    .prod-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
+    .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+    .prod-card img { width: 100%; height: 260px; object-fit: cover; }
+    .prod-info { padding: 20px; }
+    .prod-info h3 { font-size: 17px; margin-bottom: 10px; min-height: 40px; }
+    .price { font-size: 21px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
+    .btn { background: var(--gold); color: #000; padding: 12px 20px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; width: 100%; }
+
+    footer { background: #000; padding: 60px 20px; border-top: 1px solid #222; text-align: center; color: var(--text-muted); }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
+  <div class="topbar" data-en="🌍 WORLDWIDE SHIPPING | SECURE PAYMENT" data-es="🌍 ENVÍOS INTERNACIONALES | PAGO SEGURO">🌍 WORLDWIDE SHIPPING | SECURE PAYMENT</div>
+
   <header>
     <div class="navbar">
       <a href="index.html" class="logo">MARKET</a>
-      <a href="index.html" class="back" data-en="← Back to Marketplace" data-es="← Volver al Marketplace">← Back to Marketplace</a>
-      <button class="lang" id="langBtn">ES</button>
+      <div class="search-bar">
+        <input type="text" id="searchStore" data-en="Search in this store..." data-es="Buscar en esta tienda...">
+      </div>
+      <div class="header-actions">
+        <a href="index.html" class="back" data-en="← Back" data-es="← Volver">← Back</a>
+        <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
+        <button class="lang" id="langBtn">ES</button>
+      </div>
     </div>
   </header>
 
-  <!-- HERO DE LA TIENDA -->
-  <div class="store-hero">
-    <div class="store-logo-big" id="storeLogo">A</div>
-    <h1 id="storeName">Artisan Gold</h1>
-    <p id="storeDesc" data-en="Handmade jewelry from Argentina. 100% authentic." data-es="Joyería artesanal de Argentina. 100% auténtica.">Handmade jewelry from Argentina. 100% authentic.</p>
-    <div class="store-stats">
-      <span id="productCount">24 Products</span>
-      <span id="storeLocation">📍 Argentina</span>
-      <span>⭐ 4.9 Rating</span>
+  <div class="categories-bar">
+    <div class="cat-scroll">
+      <a href="index.html" class="cat-btn active" data-en="STORE PRODUCTS" data-es="PRODUCTOS DE LA TIENDA">STORE PRODUCTS</a>
+      <a href="index.html" class="cat-btn" data-en="ALL STORES" data-es="TODAS LAS TIENDAS">ALL STORES</a>
     </div>
   </div>
 
-  <!-- CATÁLOGO DE PRODUCTOS -->
-  <section>
-    <h2 class="section-title" data-en="STORE CATALOG" data-es="CATÁLOGO DE LA TIENDA">STORE CATALOG</h2>
-    <div class="prod-grid" id="productGrid">
-      <!-- Se carga con JS -->
+  <!-- CARRITO -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <h3 data-en="Your Cart" data-es="Tu Carrito">Your Cart</h3>
+    <div id="cartItems"></div>
+    <div class="cart-total" id="cartTotal">Total: $0.00</div>
+    <button class="btn" data-en="CHECKOUT" data-es="FINALIZAR COMPRA">CHECKOUT</button>
+  </div>
+
+  <!-- BANNER TIENDA -->
+  <div class="store-banner" id="storeBanner"></div>
+  <div class="store-info">
+    <div class="store-logo-big" id="storeLogo">A</div>
+    <div class="store-details">
+      <h1 id="storeName">Loading...</h1>
+      <p id="storeDesc">Loading...</p>
+      <span id="productCount" style="color: var(--text-muted);">0 Products</span>
     </div>
+  </div>
+
+  <!-- PRODUCTOS DE LA TIENDA -->
+  <section id="products">
+    <h2 class="section-title" data-en="PRODUCTS" data-es="PRODUCTOS">PRODUCTS</h2>
+    <div class="prod-grid" id="productGrid"></div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <p data-en="© 2026 MARKET. All rights reserved." data-es="© 2026 MARKET. Todos los derechos reservados.">© 2026 MARKET. All rights reserved.</p>
   </footer>
 
   <script>
-    // BASE DE DATOS DE TIENDAS
     const stores = {
-      artisan: {
-        name: "Artisan Gold",
-        name_es: "Artisan Gold",
-        logo: "A",
-        location: "Argentina",
-        location_es: "Argentina",
-        desc: "Handmade jewelry from Argentina. 100% authentic.",
-        desc_es: "Joyería artesanal de Argentina. 100% auténtica.",
-        products: [
-          {name: "Golden Thread Bracelet", name_es: "Pulsera Hilo Dorado", price: "$29.99", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"},
-          {name: "Silver Moon Necklace", name_es: "Collar Luna Plata", price: "$45.00", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600"},
-          {name: "Premium Gift Box", name_es: "Caja Regalo Premium", price: "$59.99", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600"},
-          {name: "Rose Gold Ring", name_es: "Anillo Oro Rosa", price: "$32.50", img: "https://images.unsplash.com/photo-1603561596112-0a132b757442?q=80&w=600"}
-        ]
-      },
-      boho: {
-        name: "Boho Dreams",
-        name_es: "Boho Dreams",
-        logo: "B",
-        location: "Mexico",
-        location_es: "México",
-        desc: "Bohemian style accessories made by hand.",
-        desc_es: "Accesorios estilo bohemio hechos a mano.",
-        products: [
-          {name: "Boho Necklace Set", name_es: "Set Collar Boho", price: "$35.50", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=600"},
-          {name: "Feather Earrings", name_es: "Aros de Pluma", price: "$18.99", img: "https://images.unsplash.com/photo-1633810536532-3c5e0c4f2b0b?q=80&w=600"},
-          {name: "Leather Bracelet", name_es: "Pulsera de Cuero", price: "$22.00", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"}
-        ]
-      },
-      crystal: {
-        name: "Crystal Lux",
-        name_es: "Crystal Lux",
-        logo: "C",
-        location: "Spain",
-        location_es: "España",
-        desc: "Luxury crystal jewelry with european design.",
-        desc_es: "Joyería de cristal de lujo con diseño europeo.",
-        products: [
-          {name: "Crystal Chandelier", name_es: "Aros Cristal", price: "$48.00", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600"},
-          {name: "Diamond Ring", name_es: "Anillo Diamante", price: "$89.99", img: "https://images.unsplash.com/photo-1603561596112-0a132b757442?q=80&w=600"},
-          {name: "Luxury Set", name_es: "Set de Lujo", price: "$120.00", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=600"}
-        ]
-      }
+      artisan: { name: "Artisan Gold", name_es: "Artisan Gold", logo: "A", banner: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2000", desc: "Handmade jewelry from Argentina.", desc_es: "Joyería artesanal de Argentina.", products: [
+        {name: "Golden Thread Bracelet", name_es: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"},
+        {name: "Silver Moon Necklace", name_es: "Collar Luna Plata", price: 45.00, img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600"}
+      ]},
+      tech: { name: "TechWorld", name_es: "TechWorld", logo: "T", banner: "https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=2000", desc: "Latest electronics.", desc_es: "Última tecnología.", products: [
+        {name: "Wireless Headphones", name_es: "Auriculares Inalámbricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600"},
+        {name: "Smart Watch Pro", name_es: "Reloj Inteligente Pro", price: 199.00, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600"}
+      ]},
+      fashion: { name: "Fashion Hub", name_es: "Fashion Hub", logo: "F", banner: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2000", desc: "Trendy clothing.", desc_es: "Ropa de tendencia.", products: [
+        {name: "Summer Dress", name_es: "Vestido de Verano", price: 39.99, img: "https://images.unsplash.com/photo-1489987707025-afc2323ea0eb?q=80&w=600"},
+        {name: "Denim Jacket", name_es: "Campera de Jean", price: 69.00, img: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=600"}
+      ]}
     };
 
-    // OBTENER ID DE LA URL?id=artisan
     const urlParams = new URLSearchParams(window.location.search);
     const storeId = urlParams.get('id') || 'artisan';
     const store = stores[storeId] || stores['artisan'];
-
     let currentLang = 'en';
+    let cart = JSON.parse(localStorage.getItem('marketCart')) || [];
 
     function loadStore(lang) {
       document.getElementById('storeName').textContent = lang === 'en'? store.name : store.name_es;
       document.getElementById('storeDesc').textContent = lang === 'en'? store.desc : store.desc_es;
       document.getElementById('storeLogo').textContent = store.logo;
-      document.getElementById('storeLocation').textContent = `📍 ${lang === 'en'? store.location : store.location_es}`;
       document.getElementById('productCount').textContent = `${store.products.length} ${lang === 'en'? 'Products' : 'Productos'}`;
       document.getElementById('pageTitle').textContent = `${store.name} - MARKET`;
+      document.getElementById('storeBanner').style.backgroundImage = `url('${store.banner}')`;
+      renderProducts();
+      updateCart();
+    }
 
-      // Cargar productos
+    function renderProducts() {
       const grid = document.getElementById('productGrid');
+      const searchTerm = document.getElementById('searchStore').value.toLowerCase();
       grid.innerHTML = '';
-      store.products.forEach(p => {
+      store.products.filter(p => {
+        const name = currentLang === 'en'? p.name : p.name_es;
+        return name.toLowerCase().includes(searchTerm);
+      }).forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.img}" alt="${p.name}">
+            <img src="${p.img}" alt="">
             <div class="prod-info">
-              <h3>${lang === 'en'? p.name : p.name_es}</h3>
-              <div class="price">${p.price} USD</div>
-              <button class="btn" data-en="ADD TO CART" data-es="AGREGAR AL CARRITO">ADD TO CART</button>
+              <h3>${currentLang === 'en'? p.name : p.name_es}</h3>
+              <div class="price">$${p.price.toFixed(2)} USD</div>
+              <button class="btn" onclick='addToCart("${p.name}", ${p.price}, "${p.img}")'>${currentLang === 'en'? 'ADD TO CART' : 'AGREGAR AL CARRITO'}</button>
             </div>
           </div>
         `;
       });
-
-      // Traducir todo
-      document.querySelectorAll('[data-en]').forEach(el => {
-        el.textContent = el.getAttribute(`data-${lang}`);
-      });
-      langBtn.textContent = lang === 'en'? 'ES' : 'EN';
     }
 
-    loadStore(currentLang);
-
-    const langBtn = document.getElementById('langBtn');
-    langBtn.addEventListener('click', () => {
+    function addToCart(name, price, img) {
+      cart.push({name, price, img});
+      localStorage.setItem('marketCart', JSON.stringify(cart));
+      updateCart();
+    }
+    function updateCart() {
+      document.querySelector('.cart-count').textContent = cart.length;
+      let cartHTML = ''; let total = 0;
+      cart.forEach(item => {
+        total += item.price;
+        cartHTML += `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toFixed(2)}</p></div></div>`;
+      });
+      document.getElementById('cartItems').innerHTML = cartHTML || (currentLang === 'en' ? 'Cart is empty' : 'Carrito vacío');
+      document.getElementById('cartTotal').textContent = `Total: $${total.toFixed(2)}`;
+    }
+    document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
+    document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
+    document.getElementById('searchStore').onkeyup = renderProducts;
+    document.getElementById('langBtn').onclick = () => {
       currentLang = currentLang === 'en'? 'es' : 'en';
+      document.querySelectorAll('[data-en]').forEach(el => el.textContent = el.getAttribute(`data-${currentLang}`));
+      document.getElementById('langBtn').textContent = currentLang === 'en'? 'ES' : 'EN';
       loadStore(currentLang);
-    });
+    };
+
+    loadStore(currentLang);
   </script>
 
 </body>
