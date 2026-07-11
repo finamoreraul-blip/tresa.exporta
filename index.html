@@ -77,17 +77,6 @@
   .btn-pay { background: var(--green); color: #000; padding: 16px; border: none; border-radius: 8px; font-weight: 900; font-size: 16px; cursor: pointer; width: 100%; }
   .btn-pay.paypal { background: #0070BA; color: #fff; }
 
-  .modal-content-publish { background: var(--card); border-radius: 15px; max-width: 850px; width: 100%; padding: 30px; }
-  .form-preview { display: flex; gap: 20px; background: #222; padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed #333; }
-  .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
-  .form-preview-info { flex: 1; }
-  .form-group { margin-bottom: 18px; }
-  .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
-  .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: var(--text); font-size: 15px; }
-  .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color: var(--gold); outline: none; }
-  .form-row { display: flex; gap: 15px; }
-  .form-row.form-group { flex: 1; }
-
   .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
   .cart-overlay.active { display: block; }
   .cart-sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; }
@@ -127,7 +116,6 @@
     @media(max-width: 768px) {
     .modal-content { flex-direction: column; }
     .modal-img { width: 100%; height: 300px; }
-    .form-preview { flex-direction: column; }
     .cart-sidebar { width: 100%; }
     .form-row { flex-direction: column; gap: 0; }
     .cart-float { bottom: 15px; right: 15px; padding: 12px 16px; font-size: 12px; }
@@ -153,9 +141,9 @@
         <input type="text" id="searchAR" placeholder="Buscar en Argentina..." style="display:none;">
       </div>
      <div class="header-actions" id="headerActions">
-  <button class="btn-publish" id="btnVender">+ VENDER-PANEL</button>
-  <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
-</div>
+        <button class="btn-publish" id="btnVender">+ VENDER-PANEL</button>
+        <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
+      </div>
     </div>
   </header>
 
@@ -201,7 +189,7 @@
     </div>
   </div>
 
-  <!-- MODAL CHECKOUT TIPO ML NUEVO -->
+  <!-- MODAL CHECKOUT -->
   <div class="modal-overlay" id="checkoutModal">
     <div class="modal-content-checkout">
       <span class="modal-close" onclick="closeCheckoutModal()">×</span>
@@ -227,53 +215,6 @@
         <button type="button" class="btn-small" style="background:var(--blue-ar);" onclick="cotizarEnvio()">COTIZAR ENVIO</button>
         <div class="shipping-result" id="shippingResult"></div>
         <button type="submit" class="btn-pay" id="payBtn">PAGAR</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL PUBLICAR -->
-  <div class="modal-overlay" id="publishModal">
-    <div class="modal-content-publish">
-      <span class="modal-close" onclick="closePublishModal()">×</span>
-      <h2 style="margin-bottom:20px;">PUBLICAR MI PRODUCTO AHORA</h2>
-      <p style="color:var(--text-muted);margin-bottom:20px">Completa y aparece en la tienda al instante</p>
-
-      <div class="form-preview" id="previewCard">
-        <img id="previewImg" src="https://via.placeholder.com/150/222/FFFFFF?text=Foto">
-        <div class="form-preview-info">
-          <p style="font-size:12px;color:var(--text-muted)">VISTA PREVIA</p>
-          <h3 id="previewTitle">Nombre del producto</h3>
-          <div class="price ar" id="previewPrice">$0</div>
-          <p style="font-size:12px" id="previewEnvio">Envio a coordinar</p>
-        </div>
-      </div>
-
-      <form id="publishForm">
-        <div class="form-group">
-          <label>1. Foto Principal del Producto</label>
-          <input type="file" id="prodImg" accept="image/*" onchange="previewImage(event)" required>
-        </div>
-        <div class="form-group"><label>2. Nombre del Producto</label><input type="text" id="prodName" onkeyup="updatePreview()" required></div>
-        <div class="form-group"><label>3. Precio ARS</label><input type="number" id="prodPrice" onkeyup="updatePreview()" required></div>
-        <div class="form-group"><label>4. Categoria</label>
-          <select id="prodCategory">
-            <option value="artesanias">Artesanias</option>
-            <option value="home">Hogar</option>
-            <option value="clothing">Ropa</option>
-            <option value="electronics">Tecnologia</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>5. Tu Ciudad</label>
-            <select id="sellerCity">
-              <option>Tres Arroyos</option><option>Adolfo Gonzales Chaves</option><option>Bahia Blanca</option><option>CABA</option><option>La Plata</option>
-            </select>
-          </div>
-          <div class="form-group"><label>6. Stock</label><input type="number" id="prodStock" value="1"></div>
-        </div>
-        <div class="form-group"><label>7. Tu WhatsApp</label><input type="text" id="prodWhatsapp" placeholder="549387XXXXXXX" required></div>
-        <button type="submit" class="btn" style="width:100%; background:var(--green); color:#000; padding:16px; border:none; border-radius:8px; font-weight:700;">PUBLICAR AHORA</button>
       </form>
     </div>
   </div>
@@ -311,58 +252,68 @@
     let userCity = 'Tres Arroyos';
     let currentCheckoutProduct = null;
     let currentIsAR = false;
-    const TU_WHATSAPP = '54911XXXXXXXX';
 
+    // PRODUCTOS DEMO + LOS QUE VIENEN DEL ADMIN
     let allProducts = [
-      {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "MARKET", storeId: "market", city: "Miami"},
-      {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "MARKET", storeId: "market", city: "Miami"},
-      {id: 3, name: "Auriculares Inalambricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "MARKET", storeId: "market", city: "Miami"},
-      {id: 4, name: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "MARKET", storeId: "market", city: "Miami"},
-      {id: 5, name: "Campera de Cuero", price: 120.00, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600", category: "clothing", store: "MARKET", storeId: "market", city: "Miami"},
-      {id: 6, name: "Lampara de Sal", price: 25.50, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=600", category: "home", store: "MARKET", storeId: "market", city: "Miami"},
+      {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, imgs: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+      {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, imgs: ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+      {id: 3, name: "Auriculares Inalambricos", price: 89.99, imgs: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600"], category: "electronics", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
     ];
 
     let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
+    let productsINT = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
+    let allProductsINT = [...allProducts, ...productsINT]; // junta demo + admin
 
- function showStore(store) {
-  currentStore = store;
-  document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
-  if(store === 'international') {
-    document.getElementById('international').style.display = 'block';
-    document.getElementById('argentina').style.display = 'none';
-    document.getElementById('catBarInt').style.display = 'block';
-    document.getElementById('catBarAr').style.display = 'none';
-    document.getElementById('productSearch').style.display = 'block';
-    document.getElementById('searchAR').style.display = 'none';
-    document.getElementById('btnInt').classList.add('active');
-    document.getElementById('topbar').className = 'topbar';
-    
-    // NUEVO: Ocultar VENDER-PANEL en internacional
-    document.getElementById('btnVender').style.display = 'none';
-    
-    renderProducts(); updateCart();
-  } else {
-    document.getElementById('international').style.display = 'none';
-    document.getElementById('argentina').style.display = 'block';
-    document.getElementById('catBarInt').style.display = 'none';
-    document.getElementById('catBarAr').style.display = 'block';
-    document.getElementById('productSearch').style.display = 'none';
-    document.getElementById('searchAR').style.display = 'block';
-    document.getElementById('btnAr').classList.add('active');
-    document.getElementById('topbar').className = 'topbar ar';
-    
-    // NUEVO: Mostrar VENDER-PANEL solo en Argentina
-    document.getElementById('btnVender').style.display = 'block';
-    document.getElementById('btnVender').onclick = () => window.location.href='panel.html';
-    
-    renderProductsAR(); updateCartAR();
-  }
-}
+    function saveStoreLogin(store) {
+      let tiendas = JSON.parse(localStorage.getItem('marketUsers')) || [];
+      const storeData = {
+        storeId: store === 'international' ? 'market' : 'mi-tienda',
+        storeName: store === 'international' ? 'MARKET' : 'Mi Tienda',
+        email: 'admin@market.com',
+        city: userCity,
+        lastLogin: new Date().toLocaleString('es-AR'),
+        bloqueada: false
+      };
+      const index = tiendas.findIndex(t => t.storeId === storeData.storeId);
+      if(index >= 0) tiendas[index] = storeData;
+      else tiendas.push(storeData);
+      localStorage.setItem('marketUsers', JSON.stringify(tiendas));
+    }
+
+    function showStore(store) {
+      currentStore = store;
+      saveStoreLogin(store); // GUARDA QUE LA TIENDA ESTA ONLINE
+      document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+      if(store === 'international') {
+        document.getElementById('international').style.display = 'block';
+        document.getElementById('argentina').style.display = 'none';
+        document.getElementById('catBarInt').style.display = 'block';
+        document.getElementById('catBarAr').style.display = 'none';
+        document.getElementById('productSearch').style.display = 'block';
+        document.getElementById('searchAR').style.display = 'none';
+        document.getElementById('btnInt').classList.add('active');
+        document.getElementById('topbar').className = 'topbar';
+        document.getElementById('btnVender').style.display = 'none'; // OCULTO EN USD
+        renderProductsINT(); updateCart();
+      } else {
+        document.getElementById('international').style.display = 'none';
+        document.getElementById('argentina').style.display = 'block';
+        document.getElementById('catBarInt').style.display = 'none';
+        document.getElementById('catBarAr').style.display = 'block';
+        document.getElementById('productSearch').style.display = 'none';
+        document.getElementById('searchAR').style.display = 'block';
+        document.getElementById('btnAr').classList.add('active');
+        document.getElementById('topbar').className = 'topbar ar';
+        document.getElementById('btnVender').style.display = 'block'; // VISIBLE EN ARS
+        document.getElementById('btnVender').onclick = () => window.location.href='panel.html'; // VA A PANEL
+        renderProductsAR(); updateCartAR();
+      }
+    }
 
     function openProductModal(product, isAR = false) {
       currentCheckoutProduct = product;
       currentIsAR = isAR;
-      document.getElementById('modalImg').src = product.img;
+      document.getElementById('modalImg').src = product.imgs ? product.imgs[0] : product.img;
       document.getElementById('modalTitle').textContent = product.name;
       document.getElementById('modalPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
       document.getElementById('modalPrice').className = isAR? 'modal-price ar' : 'modal-price usd';
@@ -376,7 +327,7 @@
     function openCheckoutModal(product, isAR) {
       currentCheckoutProduct = product;
       currentIsAR = isAR;
-      document.getElementById('checkoutImg').src = product.img;
+      document.getElementById('checkoutImg').src = product.imgs ? product.imgs[0] : product.img;
       document.getElementById('checkoutName').textContent = product.name;
       document.getElementById('checkoutPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
       document.getElementById('payBtn').textContent = isAR? 'PAGAR CON MERCADOPAGO' : 'PAGAR CON PAYPAL';
@@ -389,11 +340,9 @@
     function cotizarEnvio() {
       const cp = document.getElementById('buyerZip').value;
       if(!cp) return alert('Pone tu CP');
-      
       let costoAndreani = currentIsAR? 4500 : 25;
       let costoCorreo = currentIsAR? 3200 : 20;
       let moneda = currentIsAR? 'ARS' : 'USD';
-      
       document.getElementById('shippingResult').style.display = 'block';
       document.getElementById('shippingResult').innerHTML = `
         <b>Elige tu envío:</b><br><br>
@@ -406,7 +355,6 @@
       e.preventDefault();
       const envio = document.querySelector('input[name="envio"]:checked');
       if(!envio) return alert('Elegi un método de envío');
-      
       const pedido = {
         id: Date.now(),
         fecha: new Date().toLocaleString(),
@@ -427,67 +375,23 @@
         moneda: currentIsAR? 'ARS' : 'USD',
         estado: 'pagado'
       };
-      
       let pedidos = JSON.parse(localStorage.getItem('marketPedidos')) || [];
       pedidos.unshift(pedido);
       localStorage.setItem('marketPedidos', JSON.stringify(pedidos));
-      
-      alert(`Pedido #${pedido.id} creado!\nTotal: ${pedido.total.toLocaleString()} ${pedido.moneda}\n\nLa plata queda retenida en MARKET hasta que el vendedor envie.`);
+      alert(`Pedido #${pedido.id} creado!\nTotal: ${pedido.total.toLocaleString()} ${pedido.moneda}`);
       closeCheckoutModal();
     }
 
-    function openPublishModal() { document.getElementById('publishModal').classList.add('active'); }
-    function closePublishModal() { document.getElementById('publishModal').classList.remove('active'); }
-    let tempImage = "";
-    function previewImage(event) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        tempImage = reader.result;
-        document.getElementById('previewImg').src = reader.result;
-      }
-      reader.readAsDataURL(event.target.files[0]);
-    }
-    function updatePreview() {
-      document.getElementById('previewTitle').textContent = document.getElementById('prodName').value || 'Nombre del producto';
-      document.getElementById('previewPrice').textContent = '$' + (document.getElementById('prodPrice').value || '0');
-    }
-
-    document.getElementById('publishForm').onsubmit = (e) => {
-      e.preventDefault();
-      const nuevoId = Date.now();
-      const nuevoProducto = {
-        id: nuevoId,
-        name: document.getElementById('prodName').value,
-        price: parseFloat(document.getElementById('prodPrice').value),
-        img: tempImage || "https://via.placeholder.com/300",
-        category: document.getElementById('prodCategory').value,
-        store: "Mi Tienda",
-        storeId: "mi-tienda",
-        city: document.getElementById('sellerCity').value,
-        whatsapp: document.getElementById('prodWhatsapp').value
-      };
-      productsAR.unshift(nuevoProducto);
-      localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
-      alert(`¡Producto publicado!\n${nuevoProducto.name}`);
-      closePublishModal();
-      document.getElementById('publishForm').reset();
-      document.getElementById('previewImg').src = "https://via.placeholder.com/150/222/FFFFFF?text=Foto";
-      renderProductsAR();
-      showStore('argentina');
-    }
-
-function renderProducts() {
+    function renderProductsINT() {
       const grid = document.getElementById('productGrid');
       const search = document.getElementById('productSearch').value.toLowerCase();
       grid.innerHTML = '';
-      let filtered = allProducts.filter(p => (activeCategory === 'all' || p.category === activeCategory) && p.name.toLowerCase().includes(search));
-
-      if(filtered.length === 0) grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted)">No hay productos en esta categoria</p>';
-
+      let filtered = allProductsINT.filter(p => (activeCategory === 'all' || p.category === activeCategory) && p.name.toLowerCase().includes(search));
+      if(filtered.length === 0) grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted)">No hay productos</p>';
       filtered.forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, false)'>
+            <img src="${p.imgs[0]}" onclick='openProductModal(${JSON.stringify(p)}, false)'>
             <div class="prod-info">
               <div class="prod-store">📍 ${p.store}</div>
               <span class="badge envio">ENVIO INTERNACIONAL</span>
@@ -508,13 +412,11 @@ function renderProducts() {
       const search = document.getElementById('searchAR').value.toLowerCase();
       grid.innerHTML = '';
       let filtered = productsAR.filter(p => (activeCatAR === 'all' || p.category === activeCatAR) && p.name.toLowerCase().includes(search));
-
-      if(filtered.length === 0) grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted)">No hay productos en esta categoria</p>';
-
+      if(filtered.length === 0) grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted)">No hay productos</p>';
       filtered.forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, true)'>
+            <img src="${p.imgs ? p.imgs[0] : p.img}" onclick='openProductModal(${JSON.stringify(p)}, true)'>
             <div class="prod-info">
               <div class="prod-store">📍 ${p.store}</div>
               <h3>${p.name}</h3>
@@ -530,7 +432,7 @@ function renderProducts() {
     }
 
     function addToCart(id) {
-      const product = allProducts.find(p => p.id === id);
+      const product = allProductsINT.find(p => p.id === id);
       cart.push(product);
       localStorage.setItem('marketCart', JSON.stringify(cart));
       updateCart();
@@ -550,10 +452,7 @@ function renderProducts() {
       if(btn){
         btn.classList.add('added');
         btn.textContent = '✓ AGREGADO';
-        setTimeout(() => { 
-          btn.classList.remove('added'); 
-          btn.textContent = 'AGREGAR'; 
-        }, 1500);
+        setTimeout(() => { btn.classList.remove('added'); btn.textContent = 'AGREGAR'; }, 1500);
       }
     }
 
@@ -570,15 +469,8 @@ function renderProducts() {
     }
 
     function clearCart() {
-      if(currentStore === 'international') { 
-        cart = []; 
-        localStorage.setItem('marketCart', JSON.stringify(cart)); 
-        updateCart(); 
-      } else { 
-        cartAR = []; 
-        localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); 
-        updateCartAR(); 
-      }
+      if(currentStore === 'international') { cart = []; localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); } 
+      else { cartAR = []; localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); }
     }
 
     function updateCart() {
@@ -587,11 +479,8 @@ function renderProducts() {
       document.querySelector('.cart-float-badge').textContent = totalItems;
       document.getElementById('cartItems').innerHTML = cart.map((item, i) => `
         <div class="cart-item">
-          <img src="${item.img}">
-          <div>
-            <h4>${item.name}</h4>
-            <p>$${item.price.toFixed(2)} USD</p>
-          </div>
+          <img src="${item.imgs[0]}">
+          <div><h4>${item.name}</h4><p>$${item.price.toFixed(2)} USD</p></div>
           <button class="remove-item" onclick="removeItem(${i})">×</button>
         </div>
       `).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>';
@@ -599,17 +488,14 @@ function renderProducts() {
       document.getElementById('cartFloat').style.display = totalItems > 0 ? 'flex' : 'none';
     }
     
-    function updateCartAR() {
+      function updateCartAR() {
       const totalItems = cartAR.length;
       document.querySelector('.cart-count').textContent = totalItems;
       document.querySelector('.cart-float-badge').textContent = totalItems;
       document.getElementById('cartItems').innerHTML = cartAR.map((item, i) => `
         <div class="cart-item">
-          <img src="${item.img}">
-          <div>
-            <h4>${item.name}</h4>
-            <p>$${item.price.toLocaleString('es-AR')} ARS</p>
-          </div>
+          <img src="${item.imgs ? item.imgs[0] : item.img}">
+          <div><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-AR')} ARS</p></div>
           <button class="remove-item" onclick="removeItem(${i})">×</button>
         </div>
       `).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>';
@@ -624,7 +510,7 @@ function renderProducts() {
           document.querySelectorAll('#catFilter .cat-btn').forEach(b => b.classList.remove('active')); 
           btn.classList.add('active'); 
           activeCategory = btn.getAttribute('data-cat'); 
-          renderProducts(); 
+          renderProductsINT(); 
         }
       });
       
@@ -651,15 +537,12 @@ function renderProducts() {
       document.getElementById('checkoutModal').onclick = (e) => { 
         if(e.target.id === 'checkoutModal') closeCheckoutModal(); 
       }
-      document.getElementById('publishModal').onclick = (e) => { 
-        if(e.target.id === 'publishModal') closePublishModal(); 
-      }
       document.getElementById('clearCartBtn').onclick = clearCart;
-      document.getElementById('productSearch').onkeyup = renderProducts;
+      document.getElementById('productSearch').onkeyup = renderProductsINT;
       document.getElementById('searchAR').onkeyup = renderProductsAR;
 
       // INICIALIZAR
-      renderProducts();
+      renderProductsINT();
       renderProductsAR();
       showStore('international');
     }
