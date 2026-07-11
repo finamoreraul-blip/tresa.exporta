@@ -114,7 +114,7 @@
         </div>
         <button class="contact-seller" id="contactBtn">CONSULTAR POR WHATSAPP</button>
         <button class="btn-small" id="modalAddBtn" style="margin-top:10px;">AGREGAR AL CARRITO</button>
-        <button class="mp-btn" id="modalMpBtn" style="display:none;">PAGAR CON MERCADOPAGO</button>
+        <button class="mp-btn" id="modalMpBtn">PAGAR CON MERCADOPAGO</button>
       </div>
     </div>
   </div>
@@ -128,7 +128,7 @@
     </div>
     <div id="cartItems"></div>
     <div style="font-size:24px; font-weight:900; margin:20px 0; text-align:center;" id="cartTotal">Total: $0</div>
-    <button class="btn-small" style="background:var(--gold);" onclick="alert('Ir a finalizar compra')">FINALIZAR COMPRA</button>
+    <button class="btn-small" style="background:var(--gold);" id="finalizeBtn">FINALIZAR COMPRA POR WHATSAPP</button>
   </div>
 
   <script>
@@ -191,6 +191,7 @@
       document.getElementById('modalCity').textContent = product.city;
       document.getElementById('contactBtn').onclick = () => window.open(`https://wa.me/${product.whatsapp}?text=Hola, consulto por: ${product.name}`,'_blank');
       document.getElementById('modalAddBtn').onclick = () => addToCart(product.id);
+      document.getElementById('modalMpBtn').onclick = () => alert('Conectar con MP');
       document.getElementById('productModal').classList.add('active');
     }
     function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
@@ -202,11 +203,12 @@
       localStorage.setItem('marketCartStore', JSON.stringify(cart));
       updateCart();
       const btn = document.getElementById(`btn-${id}`);
-      if(btn) { btn.textContent = 'AGREGADO'; btn.classList.add('added'); setTimeout(() => {btn.textContent='AGREGAR'; btn.classList.remove('added')}, 1500); }
+      if(btn) { btn.textContent = '✓ AGREGADO'; btn.classList.add('added'); setTimeout(() => {btn.textContent='AGREGAR'; btn.classList.remove('added')}, 1500); }
     }
 
     function updateCart() {
-      document.querySelector('.cart-count').textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+      const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+      document.querySelector('.cart-count').textContent = totalItems;
       document.getElementById('cartItems').innerHTML = cart.length === 0? '<p style="text-align:center; color:#A0A0A0;">Carrito vacio</p>' : '';
       let total = 0;
       cart.forEach(item => {
@@ -225,6 +227,17 @@
     document.getElementById('clearCartBtn').onclick = () => { cart = []; localStorage.setItem('marketCartStore', JSON.stringify(cart)); updateCart(); }
     document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
     document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
+    
+    // FINALIZAR COMPRA POR WHATSAPP
+    document.getElementById('finalizeBtn').onclick = () => {
+      if(cart.length === 0) return alert('Tu carrito esta vacio');
+      let mensaje = `Hola ${store.storeName}! Quiero comprar:%0A%0A`;
+      cart.forEach(item => {
+        mensaje += `- ${item.name} x${item.quantity} = $${(item.price * item.quantity).toLocaleString('es-AR')}%0A`;
+      });
+      mensaje += `%0ATotal: $${cart.reduce((a,b)=>a+b.price*b.quantity,0).toLocaleString('es-AR')}`;
+      window.open(`https://wa.me/${store.whatsapp}?text=${mensaje}`, '_blank');
+    }
 
     updateCart();
   </script>
