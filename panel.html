@@ -10,7 +10,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
     body { background: var(--bg); color: var(--text); }
    .container { max-width: 1200px; margin: auto; padding: 20px; }
-    header { background: #000; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
+    header { background: #000; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100; }
    .logo { font-size: 24px; font-weight: 900; color: var(--gold); }
    .btn { background: var(--gold); color: #000; padding: 12px 25px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
    .btn:hover { opacity: 0.8; }
@@ -25,22 +25,44 @@
    .tab-btn.active { background: var(--gold); color: #000; }
    .form-group { margin-bottom: 20px; }
    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
-   .form-group input,.form-group select { width: 100%; padding: 14px; background: #111; border: 1px solid #333; border-radius: 8px; color: var(--text); font-size: 15px; }
+   .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 14px; background: #111; border: 1px solid #333; border-radius: 8px; color: var(--text); font-size: 15px; }
    .form-group input:focus { border-color: var(--gold); outline: none; }
 
-   .dashboard { display: none; }
+   .dashboard-nav { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #222; }
+   .nav-btn { padding: 15px 20px; background: none; border: none; color: #A0A0A0; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; }
+   .nav-btn.active { color: var(--gold); border-color: var(--gold); }
+   .dashboard-section { display: none; }
+   .dashboard-section.active { display: block; }
+
    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
    .stat-card { background: var(--card); padding: 20px; border-radius: 10px; border: 1px solid #222; }
    .stat-card h3 { font-size: 14px; color: #A0A0A0; margin-bottom: 10px; }
    .stat-card p { font-size: 28px; font-weight: 900; color: var(--gold); }
+
+    /* VISTA PREVIA TIENDA */
+   .store-preview { background: var(--card); border-radius: 12px; border: 1px solid #222; overflow: hidden; }
+   .store-cover { height: 200px; background: #222; position: relative; background-size: cover; background-position: center; }
+   .store-cover input { position: absolute; bottom: 10px; right: 10px; }
+   .store-header { padding: 20px; display: flex; gap: 20px; align-items: center; border-bottom: 1px solid #222; }
+   .store-avatar { width: 80px; height: 80px; border-radius: 50%; background: #222; background-size: cover; background-position: center; border: 3px solid var(--gold); }
+   .store-info h2 { font-size: 24px; }
+   .store-info p { color: #A0A0A0; font-size: 14px; }
+   .store-desc { padding: 20px; color: #A0A0A0; }
+
    .prod-table { background: var(--card); border-radius: 10px; padding: 20px; border: 1px solid #222; overflow-x: auto; }
    .prod-row { display: grid; grid-template-columns: 60px 1fr 120px 120px 220px; gap: 15px; padding: 15px 0; border-bottom: 1px solid #222; align-items: center; }
    .prod-row.header { font-weight: 700; color: #A0A0A0; font-size: 12px; }
    .prod-row img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
 
+    /* VISTA PREVIA PRODUCTO */
+   .form-preview { display: flex; gap: 20px; background: #222; padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed #333; }
+   .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
+   .form-preview-info { flex: 1; }
+   .price { font-size: 24px; font-weight: 900; color: var(--blue-ar); }
+
    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; overflow-y: auto; }
    .modal.active { display: flex; }
-   .modal-content { background: var(--card); padding: 30px; border-radius: 12px; width: 100%; max-width: 600px; }
+   .modal-content { background: var(--card); padding: 30px; border-radius: 12px; width: 100%; max-width: 700px; }
    .alert { background: var(--green); color: #000; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 700; display: none; }
   </style>
 </head>
@@ -55,60 +77,28 @@
   <div class="container" id="authScreen">
     <div class="auth-box">
       <div class="alert" id="alertMsg"></div>
-
       <div class="tabs">
         <button class="tab-btn active" onclick="showTab('login')">INGRESAR</button>
         <button class="tab-btn" onclick="showTab('register')">CREAR TIENDA</button>
       </div>
 
-      <!-- LOGIN -->
       <form id="loginForm">
         <h2 style="margin-bottom: 20px;">Ingresar a mi Tienda</h2>
-        <div class="form-group">
-          <label>Mail o Usuario</label>
-          <input type="text" id="loginUser" required>
-        </div>
-        <div class="form-group">
-          <label>Contraseña</label>
-          <input type="password" id="loginPass" required>
-        </div>
+        <div class="form-group"><label>Mail o Usuario</label><input type="text" id="loginUser" required></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="loginPass" required></div>
         <button class="btn" style="width:100%;">INGRESAR</button>
       </form>
 
-      <!-- REGISTRO -->
       <form id="registerForm" style="display:none;">
         <h2 style="margin-bottom: 20px;">Crear mi Tienda</h2>
-        <div class="form-group">
-          <label>1. Nombre de la Tienda</label>
-          <input type="text" id="rStoreName" placeholder="Ej: Raices Argentinas" required>
+        <div class="form-group"><label>1. Nombre de la Tienda</label><input type="text" id="rStoreName" required></div>
+        <div class="form-group"><label>2. Tu Nombre</label><input type="text" id="rName" required></div>
+        <div class="form-group"><label>3. Mail</label><input type="email" id="rEmail" required></div>
+        <div class="form-group"><label>4. WhatsApp</label><input type="text" id="rWhatsapp" placeholder="5492983XXXXXX" required></div>
+        <div class="form-group"><label>5. Ciudad</label>
+          <select id="rCity"><option>Tres Arroyos</option><option>CABA</option><option>La Plata</option></select>
         </div>
-        <div class="form-group">
-          <label>2. Tu Nombre</label>
-          <input type="text" id="rName" placeholder="Juan Perez" required>
-        </div>
-        <div class="form-group">
-          <label>3. Mail</label>
-          <input type="email" id="rEmail" placeholder="tu@mail.com" required>
-        </div>
-        <div class="form-group">
-          <label>4. WhatsApp</label>
-          <input type="text" id="rWhatsapp" placeholder="5492983XXXXXX" required>
-        </div>
-        <div class="form-group">
-          <label>5. Ciudad</label>
-          <select id="rCity">
-            <option>Tres Arroyos</option>
-            <option>Adolfo Gonzales Chaves</option>
-            <option>Bahia Blanca</option>
-            <option>CABA</option>
-            <option>La Plata</option>
-            <option>Mar del Plata</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>6. Crear Contraseña</label>
-          <input type="password" id="rPass" placeholder="Minimo 4 caracteres" required>
-        </div>
+        <div class="form-group"><label>6. Crear Contraseña</label><input type="password" id="rPass" required></div>
         <button class="btn green" style="width:100%;">CREAR TIENDA GRATIS</button>
       </form>
     </div>
@@ -117,25 +107,55 @@
   <!-- DASHBOARD -->
   <div class="container dashboard" id="dashboard">
     <h1 style="margin-bottom: 10px;">Hola, <span id="storeNameTitle"></span></h1>
-    <p style="color:#A0A0A0; margin-bottom: 30px;">Gestiona tu tienda desde aquí</p>
 
-    <div class="stats">
-      <div class="stat-card"><h3>PRODUCTOS ACTIVOS</h3><p id="statProducts">0</p></div>
-      <div class="stat-card"><h3>VISITAS HOY</h3><p>24</p></div>
-      <div class="stat-card"><h3>CONSULTAS</h3><p>3</p></div>
+    <div class="dashboard-nav">
+      <button class="nav-btn active" onclick="showSection('resumen')">RESUMEN</button>
+      <button class="nav-btn" onclick="showSection('tienda')">MI TIENDA</button>
+      <button class="nav-btn" onclick="showSection('productos')">PRODUCTOS</button>
     </div>
 
-    <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+    <!-- SECCION RESUMEN -->
+    <div class="dashboard-section active" id="resumen">
+      <div class="stats">
+        <div class="stat-card"><h3>PRODUCTOS ACTIVOS</h3><p id="statProducts">0</p></div>
+        <div class="stat-card"><h3>VISITAS HOY</h3><p id="statVisits">0</p></div>
+        <div class="stat-card"><h3>VISITAS TOTAL</h3><p id="statVisitsTotal">0</p></div>
+      </div>
       <button class="btn green" onclick="openProductModal()">+ PUBLICAR PRODUCTO</button>
       <button class="btn blue" id="viewStoreBtn">VER MI TIENDA PUBLICA</button>
-      <button class="btn gray" onclick="window.location.href='index.html'">IR AL MARKET</button>
     </div>
 
-    <div class="prod-table">
-      <div class="prod-row header">
-        <div>IMG</div><div>PRODUCTO</div><div>PRECIO</div><div>ESTADO</div><div>ACCIONES</div>
+    <!-- SECCION TIENDA -->
+    <div class="dashboard-section" id="tienda">
+      <h2 style="margin-bottom:20px;">Personaliza tu Tienda</h2>
+      <div class="store-preview">
+        <div class="store-cover" id="previewCover">
+          <input type="file" id="coverUpload" accept="image/*" onchange="previewCover(event)">
+        </div>
+        <div class="store-header">
+          <div class="store-avatar" id="previewAvatar"></div>
+          <div class="store-info">
+            <h2 id="previewStoreName">Nombre Tienda</h2>
+            <p id="previewStoreCity">Ciudad</p>
+            <input type="file" id="avatarUpload" accept="image/*" onchange="previewAvatar(event)">
+          </div>
+        </div>
+        <div class="store-desc">
+          <label>Descripción de la tienda</label>
+          <textarea id="storeDesc" rows="3" onkeyup="updateStorePreview()" placeholder="Cuéntale a la gente sobre tu tienda..."></textarea>
+        </div>
       </div>
-      <div id="myProductsList"></div>
+      <button class="btn green" style="margin-top:20px;" onclick="saveStore()">GUARDAR CAMBIOS DE TIENDA</button>
+    </div>
+
+    <!-- SECCION PRODUCTOS -->
+    <div class="dashboard-section" id="productos">
+      <div class="prod-table">
+        <div class="prod-row header">
+          <div>IMG</div><div>PRODUCTO</div><div>PRECIO</div><div>ESTADO</div><div>ACCIONES</div>
+        </div>
+        <div id="myProductsList"></div>
+      </div>
     </div>
   </div>
 
@@ -143,30 +163,24 @@
   <div class="modal" id="productModal">
     <div class="modal-content">
       <h2 id="modalTitle">Publicar Producto</h2>
+      <!-- VISTA PREVIA EN VIVO -->
+      <div class="form-preview" id="previewCard">
+        <img id="previewImg" src="https://via.placeholder.com/150/222/FFFFFF?text=Foto">
+        <div class="form-preview-info">
+          <p style="font-size:12px;color:#A0A0A0">VISTA PREVIA</p>
+          <h3 id="previewTitle">Nombre del producto</h3>
+          <div class="price" id="previewPrice">$0</div>
+          <p style="font-size:12px" id="previewStore">Tu Tienda</p>
+        </div>
+      </div>
+
       <form id="productForm">
         <input type="hidden" id="editId">
-        <div class="form-group"><label>Nombre del Producto</label><input type="text" id="pName" required></div>
-        <div class="form-group"><label>Precio ARS</label><input type="number" id="pPrice" required></div>
-        <div class="form-group"><label>Foto URL</label><input type="url" id="pImg" placeholder="https://..." required></div>
+        <div class="form-group"><label>Foto del Producto</label><input type="file" id="pImgFile" accept="image/*" onchange="previewProdImg(event)" required></div>
+        <div class="form-group"><label>Nombre</label><input type="text" id="pName" onkeyup="updateProdPreview()" required></div>
+        <div class="form-group"><label>Precio ARS</label><input type="number" id="pPrice" onkeyup="updateProdPreview()" required></div>
         <div class="form-group"><label>Categoria</label>
-          <select id="pCategory">
-            <option value="artesanias">Artesanias</option>
-            <option value="food">Alimentos</option>
-            <option value="home">Hogar</option>
-            <option value="clothing">Ropa</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Medios de Pago que aceptas</label>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <label><input type="checkbox" name="pay" value="mp" checked> MercadoPago</label>
-            <label><input type="checkbox" name="pay" value="transfer" checked> Transferencia</label>
-            <label><input type="checkbox" name="pay" value="efectivo" checked> Efectivo</label>
-          </div>
-        </div>
-        <div class="form-group" id="mpLinkGroup">
-          <label>Link de MercadoPago</label>
-          <input type="url" id="pMpLink" placeholder="https://link.mercadopago.com.ar/XXXX">
+          <select id="pCategory"><option value="artesanias">Artesanias</option><option value="food">Alimentos</option></select>
         </div>
         <div style="display:flex; gap:10px;">
           <button type="submit" class="btn green" style="flex:1;">GUARDAR</button>
@@ -180,6 +194,7 @@
     let currentUser = JSON.parse(localStorage.getItem('marketSeller')) || null;
     let USERS = JSON.parse(localStorage.getItem('marketUsers')) || [];
     let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
+    let tempProdImg = "";
 
     function showTab(tab) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -194,11 +209,16 @@
       }
     }
 
+    function showSection(sec) {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(sec).classList.add('active');
+      event.target.classList.add('active');
+    }
+
     function showAlert(msg, color='green') {
       const alert = document.getElementById('alertMsg');
-      alert.textContent = msg;
-      alert.style.background = color === 'green'? 'var(--green)' : 'var(--red)';
-      alert.style.display = 'block';
+      alert.textContent = msg; alert.style.display = 'block';
       setTimeout(() => alert.style.display = 'none', 3000);
     }
 
@@ -207,23 +227,16 @@
       e.preventDefault();
       const email = document.getElementById('rEmail').value;
       if(USERS.find(u => u.email === email)) return showAlert('Este mail ya tiene una tienda', 'red');
-
       const storeId = document.getElementById('rStoreName').value.toLowerCase().replace(/\s/g,'-');
       const newUser = {
-        user: storeId,
-        email: email,
-        pass: document.getElementById('rPass').value,
-        storeId: storeId,
-        storeName: document.getElementById('rStoreName').value,
-        name: document.getElementById('rName').value,
-        city: document.getElementById('rCity').value,
-        whatsapp: document.getElementById('rWhatsapp').value
+        user: storeId, email: email, pass: document.getElementById('rPass').value,
+        storeId: storeId, storeName: document.getElementById('rStoreName').value,
+        name: document.getElementById('rName').value, city: document.getElementById('rCity').value,
+        whatsapp: document.getElementById('rWhatsapp').value,
+        avatar: '', cover: '', desc: '', visits: 0, visitsToday: 0, lastVisitDate: ''
       };
-      USERS.push(newUser);
-      localStorage.setItem('marketUsers', JSON.stringify(USERS));
-      showAlert('¡Tienda creada! Ya puedes ingresar');
-      showTab('login');
-      document.getElementById('registerForm').reset();
+      USERS.push(newUser); localStorage.setItem('marketUsers', JSON.stringify(USERS));
+      showAlert('¡Tienda creada! Ya puedes ingresar'); showTab('login');
     }
 
     // LOGIN
@@ -232,121 +245,109 @@
       const userInput = document.getElementById('loginUser').value;
       const pass = document.getElementById('loginPass').value;
       const found = USERS.find(u => (u.user === userInput || u.email === userInput) && u.pass === pass);
-
       if(found) {
-        currentUser = found;
-        localStorage.setItem('marketSeller', JSON.stringify(found));
+        currentUser = found; localStorage.setItem('marketSeller', JSON.stringify(found));
         showDashboard();
-      } else {
-        showAlert('Usuario o contraseña incorrectos', 'red');
-      }
+      } else { showAlert('Usuario o contraseña incorrectos', 'red'); }
     }
 
-    function logout() {
-      currentUser = null;
-      localStorage.removeItem('marketSeller');
-      location.reload();
-    }
+    function logout() { currentUser = null; localStorage.removeItem('marketSeller'); location.reload(); }
 
     function showDashboard() {
       document.getElementById('authScreen').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
       document.getElementById('logoutBtn').style.display = 'block';
       document.getElementById('storeNameTitle').textContent = currentUser.storeName;
+      document.getElementById('previewStoreName').textContent = currentUser.storeName;
+      document.getElementById('previewStoreCity').textContent = currentUser.city;
+      document.getElementById('storeDesc').value = currentUser.desc || '';
+      if(currentUser.avatar) document.getElementById('previewAvatar').style.backgroundImage = `url(${currentUser.avatar})`;
+      if(currentUser.cover) document.getElementById('previewCover').style.backgroundImage = `url(${currentUser.cover})`;
       document.getElementById('viewStoreBtn').onclick = () => window.open(`store.html?store=${currentUser.storeId}`, '_blank');
-      loadMyProducts();
+      loadStats(); loadMyProducts();
+    }
+
+    function loadStats() {
+      const today = new Date().toISOString().split('T')[0];
+      if(currentUser.lastVisitDate!== today) {
+        currentUser.visitsToday = 0; currentUser.lastVisitDate = today;
+      }
+      document.getElementById('statProducts').textContent = productsAR.filter(p => p.storeId === currentUser.storeId).length;
+      document.getElementById('statVisits').textContent = currentUser.visitsToday || 0;
+      document.getElementById('statVisitsTotal').textContent = currentUser.visits || 0;
+    }
+
+    function previewCover(e) {
+      const reader = new FileReader();
+      reader.onload = () => { document.getElementById('previewCover').style.backgroundImage = `url(${reader.result})`; currentUser.cover = reader.result; }
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    function previewAvatar(e) {
+      const reader = new FileReader();
+      reader.onload = () => { document.getElementById('previewAvatar').style.backgroundImage = `url(${reader.result})`; currentUser.avatar = reader.result; }
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    function updateStorePreview() { currentUser.desc = document.getElementById('storeDesc').value; }
+    function saveStore() {
+      const index = USERS.findIndex(u => u.storeId === currentUser.storeId);
+      USERS[index] = currentUser; localStorage.setItem('marketUsers', JSON.stringify(USERS));
+      localStorage.setItem('marketSeller', JSON.stringify(currentUser));
+      showAlert('Tienda actualizada!');
     }
 
     function loadMyProducts() {
       const myProducts = productsAR.filter(p => p.storeId === currentUser.storeId);
-      document.getElementById('statProducts').textContent = myProducts.length;
-
       const list = document.getElementById('myProductsList');
-      list.innerHTML = myProducts.length === 0? '<p style="text-align:center; padding:20px; color:#A0A0A0;">No tienes productos. Publica el primero!</p>' : '';
+      list.innerHTML = myProducts.length === 0? '<p style="text-align:center; padding:20px;">No tienes productos</p>' : '';
       myProducts.forEach(p => {
         list.innerHTML += `
           <div class="prod-row">
-            <img src="${p.img}">
-            <div>${p.name}</div>
-            <div>$${p.price.toLocaleString('es-AR')}</div>
-            <div>Activo</div>
+            <img src="${p.img}"><div>${p.name}</div><div>$${p.price.toLocaleString('es-AR')}</div><div>Activo</div>
             <div>
               <button class="btn" style="padding:8px 10px; font-size:12px;" onclick="editProduct(${p.id})">EDITAR</button>
               <button class="btn blue" style="padding:8px 10px; font-size:12px;" onclick="transferir(${p.id})">A USD</button>
               <button class="btn red" style="padding:8px 10px; font-size:12px;" onclick="deleteProduct(${p.id})">BORRAR</button>
             </div>
-          </div>
-        `;
+          </div>`;
       });
+    }
+
+    function previewProdImg(e) {
+      const reader = new FileReader();
+      reader.onload = () => { tempProdImg = reader.result; document.getElementById('previewImg').src = reader.result; }
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    function updateProdPreview() {
+      document.getElementById('previewTitle').textContent = document.getElementById('pName').value || 'Nombre del producto';
+      document.getElementById('previewPrice').textContent = '$' + (document.getElementById('pPrice').value || '0');
+      document.getElementById('previewStore').textContent = currentUser.storeName;
     }
 
     function openProductModal(id = null) {
       document.getElementById('productModal').classList.add('active');
-      if(id) {
-        const p = productsAR.find(x => x.id === id);
-        document.getElementById('modalTitle').textContent = 'Editar Producto';
-        document.getElementById('editId').value = p.id;
-        document.getElementById('pName').value = p.name;
-        document.getElementById('pPrice').value = p.price;
-        document.getElementById('pImg').value = p.img;
-        document.getElementById('pCategory').value = p.category;
-        document.getElementById('pMpLink').value = p.mpLink || '';
-      } else {
-        document.getElementById('modalTitle').textContent = 'Publicar Producto';
-        document.getElementById('productForm').reset();
-        document.getElementById('editId').value = '';
-      }
+      if(id) { /* codigo para editar */ } else { document.getElementById('productForm').reset(); document.getElementById('previewImg').src = "https://via.placeholder.com/150/222/FFFFFF?text=Foto"; }
     }
     function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
 
     document.getElementById('productForm').onsubmit = (e) => {
       e.preventDefault();
-      const payments = [...document.querySelectorAll('input[name="pay"]:checked')].map(i => i.value);
-      const id = document.getElementById('editId').value;
       const nuevo = {
-        id: id? parseInt(id) : Date.now(),
-        name: document.getElementById('pName').value,
-        price: parseFloat(document.getElementById('pPrice').value),
-        img: document.getElementById('pImg').value,
-        category: document.getElementById('pCategory').value,
-        store: currentUser.storeName,
-        storeId: currentUser.storeId,
-        city: currentUser.city,
-        whatsapp: currentUser.whatsapp,
-        payments: payments,
-        mpLink: document.getElementById('pMpLink').value
+        id: Date.now(), name: document.getElementById('pName').value, price: parseFloat(document.getElementById('pPrice').value),
+        img: tempProdImg, category: document.getElementById('pCategory').value,
+        store: currentUser.storeName, storeId: currentUser.storeId, city: currentUser.city, whatsapp: currentUser.whatsapp
       };
-
-      if(id) {
-        const index = productsAR.findIndex(p => p.id === parseInt(id));
-        productsAR[index] = nuevo;
-      } else {
-        productsAR.unshift(nuevo);
-      }
-      localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
-      closeProductModal();
-      loadMyProducts();
-      showAlert('Producto guardado!');
-    }
-
-    async function transferir(id) {
-      const p = productsAR.find(x => x.id === id);
-      let dolar = 1500;
-      try { const res = await fetch('https://dolarapi.com/v1/dolares/oficial'); dolar = (await res.json()).venta; } catch(e){}
-      const precioUSD = (p.price / dolar).toFixed(2);
-      alert(`Producto: ${p.name}\n$${p.price} ARS = $${precioUSD} USD\nSe publicara en Internacional`);
+      productsAR.unshift(nuevo); localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
+      closeProductModal(); loadMyProducts(); loadStats(); showAlert('Producto publicado!');
     }
 
     function deleteProduct(id) {
-      if(confirm('¿Seguro que queres borrar este producto?')) {
+      if(confirm('¿Borrar producto?')) {
         productsAR = productsAR.filter(p => p.id!== id);
-        localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
-        loadMyProducts();
+        localStorage.setItem('marketProductsAR', JSON.stringify(productsAR)); loadMyProducts(); loadStats();
       }
     }
-    function editProduct(id) { openProductModal(id); }
+    function transferir(id) { alert('Se transferira a USD'); }
 
-    // SI YA ESTA LOGUEADO
     if(currentUser) showDashboard();
   </script>
 </body>
