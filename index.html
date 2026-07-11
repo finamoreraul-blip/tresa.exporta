@@ -8,7 +8,7 @@
   <style>
     :root {
       --bg: #FFFFFF; --bg-light: #F5F5F5; --card: #FFFFFF;
-      --text: #333333; --text-muted: #666; --green: #00A650; --red: #E63946; --blue-ar: #3483FA; --gold: #D4AF37;
+      --text: #333; --text-muted: #666; --green: #00A650; --red: #E63946; --blue-ar: #3483FA; --gold: #D4AF37;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg-light); color: var(--text); }
@@ -17,11 +17,10 @@
     .country-selector { background: #FFF; padding: 10px 12px; border-bottom: 1px solid #E5E5E5; position: sticky; top: 0; z-index: 101; }
     .country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 10px; justify-content: center; }
     .country-btn { background: #F5F5F5; border: 2px solid #DDD; color: var(--text); padding: 10px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 12px; flex: 1; text-align: center; transition: 0.3s; }
-    .country-btn:hover { border-color: #BBB; }
     .country-btn.active.int { border-color: var(--gold); background: var(--gold); color: #000; }
     .country-btn.active.ar { border-color: var(--blue-ar); background: var(--blue-ar); color: #FFF; }
 
-    .topbar { background: var(--green); color: #FFF; text-align: center; padding: 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+    .topbar { background: var(--green); color: #FFF; text-align: center; padding: 10px; font-size: 11px; font-weight: 700; }
     .topbar.ar { background: var(--blue-ar); color: #fff; }
 
     header { background: #FFF; padding: 15px 12px; position: sticky; top: 55px; z-index: 100; border-bottom: 1px solid #E5E5E5; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
@@ -32,9 +31,7 @@
     .search-row { display: flex; gap: 10px; align-items: center; width: 100%; }
     .search-bar { flex: 1; }
     .search-bar input { width: 100%; padding: 12px 15px; background: #F5F5F5; border: 2px solid #DDD; border-radius: 8px; color: var(--text); font-size: 14px; }
-    .search-bar input:focus { border-color: var(--green); outline: none; }
-    .btn-publish { background: var(--green); color: #FFF; padding: 12px 18px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; white-space: nowrap; transition: 0.3s; }
-    .btn-publish:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-publish { background: var(--green); color: #FFF; padding: 12px 18px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; white-space: nowrap; }
 
     .header-actions { display: flex; gap: 15px; align-items: center; }
     .cart-btn { position: relative; font-size: 24px; cursor: pointer; }
@@ -42,10 +39,7 @@
 
     .categories-bar { background: #FFF; padding: 12px; position: sticky; top: 135px; z-index: 99; border-bottom: 1px solid #E5E5E5; overflow-x: auto; }
     .cat-scroll { display: flex; gap: 10px; max-width: 1400px; margin: auto; }
-    .cat-scroll::-webkit-scrollbar { height: 4px; }
-    .cat-scroll::-webkit-scrollbar-thumb { background: #CCC; border-radius: 10px; }
-    .cat-btn { padding: 8px 16px; background: #F5F5F5; border: 1px solid #DDD; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; white-space: nowrap; transition: 0.3s; }
-    .cat-btn:hover { border-color: #BBB; }
+    .cat-btn { padding: 8px 16px; background: #F5F5F5; border: 1px solid #DDD; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; white-space: nowrap; }
     .cat-btn.active { background: var(--green); color: #FFF; border-color: var(--green); }
     .cat-btn.ar.active { background: var(--blue-ar); border-color: var(--blue-ar); }
 
@@ -54,11 +48,10 @@
     .badge.full { background: var(--blue-ar); color: #fff; }
     .badge.nuevo { background: var(--gold); color: #000; }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 300; display: none; align-items: center; justify-content: center; }
-    .modal-overlay.active { display: flex; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 300; display: none; }
+    .modal-overlay.active { display: flex; align-items: center; justify-content: center; }
     .modal-content { background: var(--card); width: 100%; height: 100vh; padding: 15px; overflow-y: auto; position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); z-index: 10; transition: 0.3s; }
-    .modal-close:hover { color: var(--text); }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); z-index: 10; }
     .modal-img { width: 100%; height: 300px; object-fit: cover; border-radius: 10px; }
     .modal-info h2 { font-size: 22px; margin: 15px 0 10px; }
     .modal-price { font-size: 32px; font-weight: 900; margin: 15px 0; }
@@ -66,9 +59,7 @@
     .modal-price.usd { color: var(--green); }
     .seller-box { background: #F5F5F5; padding: 15px; border-radius: 10px; margin: 15px 0; }
     .store-link { color: var(--green); cursor: pointer; text-decoration: underline; font-weight: 700; }
-    .store-link:hover { color: #000; }
-    .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; transition: 0.3s; }
-    .contact-seller:hover { opacity: 0.8; }
+    .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; }
 
     .modal-content-publish { background: var(--card); width: 100%; height: 100vh; padding: 20px; overflow-y: auto; }
     .form-preview { display: flex; flex-direction: column; gap: 15px; background: #F5F5F5; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 2px dashed #DDD; }
@@ -76,7 +67,6 @@
     .form-group { margin-bottom: 18px; }
     .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
     .form-group input,.form-group select { width: 100%; padding: 12px; background: #FFF; border: 1px solid #DDD; border-radius: 8px; color: var(--text); font-size: 15px; }
-    .form-group input:focus, .form-group select:focus { border-color: var(--green); outline: none; }
 
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
     .cart-overlay.active { display: block; }
@@ -92,24 +82,20 @@
     .hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
     .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: -1; }
     .hero-content h1 { font-size: 32px; margin-bottom: 20px; color: #FFF; }
-    .btn { background: var(--green); color: #FFF; padding: 14px 35px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 15px; transition: 0.3s; }
-    .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .btn { background: var(--green); color: #FFF; padding: 14px 35px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 15px; }
 
     section { padding: 30px 12px; max-width: 1400px; margin: auto; }
     .section-title { font-size: 24px; font-weight: 900; margin-bottom: 20px; }
     .prod-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .prod-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #E5E5E5; transition: 0.3s; }
-    .prod-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .prod-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #E5E5E5; }
     .prod-card img { width: 100%; height: 200px; object-fit: cover; cursor: pointer; }
     .prod-info { padding: 12px; }
     .prod-store { font-size: 11px; color: var(--text-muted); cursor: pointer; margin-bottom: 5px; }
-    .prod-store:hover { color: var(--green); }
     .prod-info h3 { font-size: 14px; margin-bottom: 8px; height: 36px; overflow: hidden; }
     .price { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
     .price.ar { color: var(--blue-ar); }
     .price.usd { color: var(--green); }
-    .btn-small { padding: 10px; font-size: 13px; border-radius: 8px; width: 100%; background: var(--green); color: #FFF; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
-    .btn-small:hover { opacity: 0.8; }
+    .btn-small { padding: 10px; font-size: 13px; border-radius: 8px; width: 100%; background: var(--green); color: #FFF; border: none; font-weight: 700; cursor: pointer; }
     .btn-small.added { background: var(--blue-ar); }
     .mp-btn { width: 100%; margin-top: 8px; padding: 10px; background: #00B1EA; color: #FFF; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
 
@@ -214,8 +200,8 @@
         <div class="form-group"><label>1. Foto Principal</label><input type="file" id="prodImg" accept="image/*" onchange="previewImage(event)" required></div>
         <div class="form-group"><label>2. Nombre del Producto</label><input type="text" id="prodName" onkeyup="updatePreview()" required></div>
         <div class="form-group"><label>3. Precio ARS</label><input type="number" id="prodPrice" onkeyup="updatePreview()" required></div>
-        <div class="form-group"><label>4. Categoria</label><select id="prodCategory"><option value="artesanias">Artesanias</option><option value="food">Alimentos</option><option value="home">Hogar</option><option value="clothing">Ropa</option></select></div>
-        <div class="form-group"><label>5. Tu Ciudad</label><select id="sellerCity"><option>Tres Arroyos</option><option>CABA</option><option>Bahia Blanca</option></select></div>
+        <div class="form-group"><label>4. Categoria</label><select id="prodCategory"><option value="artesanias">Artesanias</option><option value="food">Alimentos</option><option value="home">Hogar</option><option value="clothing">Ropa</option><option value="electronics">Tecnologia</option></select></div>
+        <div class="form-group"><label>5. Tu Ciudad</label><select id="sellerCity"><option>Tres Arroyos</option><option>Adolfo Gonzales Chaves</option><option>Bahia Blanca</option><option>CABA</option><option>La Plata</option></select></div>
         <div class="form-group"><label>6. Tu WhatsApp</label><input type="text" id="prodWhatsapp" placeholder="549387XXXXXXX" required></div>
         <button type="submit" class="btn" style="width:100%;">PUBLICAR AHORA</button>
       </form>
@@ -256,12 +242,16 @@
       {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos"},
       {id: 3, name: "Auriculares Inalambricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "TechWorld", storeId: "tech", city: "CABA"},
       {id: 4, name: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "Artisan Gold", storeId: "artisan", city: "Bahia Blanca"},
+      {id: 5, name: "Campera de Cuero", price: 120.00, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600", category: "clothing", store: "Moda Urbana", storeId: "moda", city: "CABA"},
+      {id: 6, name: "Lampara de Sal", price: 25.50, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=600", category: "home", store: "Deco Home", storeId: "deco", city: "La Plata"},
     ];
 
     let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [
       {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
       {id: 2, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", store: "Dulceria Don Juan", storeId: "dulce", city: "Adolfo Gonzales Chaves", whatsapp: TU_WHATSAPP},
       {id: 3, name: "Manta Polar", price: 22000, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600", category: "home", store: "Hogar Confort", storeId: "hogar", city: "Bahia Blanca", whatsapp: TU_WHATSAPP},
+      {id: 4, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
+      {id: 5, name: "Remera Basica", price: 12000, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600", category: "clothing", store: "Moda Urbana", storeId: "moda", city: "CABA", whatsapp: TU_WHATSAPP},
     ];
 
     function showStore(store) {
@@ -343,7 +333,7 @@
     function removeItem(index) { if(currentStore === 'international') { cart.splice(index, 1); localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); } else { cartAR.splice(index, 1); localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); } }
     function clearCart() { if(currentStore === 'international') { cart = []; localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); } else { cartAR = []; localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); } }
     function updateCart() { document.querySelector('.cart-count').textContent = cart.length; document.getElementById('cartItems').innerHTML = cart.map((item, i) => `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toFixed(2)} USD</p></div><button class="remove-item" onclick="removeItem(${i})">×</button></div>`).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>'; document.getElementById('cartTotal').textContent = `Total: $${cart.reduce((a,b)=>a+b.price,0).toFixed(2)} USD`; }
-       function updateCartAR() { 
+      function updateCartAR() { 
       document.querySelector('.cart-count').textContent = cartAR.length; 
       document.getElementById('cartItems').innerHTML = cartAR.map((item, i) => `
         <div class="cart-item">
