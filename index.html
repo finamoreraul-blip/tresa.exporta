@@ -27,6 +27,8 @@
     .logo { font-size: 26px; font-weight: 900; color: var(--gold); }
     .search-bar { flex: 1; max-width: 600px; }
     .search-bar input { width: 100%; padding: 12px 20px; background: #222; border: 1px solid #333; border-radius: 50px; color: var(--text); }
+    .header-actions { display: flex; gap: 15px; align-items: center; }
+    .btn-publish { background: var(--green); color: #000; padding: 10px 18px; border-radius: 20px; font-weight: 700; font-size: 13px; cursor: pointer; border: none; }
     .cart-btn { position: relative; font-size: 24px; cursor: pointer; }
     .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
@@ -36,17 +38,17 @@
     .cat-btn.active { background: var(--gold); color: #000; }
     .cat-btn.ar.active { background: var(--blue-ar); }
 
-    /* MODAL PRODUCTO */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
+    /* MODAL PUBLICAR */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
     .modal-overlay.active { display: flex; }
-    .modal-content { background: var(--card); border-radius: 20px; max-width: 900px; width: 100%; display: flex; gap: 30px; padding: 30px; position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); }
-    .modal-img { width: 400px; height: 400px; object-fit: cover; border-radius: 15px; }
-    .modal-info h2 { font-size: 28px; margin-bottom: 10px; }
-    .modal-store { color: var(--gold); margin-bottom: 15px; cursor: pointer; }
-    .modal-price { font-size: 32px; color: var(--gold); font-weight: 900; margin: 20px 0; }
-    .modal-price.ar { color: var(--blue-ar); }
-    .modal-desc { color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+    .modal-content { background: var(--card); border-radius: 20px; max-width: 700px; width: 100%; padding: 30px; position: relative; }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: #222; border: 1px solid #333; border-radius: 8px; color: var(--text); }
+    .form-row { display: flex; gap: 15px; }
+    .shipping-result { background: #222; padding: 15px; border-radius: 10px; margin-top: 10px; border: 1px solid var(--gold); }
+    .shipping-price { font-size: 24px; color: var(--gold); font-weight: 700; }
 
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
     .cart-overlay.active { display: block; }
@@ -62,17 +64,13 @@
     .hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
     .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(10,10,10,0.8); z-index: -1; }
     .btn { background: var(--gold); color: #000; padding: 16px 45px; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; }
-    .btn.ar { background: var(--blue-ar); }
 
     section { padding: 60px 20px; max-width: 1400px; margin: auto; }
     .section-title { font-size: 34px; font-weight: 900; margin-bottom: 30px; text-align: center; }
     .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-    .prod-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
-    .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+    .prod-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; }
     .prod-card img { width: 100%; height: 260px; object-fit: cover; cursor: pointer; }
     .prod-info { padding: 20px; }
-    .prod-store { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
-    .prod-info h3 { font-size: 17px; margin-bottom: 10px; min-height: 40px; }
     .price { font-size: 21px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
     .price.ar { color: var(--blue-ar); }
     .btn-small { padding: 12px 20px; font-size: 14px; border-radius: 8px; width: 100%; }
@@ -83,11 +81,7 @@
     .mp-btn { width: 100%; margin-top: 8px; padding: 12px; background: #00B1EA; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
     .envio-tag { font-size: 12px; color: var(--blue-ar); margin-bottom: 5px; font-weight: 600; }
 
-    @media(max-width: 768px) { 
-      .modal-content { flex-direction: column; }
-      .modal-img { width: 100%; height: 300px; }
-      .cart-sidebar { width: 100%; } 
-    }
+    @media(max-width: 768px) { .cart-sidebar { width: 100%; } .form-row { flex-direction: column; } }
   </style>
 </head>
 <body>
@@ -109,6 +103,7 @@
         <input type="text" id="searchAR" placeholder="Buscar en Argentina..." style="display:none;">
       </div>
       <div class="header-actions">
+        <button class="btn-publish" onclick="openPublishModal()">+ PUBLICAR MI PRODUCTO</button>
         <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
       </div>
     </div>
@@ -119,6 +114,7 @@
       <div class="cat-btn active" data-cat="all">ALL PRODUCTS</div>
       <div class="cat-btn" data-cat="artesanias">ARTESANÍAS</div>
       <div class="cat-btn" data-cat="jewelry">JOYERÍA</div>
+      <div class="cat-btn" data-cat="electronics">ELECTRÓNICA</div>
     </div>
   </div>
 
@@ -127,22 +123,67 @@
       <div class="cat-btn ar active" data-cat-ar="all">TODOS</div>
       <div class="cat-btn ar" data-cat-ar="artesanias">ARTESANÍAS</div>
       <div class="cat-btn ar" data-cat-ar="food">ALIMENTOS</div>
+      <div class="cat-btn ar" data-cat-ar="home">HOGAR</div>
     </div>
   </div>
 
-  <!-- MODAL PRODUCTO -->
-  <div class="modal-overlay" id="productModal">
+  <!-- MODAL PUBLICAR PRODUCTO -->
+  <div class="modal-overlay" id="publishModal">
     <div class="modal-content">
-      <span class="modal-close" onclick="closeModal()">×</span>
-      <img class="modal-img" id="modalImg" src="" alt="">
-      <div class="modal-info">
-        <h2 id="modalTitle"></h2>
-        <div class="modal-store" id="modalStore" onclick=""></div>
-        <p class="modal-desc" id="modalDesc">Producto de alta calidad, envío a todo el mundo. Garantía de satisfacción.</p>
-        <div class="modal-price" id="modalPrice"></div>
-        <button class="btn" id="modalAddBtn" style="width:100%;">AGREGAR AL CARRITO</button>
-        <button class="btn ar" id="modalMpBtn" style="width:100%; margin-top:10px; display:none;">PAGAR CON MERCADOPAGO</button>
-      </div>
+      <span class="modal-close" onclick="closePublishModal()">×</span>
+      <h2 style="margin-bottom:20px;">PUBLICAR MI PRODUCTO</h2>
+      <p style="color: var(--text-muted); margin-bottom:20px;">Completa el formulario. Nosotros revisamos y lo subimos a la tienda.</p>
+      <form id="publishForm">
+        <div class="form-group">
+          <label>Nombre del Producto</label>
+          <input type="text" id="prodName" required>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="prodDesc" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Precio</label>
+          <input type="number" id="prodPrice" required>
+        </div>
+        <div class="form-group">
+          <label>Categoría</label>
+          <select id="prodCat">
+            <option value="artesanias">Artesanías</option>
+            <option value="food">Alimentos</option>
+            <option value="home">Hogar</option>
+            <option value="jewelry">Joyería</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Modo de Envío</label>
+          <select id="shippingMode" onchange="calcShipping()">
+            <option value="correo">Correo Argentino</option>
+            <option value="oca">OCA</option>
+            <option value="andreani">Andreani</option>
+            <option value="retiro">Retiro en local</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Peso en Kg</label>
+            <input type="number" step="0.1" id="prodWeight" onkeyup="calcShipping()" required>
+          </div>
+          <div class="form-group">
+            <label>Alto cm</label>
+            <input type="number" id="prodAlto" onkeyup="calcShipping()" required>
+          </div>
+          <div class="form-group">
+            <label>Ancho cm</label>
+            <input type="number" id="prodAncho" onkeyup="calcShipping()" required>
+          </div>
+        </div>
+        <div class="shipping-result" id="shippingResult" style="display:none;">
+          <p>Envío estimado:</p>
+          <div class="shipping-price" id="shippingPrice">$0</div>
+        </div>
+        <button type="submit" class="btn" style="width:100%; margin-top:20px;">ENVIAR SOLICITUD</button>
+      </form>
     </div>
   </div>
 
@@ -185,18 +226,19 @@
     let cartAR = JSON.parse(localStorage.getItem('marketCartAR')) || [];
     let activeCategory = 'all';
     let activeCatAR = 'all';
-    let currentProduct = null;
 
     const allProducts = [
-      {id: 1, name: "Leather Mate Set", name_es: "Set Matero de Cuero", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raíces Argentinas", storeId: "raices"},
-      {id: 2, name: "Alpaca Wool Scarf", name_es: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raíces Argentinas", storeId: "raices"},
-      {id: 3, name: "Golden Thread Bracelet", name_es: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "Artisan Gold", storeId: "artisan"}
+      {id: 1, name: "Leather Mate Set", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raíces Argentinas"},
+      {id: 2, name: "Alpaca Wool Scarf", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raíces Argentinas"},
+      {id: 3, name: "Golden Thread Bracelet", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "Artisan Gold"},
+      {id: 4, name: "Wireless Headphones", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "TechWorld"}
     ];
 
     const productsAR = [
-      {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", envio: "Envío Gratis CABA", storeId: "raices"},
-      {id: 2, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", envio: "Envío a todo el país", storeId: "raices"},
-      {id: 3, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", envio: "Envío 24hs"}
+      {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", envio: "Envío Gratis CABA"},
+      {id: 2, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", envio: "Envío a todo el país"},
+      {id: 3, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", envio: "Envío 24hs"},
+      {id: 4, name: "Manta Polar", price: 22000, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600", category: "home", envio: "Envío Gratis +$50.000"}
     ];
 
     function showStore(store) {
@@ -226,28 +268,6 @@
       }
     }
 
-    function openModal(product, isAR = false) {
-      currentProduct = { ...product, isAR };
-      document.getElementById('modalImg').src = product.img;
-      document.getElementById('modalTitle').textContent = product.name;
-      document.getElementById('modalPrice').textContent = isAR ? `$${product.price.toLocaleString('es-AR')} ARS` : `$${product.price.toFixed(2)} USD`;
-      document.getElementById('modalPrice').className = isAR ? 'modal-price ar' : 'modal-price';
-      
-      if(product.store) {
-        document.getElementById('modalStore').textContent = `📍 ${product.store}`;
-        document.getElementById('modalStore').onclick = () => window.location.href = `store.html?id=${product.storeId}`;
-      } else {
-        document.getElementById('modalStore').textContent = '';
-      }
-
-      document.getElementById('modalAddBtn').style.display = 'block';
-      document.getElementById('modalMpBtn').style.display = isAR ? 'block' : 'none';
-      document.getElementById('modalAddBtn').onclick = () => isAR ? addToCartAR(product.id) : addToCart(product.id);
-      
-      document.getElementById('productModal').classList.add('active');
-    }
-    function closeModal() { document.getElementById('productModal').classList.remove('active'); }
-
     function renderProducts() {
       const grid = document.getElementById('productGrid');
       const searchTerm = document.getElementById('productSearch').value.toLowerCase();
@@ -259,9 +279,8 @@
       }).forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.img}" onclick='openModal(${JSON.stringify(p).replace(/'/g, "&#39;")}, false)'>
+            <img src="${p.img}">
             <div class="prod-info">
-              <div class="prod-store">📍 ${p.store}</div>
               <h3>${p.name}</h3>
               <div class="price">$${p.price.toFixed(2)} USD</div>
               <button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id})'>ADD TO CART</button>
@@ -276,13 +295,13 @@
       const searchTerm = document.getElementById('searchAR').value.toLowerCase();
       grid.innerHTML = '';
       productsAR.filter(p => {
-        const matchCat = activeCatAR === 'all' || p.category === activeCatAR;
+        const matchCat = activeCatAR === 'all' || p.category === activeCatAR; // ARREGLADO
         const matchSearch = p.name.toLowerCase().includes(searchTerm);
         return matchCat && matchSearch;
       }).forEach(p => {
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.img}" onclick='openModal(${JSON.stringify(p).replace(/'/g, "&#39;")}, true)'>
+            <img src="${p.img}">
             <div class="prod-info">
               <div class="envio-tag">${p.envio}</div>
               <h3>${p.name}</h3>
@@ -293,6 +312,35 @@
           </div>
         `;
       });
+    }
+
+    // FORMULARIO PUBLICAR
+    function openPublishModal() { document.getElementById('publishModal').classList.add('active'); }
+    function closePublishModal() { document.getElementById('publishModal').classList.remove('active'); }
+    
+    function calcShipping() {
+      const peso = parseFloat(document.getElementById('prodWeight').value) || 0;
+      const alto = parseFloat(document.getElementById('prodAlto').value) || 0;
+      const ancho = parseFloat(document.getElementById('prodAncho').value) || 0;
+      const mode = document.getElementById('shippingMode').value;
+      
+      if(peso > 0 && alto > 0 && ancho > 0) {
+        let base = 1500; // base correo
+        if(mode === 'oca') base = 2000;
+        if(mode === 'andreani') base = 1800;
+        if(mode === 'retiro') base = 0;
+        
+        const precio = base + (peso * 800);
+        document.getElementById('shippingResult').style.display = 'block';
+        document.getElementById('shippingPrice').textContent = `$${precio.toLocaleString('es-AR')} ARS aprox`;
+      }
+    }
+
+    document.getElementById('publishForm').onsubmit = (e) => {
+      e.preventDefault();
+      alert('Solicitud enviada! Te contactaremos por WhatsApp para coordinar la publicación.');
+      closePublishModal();
+      document.getElementById('publishForm').reset();
     }
 
     function addToCart(id) {
@@ -313,14 +361,12 @@
 
     function showFeedback(btnId) {
       const btn = document.getElementById(btnId);
-      if(btn) {
-        btn.classList.add('added');
-        btn.textContent = '✓ AGREGADO';
-        setTimeout(() => {
-          btn.classList.remove('added');
-          btn.textContent = currentStore === 'international' ? 'ADD TO CART' : 'AGREGAR AL CARRITO';
-        }, 1500);
-      }
+      btn.classList.add('added');
+      btn.textContent = '✓ AGREGADO';
+      setTimeout(() => {
+        btn.classList.remove('added');
+        btn.textContent = currentStore === 'international' ? 'ADD TO CART' : 'AGREGAR AL CARRITO';
+      }, 1500);
     }
 
     function removeItem(index) {
@@ -369,6 +415,7 @@
       document.getElementById('cartTotal').textContent = `Total: $${total.toLocaleString('es-AR')} ARS`;
     }
 
+    // FILTROS ARREGLADOS
     document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('#catFilter .cat-btn').forEach(b => b.classList.remove('active'));
@@ -377,10 +424,17 @@
         renderProducts();
       });
     });
+    document.querySelectorAll('#catFilterAR .cat-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#catFilterAR .cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCatAR = btn.dataset.catAr; // ESTA ERA LA FALLA
+        renderProductsAR();
+      });
+    });
 
     document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
     document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
-    document.getElementById('productModal').onclick = (e) => { if(e.target.id === 'productModal') closeModal(); }
     document.getElementById('clearCartBtn').onclick = clearCart;
     document.getElementById('productSearch').onkeyup = renderProducts;
     document.getElementById('searchAR').onkeyup = renderProductsAR;
