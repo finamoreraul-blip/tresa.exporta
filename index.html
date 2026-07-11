@@ -382,7 +382,7 @@
     function addToCart(id) { const product = allProducts.find(p => p.id === id); cart.push(product); localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); showFeedback(`btn-${id}`); }
     function addToCartAR(id) { const product = productsAR.find(p => p.id === id); cartAR.push(product); localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); showFeedback(`btnAR-${id}`); }
     
-     async function transferirAInternacional(id) {
+    async function transferirAInternacional(id) {
       const product = productsAR.find(p => p.id === id);
       if(!product) return;
       let dolar = 1500;
@@ -394,16 +394,7 @@
       
       const precioUSD = (product.price / dolar).toFixed(2);
       const nuevoId = Date.now();
-      const nuevoProducto = {
-        id: nuevoId,
-        name: product.name,
-        price: parseFloat(precioUSD),
-        img: product.img,
-        category: product.category,
-        store: product.store,
-        storeId: product.storeId,
-        city: product.city
-      };
+      const nuevoProducto = {id: nuevoId, name: product.name, price: parseFloat(precioUSD), img: product.img, category: product.category, store: product.store, storeId: product.storeId, city: product.city};
       allProducts.unshift(nuevoProducto);
       
       alert(`✅ Producto transferido a Internacional\n${product.name}\n$${product.price.toLocaleString('es-AR')} ARS = $${precioUSD} USD\nDolar usado: $${dolar}`);
@@ -484,22 +475,25 @@
       document.getElementById('cartFloat').style.display = totalItems > 0 ? 'flex' : 'none';
     }
 
-    document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
-      btn.onclick = () => { 
-        document.querySelectorAll('#catFilter .cat-btn').forEach(b => b.classList.remove('active')); 
-        btn.classList.add('active'); 
-        activeCategory = btn.dataset.cat; 
-        renderProducts(); 
-      }
-    });
-    
-    document.querySelectorAll('#catFilterAR .cat-btn').forEach(btn => {
-      btn.onclick = () => { 
-        document.querySelectorAll('#catFilterAR .cat-btn').forEach(b => b.classList.remove('active')); 
-        btn.classList.add('active'); 
-        activeCatAR = btn.dataset.catAr; 
-        renderProductsAR(); 
-      }
+    // FILTROS CORREGIDOS
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
+        btn.onclick = () => { 
+          document.querySelectorAll('#catFilter .cat-btn').forEach(b => b.classList.remove('active')); 
+          btn.classList.add('active'); 
+          activeCategory = btn.getAttribute('data-cat'); 
+          renderProducts(); 
+        }
+      });
+      
+      document.querySelectorAll('#catFilterAR .cat-btn').forEach(btn => {
+        btn.onclick = () => { 
+          document.querySelectorAll('#catFilterAR .cat-btn').forEach(b => b.classList.remove('active')); 
+          btn.classList.add('active'); 
+          activeCatAR = btn.getAttribute('data-cat-ar'); 
+          renderProductsAR(); 
+        }
+      });
     });
 
     document.getElementById('cartBtn').onclick = () => { 
