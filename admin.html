@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ADMIN - MARKET</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #0A0A0A; --card: #1C1C1C; --text: #F5F5F5; --gold: #D4AF37; --green: #00A650; --red: #E63946; --blue: #3483FA; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 20px; }
+    .container { max-width: 1400px; margin: auto; }
+    h1 { color: var(--gold); margin-bottom: 20px; }
+    .pedido-card { background: var(--card); padding: 20px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid var(--green); }
+    .pedido-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+    .pedido-id { font-size: 18px; font-weight: 900; }
+    .pedido-estado { background: var(--green); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .info-box { background: #222; padding: 15px; border-radius: 8px; }
+    .info-box h4 { color: var(--gold); margin-bottom: 10px; }
+    .total { font-size: 24px; font-weight: 900; color: var(--green); }
+    .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    .btn-enviar { background: var(--blue); color: #fff; }
+    .btn-cancelar { background: var(--red); color: #fff; }
+    @media(max-width:768px){ .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📦 PANEL ADMIN - PEDIDOS</h1>
+    <div id="pedidosList"></div>
+  </div>
+
+  <script>
+    let pedidos = JSON.parse(localStorage.getItem('marketPedidos')) || [];
+    const list = document.getElementById('pedidosList');
+
+    if(pedidos.length === 0) {
+      list.innerHTML = '<p style="text-align:center; color:#A0A0A0;">No hay pedidos aun</p>';
+    } else {
+      pedidos.forEach(p => {
+        list.innerHTML += `
+          <div class="pedido-card">
+            <div class="pedido-header">
+              <div class="pedido-id">Pedido #${p.id}</div>
+              <div class="pedido-estado">${p.estado.toUpperCase()}</div>
+            </div>
+            <div class="grid">
+              <div class="info-box">
+                <h4>Cliente</h4>
+                <p><b>Nombre:</b> ${p.cliente.nombre}</p>
+                <p><b>DNI:</b> ${p.cliente.dni}</p>
+                <p><b>Email:</b> ${p.cliente.email}</p>
+                <p><b>Tel:</b> ${p.cliente.telefono}</p>
+              </div>
+              <div class="info-box">
+                <h4>Envío</h4>
+                <p><b>Dirección:</b> ${p.cliente.direccion}</p>
+                <p><b>Ciudad:</b> ${p.cliente.ciudad} - CP ${p.cliente.cp}</p>
+                <p><b>Fecha:</b> ${p.fecha}</p>
+              </div>
+            </div>
+            <div class="info-box" style="margin-top:15px;">
+              <h4>Producto</h4>
+              <p><b>${p.producto}</b></p>
+              <p><b>Vendedor:</b> ${p.vendedor}</p>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+              <div>
+                <p>Subtotal: $${p.subtotal.toLocaleString()} ${p.moneda}</p>
+                <p>Envío: $${p.envio.toLocaleString()} ${p.moneda}</p>
+                <p class="total">Total: $${p.total.toLocaleString()} ${p.moneda}</p>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <button class="btn btn-enviar" onclick="alert('Marcar como enviado')">MARCAR ENVIADO</button>
+                <button class="btn btn-cancelar" onclick="cancelar(${p.id})">CANCELAR</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function cancelar(id) {
+      if(confirm('Seguro?')) {
+        pedidos = pedidos.filter(p => p.id !== id);
+        localStorage.setItem('marketPedidos', JSON.stringify(pedidos));
+        location.reload();
+      }
+    }
+  </script>
+</body>
+</html>
