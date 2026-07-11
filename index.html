@@ -8,7 +8,7 @@
   <style>
     :root {
       --bg: #0A0A0A; --bg-light: #141414; --card: #1C1C1C;
-      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --gold-hover: #B8941F; --red: #E63946; --blue-ar: #75AADB;
+      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --gold-hover: #B8941F; --red: #E63946; --blue-ar: #75AADB; --green: #2ECC71;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
     body { background: var(--bg); color: var(--text); scroll-behavior: smooth; }
@@ -18,7 +18,6 @@
     .country-selector { background: #000; padding: 12px 20px; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 101; }
     .country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
     .country-btn { background: #222; border: 2px solid #333; color: var(--text); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: 0.3s; font-size: 14px; }
-    .country-btn:hover { transform: translateY(-2px); background: #2a2a2a; }
     .country-btn.active.int { border-color: var(--gold); background: var(--gold); color: #000; }
     .country-btn.active.ar { border-color: var(--blue-ar); background: var(--blue-ar); color: #000; }
 
@@ -29,74 +28,58 @@
     .logo { font-size: 26px; font-weight: 900; color: var(--gold); letter-spacing: 2px; }
     .search-bar { flex: 1; position: relative; max-width: 600px; }
     .search-bar input { width: 100%; padding: 12px 20px; background: #222; border: 1px solid #333; border-radius: 50px; color: var(--text); font-size: 14px; }
-    .search-bar input:focus { outline: none; border-color: var(--gold); }
     .header-actions { display: flex; gap: 15px; align-items: center; }
-    .lang { border: 1px solid #333; padding: 8px 14px; border-radius: 20px; cursor: pointer; background: #222; color: var(--text); font-weight: 600; transition: 0.3s; }
-    .lang:hover { border-color: var(--gold); }
+    .lang { border: 1px solid #333; padding: 8px 14px; border-radius: 20px; cursor: pointer; background: #222; color: var(--text); font-weight: 600; }
     .cart-btn { position: relative; font-size: 24px; cursor: pointer; }
     .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
     .categories-bar { background: var(--bg-light); padding: 15px 20px; border-bottom: 1px solid #222; position: sticky; top: 125px; z-index: 99; }
-    .cat-scroll { max-width: 1400px; margin: auto; display: flex; gap: 12px; overflow-x: auto; padding-bottom: 5px; }
-    .cat-scroll::-webkit-scrollbar { display: none; }
-    .cat-btn { padding: 10px 22px; background: #222; border: 1px solid #333; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; transition: 0.3s; }
-    .cat-btn.active, .cat-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
-    .cat-btn.ar.active, .cat-btn.ar:hover { background: var(--blue-ar); border-color: var(--blue-ar); }
+    .cat-scroll { max-width: 1400px; margin: auto; display: flex; gap: 12px; overflow-x: auto; }
+    .cat-btn { padding: 10px 22px; background: #222; border: 1px solid #333; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; }
+    .cat-btn.active { background: var(--gold); color: #000; }
+    .cat-btn.ar.active { background: var(--blue-ar); }
 
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
     .cart-overlay.active { display: block; }
-    .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; border-left: 1px solid #222; }
+    .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; }
     .cart-sidebar.active { right: 0; }
-    .cart-sidebar h3 { font-size: 22px; margin-bottom: 20px; }
-    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; }
+    .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; position: relative; }
     .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
-    .cart-item h4 { font-size: 14px; margin-bottom: 5px; }
+    .cart-item-info { flex: 1; }
+    .remove-item { background: none; border: none; color: var(--red); font-size: 18px; cursor: pointer; position: absolute; right: 0; top: 0; }
     .cart-total { font-size: 22px; color: var(--gold); font-weight: 700; margin: 20px 0; text-align: center; }
 
     .hero { position: relative; height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; }
     .hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
     .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: linear-gradient(rgba(10,10,10,0.8), rgba(10,10,10,0.9)); z-index: -1; }
     .hero-content h1 { font-size: 52px; font-weight: 900; margin-bottom: 15px; }
-    .hero-content p { font-size: 18px; color: var(--text-muted); margin-bottom: 30px; }
     .btn { background: var(--gold); color: #000; padding: 16px 45px; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; transition: 0.3s; font-size: 16px; }
-    .btn:hover { background: var(--gold-hover); transform: translateY(-2px); }
     .btn.ar { background: var(--blue-ar); }
-    .btn.ar:hover { background: #5A9FD4; }
 
     section { padding: 60px 20px; max-width: 1400px; margin: auto; }
     .section-title { font-size: 34px; font-weight: 900; margin-bottom: 30px; text-align: center; }
     .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
     .prod-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
-    .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(212,175,55,0.1); }
-    .prod-card:hover.ar-hover { border-color: var(--blue-ar); box-shadow: 0 10px 30px rgba(117,170,219,0.1); }
+    .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
     .prod-card img { width: 100%; height: 260px; object-fit: cover; }
     .prod-info { padding: 20px; }
     .prod-store { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
     .prod-info h3 { font-size: 17px; margin-bottom: 10px; min-height: 40px; }
     .price { font-size: 21px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
     .price.ar { color: var(--blue-ar); }
-    .btn-small { padding: 12px 20px; font-size: 14px; border-radius: 8px; width: 100%; }
+    .btn-small { padding: 12px 20px; font-size: 14px; border-radius: 8px; width: 100%; position: relative; }
+    .btn-small.added { background: var(--green); }
+    .btn-small.added::after { content: '✓'; margin-left: 8px; }
 
-    #argentina { background: var(--bg-light); border-top: 3px solid var(--blue-ar); display: none; }
+    #argentina { background: var(--bg-light); display: none; }
     .ar-header { text-align: center; margin-bottom: 40px; }
-    .ar-header h2 { font-size: 40px; margin-bottom: 10px; }
     .ar-badge { display: inline-block; background: var(--blue-ar); color: #000; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 14px; margin-bottom: 15px; }
-    .mp-btn { width: 100%; margin-top: 8px; padding: 12px; background: #00B1EA; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-    .mp-btn:hover { background: #0099CC; }
+    .mp-btn { width: 100%; margin-top: 8px; padding: 12px; background: #00B1EA; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
     .envio-tag { font-size: 12px; color: var(--blue-ar); margin-bottom: 5px; font-weight: 600; }
-    .filters-bar { background: #000; padding: 20px; border-radius: 15px; margin-bottom: 40px; border: 1px solid #222; }
 
     footer { background: #000; padding: 60px 20px; border-top: 1px solid #222; text-align: center; color: var(--text-muted); }
-    footer p { font-size: 14px; }
-
-    @media(max-width: 768px) { 
-      .cart-sidebar { width: 100%; } 
-      .hero-content h1 { font-size: 34px; } 
-      header { top: 105px; } 
-      .categories-bar { top: 175px; } 
-      .navbar { flex-wrap: wrap; }
-      .search-bar { order: 3; width: 100%; }
-    }
   </style>
 </head>
 <body>
@@ -108,14 +91,14 @@
     </div>
   </div>
 
-  <div class="topbar" id="topbar" data-en="🌍 WORLDWIDE SHIPPING | SECURE PAYMENT WITH PAYPAL & STRIPE" data-es="🌍 ENVÍOS INTERNACIONALES | PAGO SEGURO CON PAYPAL & STRIPE">🌍 WORLDWIDE SHIPPING | SECURE PAYMENT WITH PAYPAL & STRIPE</div>
+  <div class="topbar" id="topbar">🌍 WORLDWIDE SHIPPING | SECURE PAYMENT WITH PAYPAL & STRIPE</div>
 
   <header>
     <div class="navbar">
       <div class="logo">MARKET</div>
       <div class="search-bar">
-        <input type="text" id="productSearch" placeholder="Search products, brands, categories..." data-en="Search products, brands, categories..." data-es="Buscar productos, marcas, categorías...">
-        <input type="text" id="searchAR" placeholder="Search in Argentina..." data-en="Search in Argentina..." data-es="Buscar en Argentina..." style="display:none;">
+        <input type="text" id="productSearch" placeholder="Search products...">
+        <input type="text" id="searchAR" placeholder="Buscar en Argentina..." style="display:none;">
       </div>
       <div class="header-actions">
         <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
@@ -126,61 +109,56 @@
 
   <div class="categories-bar" id="catBarInt">
     <div class="cat-scroll" id="catFilter">
-      <div class="cat-btn active" data-cat="all" data-en="ALL PRODUCTS" data-es="TODOS LOS ARTÍCULOS">ALL PRODUCTS</div>
-      <div class="cat-btn" data-cat="artesanias" data-en="HANDICRAFTS" data-es="ARTESANÍAS">ARTESANÍAS</div>
-      <div class="cat-btn" data-cat="jewelry" data-en="JEWELRY" data-es="JOYERÍA">JOYERÍA</div>
-      <div class="cat-btn" data-cat="electronics" data-en="ELECTRONICS" data-es="ELECTRÓNICA">ELECTRÓNICA</div>
-      <div class="cat-btn" data-cat="clothing" data-en="CLOTHING" data-es="INDUMENTARIA">INDUMENTARIA</div>
+      <div class="cat-btn active" data-cat="all">ALL PRODUCTS</div>
+      <div class="cat-btn" data-cat="artesanias">ARTESANÍAS</div>
+      <div class="cat-btn" data-cat="jewelry">JOYERÍA</div>
+      <div class="cat-btn" data-cat="electronics">ELECTRÓNICA</div>
     </div>
   </div>
 
   <div class="categories-bar" id="catBarAr" style="display:none;">
     <div class="cat-scroll" id="catFilterAR">
-      <div class="cat-btn ar active" data-cat-ar="all" data-en="ALL" data-es="TODOS">TODOS</div>
-      <div class="cat-btn ar" data-cat-ar="artesanias" data-en="HANDICRAFTS" data-es="ARTESANÍAS">ARTESANÍAS</div>
-      <div class="cat-btn ar" data-cat-ar="food" data-en="FOOD" data-es="ALIMENTOS">ALIMENTOS</div>
-      <div class="cat-btn ar" data-cat-ar="home" data-en="HOME" data-es="HOGAR">HOGAR</div>
+      <div class="cat-btn ar active" data-cat-ar="all">TODOS</div>
+      <div class="cat-btn ar" data-cat-ar="artesanias">ARTESANÍAS</div>
+      <div class="cat-btn ar" data-cat-ar="food">ALIMENTOS</div>
     </div>
   </div>
 
   <div class="cart-overlay" id="cartOverlay"></div>
   <div class="cart-sidebar" id="cartSidebar">
-    <h3 data-en="Your Cart" data-es="Tu Carrito">Your Cart</h3>
+    <div class="cart-header">
+      <h3 id="cartTitle">Your Cart</h3>
+      <button class="clear-cart" id="clearCartBtn">VACIAR</button>
+    </div>
     <div id="cartItems"></div>
     <div class="cart-total" id="cartTotal">Total: $0.00</div>
-    <button class="btn" style="width:100%;" data-en="CHECKOUT" data-es="FINALIZAR COMPRA">CHECKOUT</button>
+    <button class="btn" style="width:100%;" id="checkoutBtn">CHECKOUT</button>
   </div>
 
-  <!-- SECCION 1: INTERNACIONAL -->
   <section id="international">
     <section class="hero">
-      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2000" alt="Global Marketplace">
+      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2000" alt="">
       <div class="hero-content">
-        <h1 data-en="THE GLOBAL MARKETPLACE" data-es="EL MARKETPLACE GLOBAL">THE GLOBAL MARKETPLACE</h1>
-        <p data-en="Thousands of products from verified sellers worldwide" data-es="Miles de productos de vendedores verificados en todo el mundo">Thousands of products from verified sellers worldwide</p>
-        <a href="#products" class="btn" data-en="SHOP NOW" data-es="COMPRAR AHORA">SHOP NOW</a>
+        <h1>THE GLOBAL MARKETPLACE</h1>
+        <a href="#products" class="btn">SHOP NOW</a>
       </div>
     </section>
-
     <section id="products">
-      <h2 class="section-title" data-en="FEATURED PRODUCTS - USD" data-es="PRODUCTOS DESTACADOS - USD">FEATURED PRODUCTS - USD</h2>
+      <h2 class="section-title">FEATURED PRODUCTS - USD</h2>
       <div class="prod-grid" id="productGrid"></div>
     </section>
   </section>
 
-  <!-- SECCION 2: ARGENTINA -->
   <section id="argentina">
     <div class="ar-header">
       <span class="ar-badge">🇦🇷 SOLO ARGENTINA</span>
-      <h2 data-en="SALES IN ARGENTINA" data-es="VENTAS DENTRO DE ARGENTINA">VENTAS DENTRO DE ARGENTINA</h2>
-      <p style="color: var(--text-muted);" data-en="Fast shipping. Pay with MercadoPago. Prices in ARS" data-es="Envíos rápidos. Pagá con MercadoPago. Precios en ARS">Envíos rápidos. Pagá con MercadoPago. Precios en ARS</p>
+      <h2>VENTAS DENTRO DE ARGENTINA</h2>
     </div>
-
     <div class="prod-grid" id="productGridAR"></div>
   </section>
 
   <footer>
-    <p data-en="© 2026 MARKET. Global & Argentina Marketplace. All rights reserved." data-es="© 2026 MARKET. Marketplace Global y Argentina. Todos los derechos reservados.">© 2026 MARKET. Global & Argentina Marketplace. All rights reserved.</p>
+    <p>© 2026 MARKET. All rights reserved.</p>
   </footer>
 
   <script>
@@ -192,18 +170,16 @@
     let activeCatAR = 'all';
 
     const allProducts = [
-      {id: 1, name: "Leather Mate Set", name_es: "Set Matero de Cuero", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raíces Argentinas", storeId: "raices"},
-      {id: 2, name: "Alpaca Wool Scarf", name_es: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raíces Argentinas", storeId: "raices"},
-      {id: 3, name: "Golden Thread Bracelet", name_es: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "Artisan Gold", storeId: "artisan"},
-      {id: 4, name: "Wireless Headphones", name_es: "Auriculares Inalámbricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "TechWorld", storeId: "tech"},
-      {id: 5, name: "Summer Dress", name_es: "Vestido de Verano", price: 39.99, img: "https://images.unsplash.com/photo-1489987707025-afc2323ea0eb?q=80&w=600", category: "clothing", store: "Fashion Hub", storeId: "fashion"}
+      {id: 1, name: "Leather Mate Set", name_es: "Set Matero de Cuero", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raíces Argentinas"},
+      {id: 2, name: "Alpaca Wool Scarf", name_es: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raíces Argentinas"},
+      {id: 3, name: "Golden Thread Bracelet", name_es: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "Artisan Gold"},
+      {id: 4, name: "Wireless Headphones", name_es: "Auriculares Inalámbricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "TechWorld"}
     ];
 
     const productsAR = [
       {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", envio: "Envío Gratis CABA"},
       {id: 2, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", envio: "Envío a todo el país"},
-      {id: 3, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", envio: "Envío 24hs"},
-      {id: 4, name: "Yerba Mate 500g", price: 4500, img: "https://images.unsplash.com/photo-1571934811356-5cc061b6821f?q=80&w=600", category: "food", envio: "Retiro en Tres Arroyos"}
+      {id: 3, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", envio: "Envío 24hs"}
     ];
 
     function showStore(store) {
@@ -219,7 +195,9 @@
         document.getElementById('searchAR').style.display = 'none';
         document.getElementById('btnInt').classList.add('active');
         document.getElementById('topbar').className = 'topbar';
-        document.getElementById('topbar').innerHTML = currentLang === 'en' ? '🌍 WORLDWIDE SHIPPING | SECURE PAYMENT WITH PAYPAL & STRIPE' : '🌍 ENVÍOS INTERNACIONALES | PAGO SEGURO CON PAYPAL & STRIPE';
+        document.getElementById('topbar').textContent = '🌍 WORLDWIDE SHIPPING | SECURE PAYMENT WITH PAYPAL & STRIPE';
+        document.getElementById('cartTitle').textContent = 'Your Cart';
+        document.getElementById('checkoutBtn').textContent = 'CHECKOUT';
         updateCart();
       } else {
         document.getElementById('international').style.display = 'none';
@@ -230,7 +208,9 @@
         document.getElementById('searchAR').style.display = 'block';
         document.getElementById('btnAr').classList.add('active');
         document.getElementById('topbar').className = 'topbar ar';
-        document.getElementById('topbar').innerHTML = '🇦🇷 ENVIOS EN 48HS | PAGO CON MERCADOPAGO';
+        document.getElementById('topbar').textContent = '🇦🇷 ENVIOS EN 48HS | PAGO CON MERCADOPAGO';
+        document.getElementById('cartTitle').textContent = 'Tu Carrito';
+        document.getElementById('checkoutBtn').textContent = 'FINALIZAR COMPRA';
         updateCartAR();
       }
       window.scrollTo(0, 0);
@@ -253,8 +233,7 @@
               <div class="prod-store">📍 ${p.store}</div>
               <h3>${currentLang === 'en'? p.name : p.name_es}</h3>
               <div class="price">$${p.price.toFixed(2)} USD</div>
-              <button class="btn btn-small" onclick='addToCart("${p.name}", ${p.price}, "${p.img}")'>${currentLang === 'en'? 'ADD TO CART' : 'AGREGAR AL CARRITO'}</button>
-              <a href="store.html?id=${p.storeId}" style="display:block; text-align:center; margin-top:10px; color:var(--gold); font-size:13px;" data-en="Visit Store" data-es="Visitar Tienda">Visit Store</a>
+              <button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id}, this)'>${currentLang === 'en'? 'ADD TO CART' : 'AGREGAR AL CARRITO'}</button>
             </div>
           </div>
         `;
@@ -271,18 +250,108 @@
         return matchCat && matchSearch;
       }).forEach(p => {
         grid.innerHTML += `
-          <div class="prod-card ar-hover">
+          <div class="prod-card">
             <img src="${p.img}" alt="">
             <div class="prod-info">
               <div class="envio-tag">${p.envio}</div>
               <h3>${p.name}</h3>
               <div class="price ar">$${p.price.toLocaleString('es-AR')} ARS</div>
-              <button class="btn btn-small ar" onclick='addToCartAR("${p.name}", ${p.price}, "${p.img}")'>AGREGAR AL CARRITO</button>
-              <button class="mp-btn" onclick="alert('Redirigiendo a MercadoPago para pagar: ${p.name}')">PAGAR CON MERCADOPAGO</button>
+              <button class="btn-small ar" id="btnAR-${p.id}" onclick='addToCartAR(${p.id}, this)'>AGREGAR AL CARRITO</button>
+              <button class="mp-btn" onclick="alert('Pagar: ${p.name}')">PAGAR CON MERCADOPAGO</button>
             </div>
           </div>
         `;
       });
+    }
+
+    function addToCart(id, btn) {
+      const product = allProducts.find(p => p.id === id);
+      cart.push({id, name: product.name, price: product.price, img: product.img});
+      localStorage.setItem('marketCart', JSON.stringify(cart));
+      updateCart();
+      showFeedback(btn);
+    }
+
+    function addToCartAR(id, btn) {
+      const product = productsAR.find(p => p.id === id);
+      cartAR.push({id, name: product.name, price: product.price, img: product.img});
+      localStorage.setItem('marketCartAR', JSON.stringify(cartAR));
+      updateCartAR();
+      showFeedback(btn);
+    }
+
+    function showFeedback(btn) {
+      const originalText = btn.textContent;
+      btn.classList.add('added');
+      btn.textContent = '✓ AGREGADO';
+      setTimeout(() => {
+        btn.classList.remove('added');
+        btn.textContent = originalText;
+      }, 1500);
+    }
+
+    function removeItem(index) {
+      if(currentStore === 'international') {
+        cart.splice(index, 1);
+        localStorage.setItem('marketCart', JSON.stringify(cart));
+        updateCart();
+      } else {
+        cartAR.splice(index, 1);
+        localStorage.setItem('marketCartAR', JSON.stringify(cartAR));
+        updateCartAR();
+      }
+    }
+
+    function clearCart() {
+      if(currentStore === 'international') {
+        cart = [];
+        localStorage.setItem('marketCart', JSON.stringify(cart));
+        updateCart();
+      } else {
+        cartAR = [];
+        localStorage.setItem('marketCartAR', JSON.stringify(cartAR));
+        updateCartAR();
+      }
+    }
+
+    function updateCart() {
+      document.querySelector('.cart-count').textContent = cart.length;
+      let cartHTML = ''; let total = 0;
+      cart.forEach((item, index) => { 
+        total += item.price; 
+        cartHTML += `
+          <div class="cart-item">
+            <img src="${item.img}">
+            <div class="cart-item-info">
+              <h4>${item.name}</h4>
+              <p>$${item.price.toFixed(2)} USD</p>
+            </div>
+            <button class="remove-item" onclick="removeItem(${index})">×</button>
+          </div>
+        `; 
+      });
+      document.getElementById('cartItems').innerHTML = cartHTML || 'Cart is empty';
+      document.getElementById('cartTotal').textContent = `Total: $${total.toFixed(2)} USD`;
+    }
+
+    function updateCartAR() {
+      document.querySelector('.cart-count').textContent = cartAR.length;
+      let cartHTML = ''; let total = 0;
+      cartAR.forEach((item, index) => { 
+        total += item.price; 
+        cartHTML += `
+          <div class="cart-item">
+            <img src="${item.img}">
+            <div class="cart-item-info">
+              <h4>${item.name}</h4>
+              <p>$${item.price.toLocaleString('es-AR')} ARS</p>
+            </div>
+            <button class="remove-item" onclick="removeItem(${index})">×</button>
+          </div>
+        `; 
+      });
+      document.getElementById('cartItems').innerHTML = cartHTML || 'Carrito vacío';
+      document.getElementById('cartTotal').textContent = `Total: $${total.toLocaleString('es-AR')} ARS`;
     }
 
     document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
@@ -302,51 +371,11 @@
       });
     });
 
-    function addToCart(name, price, img) { 
-      cart.push({name, price, img}); 
-      localStorage.setItem('marketCart', JSON.stringify(cart)); 
-      updateCart(); 
-    }
-    function addToCartAR(name, price, img) { 
-      cartAR.push({name, price, img}); 
-      localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); 
-      alert('Agregado al carrito Argentina'); 
-      updateCartAR();
-    }
-    function updateCart() {
-      document.querySelector('.cart-count').textContent = cart.length;
-      let cartHTML = ''; let total = 0;
-      cart.forEach(item => { 
-        total += item.price; 
-        cartHTML += `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toFixed(2)} USD</p></div></div>`; 
-      });
-      document.getElementById('cartItems').innerHTML = cartHTML || (currentLang === 'en' ? 'Cart is empty' : 'Carrito vacío');
-      document.getElementById('cartTotal').textContent = `Total: $${total.toFixed(2)} USD`;
-    }
-    function updateCartAR() {
-      document.querySelector('.cart-count').textContent = cartAR.length;
-      let cartHTML = ''; let total = 0;
-      cartAR.forEach(item => { 
-        total += item.price; 
-        cartHTML += `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-AR')} ARS</p></div></div>`; 
-      });
-      document.getElementById('cartItems').innerHTML = cartHTML || 'Carrito vacío';
-      document.getElementById('cartTotal').textContent = `Total: $${total.toLocaleString('es-AR')} ARS`;
-    }
     document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
     document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
-
+    document.getElementById('clearCartBtn').onclick = clearCart;
     document.getElementById('productSearch').onkeyup = renderProducts;
     document.getElementById('searchAR').onkeyup = renderProductsAR;
-    document.getElementById('langBtn').onclick = () => {
-      currentLang = currentLang === 'en'? 'es' : 'en';
-      document.querySelectorAll('[data-en]').forEach(el => el.textContent = el.getAttribute(`data-${currentLang}`));
-      document.getElementById('productSearch').placeholder = document.getElementById('productSearch').getAttribute(`data-${currentLang}`);
-      document.getElementById('searchAR').placeholder = document.getElementById('searchAR').getAttribute(`data-${currentLang}`);
-      document.getElementById('langBtn').textContent = currentLang === 'en'? 'ES' : 'EN';
-      renderProducts();
-      renderProductsAR();
-    };
 
     renderProducts();
     renderProductsAR();
