@@ -17,29 +17,34 @@
     .country-selector { background: #000; padding: 10px 20px; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 101; }
     .country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 15px; justify-content: center; }
     .country-btn { background: #222; border: 2px solid #333; color: var(--text); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.3s; }
+    .country-btn:hover { border-color: #555; }
     .country-btn.active.int { border-color: var(--gold); background: var(--gold); color: #000; }
     .country-btn.active.ar { border-color: var(--blue-ar); background: var(--blue-ar); color: #000; }
 
-    .topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 700; }
+    .topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
     .topbar.ar { background: var(--blue-ar); color: #fff; }
     header { background: #000; padding: 15px 20px; position: sticky; top: 55px; z-index: 100; border-bottom: 1px solid #222; }
     .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; gap: 20px; }
-    .logo { font-size: 28px; font-weight: 900; color: var(--gold); }
+    .logo { font-size: 28px; font-weight: 900; color: var(--gold); letter-spacing: 1px; }
     .search-bar { flex: 1; max-width: 600px; }
     .search-bar input { width: 100%; padding: 12px 20px; background: #222; border: 2px solid #333; border-radius: 8px; color: var(--text); font-size: 15px; }
     .search-bar input:focus { border-color: var(--gold); outline: none; }
     .header-actions { display: flex; gap: 20px; align-items: center; }
-    .btn-publish { background: var(--green); color: #000; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; }
+    .btn-publish { background: var(--green); color: #000; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: 0.3s; }
+    .btn-publish:hover { opacity: 0.8; }
     .cart-btn { position: relative; font-size: 26px; cursor: pointer; }
     .cart-count { position: absolute; top: -6px; right: -6px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
     .categories-bar { background: var(--bg-light); padding: 15px 20px; position: sticky; top: 130px; z-index: 99; border-bottom: 1px solid #222; }
     .cat-scroll { max-width: 1400px; margin: auto; display: flex; gap: 12px; overflow-x: auto; }
-    .cat-btn { padding: 10px 20px; background: #222; border: 1px solid #333; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; }
-    .cat-btn.active { background: var(--gold); color: #000; }
-    .cat-btn.ar.active { background: var(--blue-ar); }
+    .cat-scroll::-webkit-scrollbar { height: 4px; }
+    .cat-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+    .cat-btn { padding: 10px 20px; background: #222; border: 1px solid #333; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; transition: 0.3s; }
+    .cat-btn:hover { border-color: var(--gold); }
+    .cat-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+    .cat-btn.ar.active { background: var(--blue-ar); border-color: var(--blue-ar); }
 
-    .badge { display: inline-block; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; margin-right: 5px; }
+    .badge { display: inline-block; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; margin-right: 5px; margin-bottom: 5px; }
     .badge.envio { background: var(--green); color: #000; }
     .badge.full { background: var(--blue-ar); color: #fff; }
     .badge.nuevo { background: var(--gold); color: #000; }
@@ -48,7 +53,8 @@
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
     .modal-overlay.active { display: flex; }
     .modal-content { background: var(--card); border-radius: 15px; max-width: 1000px; width: 100%; display: flex; gap: 30px; padding: 30px; position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+    .modal-close:hover { color: var(--text); }
     .modal-img { width: 400px; height: 400px; object-fit: cover; border-radius: 10px; }
     .modal-info { flex: 1; }
     .modal-info h2 { font-size: 26px; margin-bottom: 10px; }
@@ -57,9 +63,11 @@
     .modal-price.usd { color: var(--gold); }
     .seller-box { background: #222; padding: 15px; border-radius: 10px; margin: 15px 0; }
     .store-link { color: var(--gold); cursor: pointer; text-decoration: underline; font-weight: 700; }
-    .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; }
+    .store-link:hover { color: #fff; }
+    .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; transition: 0.3s; }
+    .contact-seller:hover { opacity: 0.8; }
 
-    /* MODAL PUBLICAR BOSQUEJO */
+    /* MODAL PUBLICAR */
     .modal-content-publish { background: var(--card); border-radius: 15px; max-width: 850px; width: 100%; padding: 30px; }
     .form-preview { display: flex; gap: 20px; background: #222; padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed #333; }
     .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
@@ -67,6 +75,7 @@
     .form-group { margin-bottom: 18px; }
     .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
     .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: var(--text); font-size: 15px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); outline: none; }
     .form-row { display: flex; gap: 15px; }
     .form-row .form-group { flex: 1; }
 
@@ -85,8 +94,8 @@
     .hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
     .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(10,10,10,0.75); z-index: -1; }
     .hero-content h1 { font-size: 52px; margin-bottom: 20px; }
-    .btn { background: var(--gold); color: #000; padding: 16px 45px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 16px; }
-    .btn:hover { opacity: 0.9; }
+    .btn { background: var(--gold); color: #000; padding: 16px 45px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 16px; transition: 0.3s; }
+    .btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
     section { padding: 60px 20px; max-width: 1400px; margin: auto; }
     .section-title { font-size: 32px; font-weight: 900; margin-bottom: 30px; }
@@ -101,7 +110,8 @@
     .price { font-size: 24px; font-weight: 900; margin-bottom: 10px; }
     .price.ar { color: var(--blue-ar); }
     .price.usd { color: var(--gold); }
-    .btn-small { padding: 12px; font-size: 14px; border-radius: 8px; width: 100%; background: var(--gold); color: #000; border: none; font-weight: 700; cursor: pointer; }
+    .btn-small { padding: 12px; font-size: 14px; border-radius: 8px; width: 100%; background: var(--gold); color: #000; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
+    .btn-small:hover { opacity: 0.8; }
     .btn-small.added { background: var(--green); }
     .mp-btn { width: 100%; margin-top: 8px; padding: 12px; background: #00B1EA; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
 
@@ -116,6 +126,7 @@
       .form-preview { flex-direction: column; }
       .cart-sidebar { width: 100%; } 
       .hero-content h1 { font-size: 36px; }
+      .form-row { flex-direction: column; gap: 0; }
     }
   </style>
 </head>
@@ -189,12 +200,12 @@
     </div>
   </div>
 
-  <!-- MODAL PUBLICAR BOSQUEJO -->
+  <!-- MODAL PUBLICAR -->
   <div class="modal-overlay" id="publishModal">
     <div class="modal-content-publish">
       <span class="modal-close" onclick="closePublishModal()">×</span>
-      <h2 style="margin-bottom:20px;">PUBLICAR MI PRODUCTO</h2>
-      <p style="color:var(--text-muted);margin-bottom:20px">Completa como se veria tu publicacion. Nosotros la revisamos y la subimos</p>
+      <h2 style="margin-bottom:20px;">PUBLICAR MI PRODUCTO AHORA</h2>
+      <p style="color:var(--text-muted);margin-bottom:20px">Completa y aparece en la tienda al instante</p>
 
       <div class="form-preview" id="previewCard">
         <img id="previewImg" src="https://via.placeholder.com/150/222/FFFFFF?text=Foto">
@@ -212,19 +223,27 @@
           <input type="file" id="prodImg" accept="image/*" onchange="previewImage(event)" required>
         </div>
         <div class="form-group"><label>2. Nombre del Producto</label><input type="text" id="prodName" onkeyup="updatePreview()" required></div>
-        <div class="form-group"><label>3. Precio</label><input type="number" id="prodPrice" onkeyup="updatePreview()" required></div>
-        <div class="form-group"><label>4. Descripcion</label><textarea id="prodDesc" rows="3" placeholder="Detalles del producto..."></textarea></div>
+        <div class="form-group"><label>3. Precio ARS</label><input type="number" id="prodPrice" onkeyup="updatePreview()" required></div>
+        <div class="form-group"><label>4. Categoria</label>
+          <select id="prodCategory">
+            <option value="artesanias">Artesanias</option>
+            <option value="food">Alimentos</option>
+            <option value="home">Hogar</option>
+            <option value="clothing">Ropa</option>
+            <option value="electronics">Tecnologia</option>
+          </select>
+        </div>
         <div class="form-row">
           <div class="form-group">
             <label>5. Tu Ciudad</label>
-            <select id="sellerCity" onchange="calcGeoEnvio()">
+            <select id="sellerCity">
               <option>Tres Arroyos</option><option>Adolfo Gonzales Chaves</option><option>Bahia Blanca</option><option>CABA</option><option>La Plata</option>
             </select>
           </div>
-          <div class="form-group"><label>6. Stock Disponible</label><input type="number" id="prodStock" value="1"></div>
+          <div class="form-group"><label>6. Stock</label><input type="number" id="prodStock" value="1"></div>
         </div>
         <div class="form-group"><label>7. Tu WhatsApp</label><input type="text" id="prodWhatsapp" placeholder="549387XXXXXXX" required></div>
-        <button type="submit" class="btn" style="width:100%;">ENVIAR SOLICITUD</button>
+        <button type="submit" class="btn" style="width:100%;">PUBLICAR AHORA</button>
       </form>
     </div>
   </div>
@@ -269,7 +288,7 @@
     let userCity = 'Tres Arroyos';
     const TU_WHATSAPP = '54911XXXXXXXX';
 
-    const allProducts = [
+    let allProducts = [
       {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos"},
       {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos"},
       {id: 3, name: "Auriculares Inalambricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "TechWorld", storeId: "tech", city: "CABA"},
@@ -278,13 +297,16 @@
       {id: 6, name: "Lampara de Sal", price: 25.50, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=600", category: "home", store: "Deco Home", storeId: "deco", city: "La Plata"},
     ];
 
-    const productsAR = [
-      {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos"},
-      {id: 2, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", store: "Dulceria Don Juan", storeId: "dulce", city: "Adolfo Gonzales Chaves"},
-      {id: 3, name: "Manta Polar", price: 22000, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600", category: "home", store: "Hogar Confort", storeId: "hogar", city: "Bahia Blanca"},
-      {id: 4, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos"},
-      {id: 5, name: "Remera Basica", price: 12000, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600", category: "clothing", store: "Moda Urbana", storeId: "moda", city: "CABA"},
+    let productsAR = [
+      {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
+      {id: 2, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", store: "Dulceria Don Juan", storeId: "dulce", city: "Adolfo Gonzales Chaves", whatsapp: TU_WHATSAPP},
+      {id: 3, name: "Manta Polar", price: 22000, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600", category: "home", store: "Hogar Confort", storeId: "hogar", city: "Bahia Blanca", whatsapp: TU_WHATSAPP},
+      {id: 4, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
+      {id: 5, name: "Remera Basica", price: 12000, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600", category: "clothing", store: "Moda Urbana", storeId: "moda", city: "CABA", whatsapp: TU_WHATSAPP},
     ];
+
+    const savedAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
+    productsAR = [...savedAR,...productsAR];
 
     function showStore(store) {
       currentStore = store;
@@ -327,7 +349,7 @@
       }
       document.getElementById('modalEnvioEstimado').textContent = envioText;
       document.getElementById('modalEnvioDetalle').textContent = detalle;
-      document.getElementById('contactBtn').onclick = () => window.open(`https://wa.me/${TU_WHATSAPP}?text=Hola, soy de ${userCity} y quiero consultar por el envio de: ${product.name}`,'_blank');
+      document.getElementById('contactBtn').onclick = () => window.open(`https://wa.me/${product.whatsapp || TU_WHATSAPP}?text=Hola, soy de ${userCity} y quiero consultar por: ${product.name}`,'_blank');
       document.getElementById('modalMpBtn').style.display = isAR? 'block' : 'none';
       document.getElementById('modalAddBtn').onclick = () => isAR? addToCartAR(product.id) : addToCart(product.id);
       document.getElementById('productModal').classList.add('active');
@@ -336,14 +358,42 @@
 
     function openPublishModal() { document.getElementById('publishModal').classList.add('active'); }
     function closePublishModal() { document.getElementById('publishModal').classList.remove('active'); }
+    let tempImage = "";
     function previewImage(event) {
       const reader = new FileReader();
-      reader.onload = () => { document.getElementById('previewImg').src = reader.result; }
+      reader.onload = () => {
+        tempImage = reader.result;
+        document.getElementById('previewImg').src = reader.result;
+      }
       reader.readAsDataURL(event.target.files[0]);
     }
     function updatePreview() {
       document.getElementById('previewTitle').textContent = document.getElementById('prodName').value || 'Nombre del producto';
       document.getElementById('previewPrice').textContent = '$' + (document.getElementById('prodPrice').value || '0');
+    }
+
+    document.getElementById('publishForm').onsubmit = (e) => {
+      e.preventDefault();
+      const nuevoId = Date.now();
+      const nuevoProducto = {
+        id: nuevoId,
+        name: document.getElementById('prodName').value,
+        price: parseFloat(document.getElementById('prodPrice').value),
+        img: tempImage || "https://via.placeholder.com/300",
+        category: document.getElementById('prodCategory').value,
+        store: "Mi Tienda",
+        storeId: "mi-tienda",
+        city: document.getElementById('sellerCity').value,
+        whatsapp: document.getElementById('prodWhatsapp').value
+      };
+      productsAR.unshift(nuevoProducto);
+      localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
+      alert(`¡Producto publicado!\n${nuevoProducto.name}`);
+      closePublishModal();
+      document.getElementById('publishForm').reset();
+      document.getElementById('previewImg').src = "https://via.placeholder.com/150/222/FFFFFF?text=Foto";
+      renderProductsAR();
+      showStore('argentina');
     }
 
     function renderProducts() {
@@ -402,11 +452,13 @@
       showFeedback(`btnAR-${id}`);
     }
 
-    function showFeedback(btnId) {
+  function showFeedback(btnId) {
       const btn = document.getElementById(btnId);
-      btn.classList.add('added');
-      btn.textContent = '✓ AGREGADO';
-      setTimeout(() => { btn.classList.remove('added'); btn.textContent = 'AGREGAR'; }, 1500);
+      if(btn){
+        btn.classList.add('added');
+        btn.textContent = '✓ AGREGADO';
+        setTimeout(() => { btn.classList.remove('added'); btn.textContent = 'AGREGAR'; }, 1500);
+      }
     }
 
     function removeItem(index) {
@@ -422,49 +474,86 @@
     }
 
     function clearCart() {
-      if(currentStore === 'international') { cart = []; localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); } 
-      else { cartAR = []; localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); }
+      if(currentStore === 'international') { 
+        cart = []; 
+        localStorage.setItem('marketCart', JSON.stringify(cart)); 
+        updateCart(); 
+      } else { 
+        cartAR = []; 
+        localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); 
+        updateCartAR(); 
+      }
     }
 
     function updateCart() {
       document.querySelector('.cart-count').textContent = cart.length;
-      document.getElementById('cartItems').innerHTML = cart.map((item, i) => `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toFixed(2)} USD</p></div><button class="remove-item" onclick="removeItem(${i})">×</button></div>`).join('') || 'Carrito vacio';
+      document.getElementById('cartItems').innerHTML = cart.map((item, i) => `
+        <div class="cart-item">
+          <img src="${item.img}">
+          <div>
+            <h4>${item.name}</h4>
+            <p>$${item.price.toFixed(2)} USD</p>
+          </div>
+          <button class="remove-item" onclick="removeItem(${i})">×</button>
+        </div>
+      `).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>';
       document.getElementById('cartTotal').textContent = `Total: $${cart.reduce((a,b)=>a+b.price,0).toFixed(2)} USD`;
     }
+    
     function updateCartAR() {
       document.querySelector('.cart-count').textContent = cartAR.length;
-      document.getElementById('cartItems').innerHTML = cartAR.map((item, i) => `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-AR')} ARS</p></div><button class="remove-item" onclick="removeItem(${i})">×</button></div>`).join('') || 'Carrito vacio';
+      document.getElementById('cartItems').innerHTML = cartAR.map((item, i) => `
+        <div class="cart-item">
+          <img src="${item.img}">
+          <div>
+            <h4>${item.name}</h4>
+            <p>$${item.price.toLocaleString('es-AR')} ARS</p>
+          </div>
+          <button class="remove-item" onclick="removeItem(${i})">×</button>
+        </div>
+      `).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>';
       document.getElementById('cartTotal').textContent = `Total: $${cartAR.reduce((a,b)=>a+b.price,0).toLocaleString('es-AR')} ARS`;
     }
 
-    document.querySelectorAll('#catFilter .cat-btn').forEach(btn => btn.onclick = () => { document.querySelectorAll('#catFilter .cat-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); activeCategory = btn.dataset.cat; renderProducts(); });
-    document.querySelectorAll('#catFilterAR .cat-btn').forEach(btn => btn.onclick = () => { document.querySelectorAll('#catFilterAR .cat-btn').forEach(b.b.classList.remove('active')); btn.classList.add('active'); activeCatAR = btn.dataset.catAr; renderProductsAR(); });
+    document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
+      btn.onclick = () => { 
+        document.querySelectorAll('#catFilter .cat-btn').forEach(b => b.classList.remove('active')); 
+        btn.classList.add('active'); 
+        activeCategory = btn.dataset.cat; 
+        renderProducts(); 
+      }
+    });
+    
+    document.querySelectorAll('#catFilterAR .cat-btn').forEach(btn => {
+      btn.onclick = () => { 
+        document.querySelectorAll('#catFilterAR .cat-btn').forEach(b => b.classList.remove('active')); 
+        btn.classList.add('active'); 
+        activeCatAR = btn.dataset.catAr; 
+        renderProductsAR(); 
+      }
+    });
 
-    document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
-    document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
-    document.getElementById('productModal').onclick = (e) => { if(e.target.id === 'productModal') closeProductModal(); }
-    document.getElementById('publishModal').onclick = (e) => { if(e.target.id === 'publishModal') closePublishModal(); }
+    document.getElementById('cartBtn').onclick = () => { 
+      document.getElementById('cartSidebar').classList.add('active'); 
+      document.getElementById('cartOverlay').classList.add('active'); 
+    }
+    document.getElementById('cartOverlay').onclick = () => { 
+      document.getElementById('cartSidebar').classList.remove('active'); 
+      document.getElementById('cartOverlay').classList.remove('active'); 
+    }
+    document.getElementById('productModal').onclick = (e) => { 
+      if(e.target.id === 'productModal') closeProductModal(); 
+    }
+    document.getElementById('publishModal').onclick = (e) => { 
+      if(e.target.id === 'publishModal') closePublishModal(); 
+    }
     document.getElementById('clearCartBtn').onclick = clearCart;
     document.getElementById('productSearch').onkeyup = renderProducts;
     document.getElementById('searchAR').onkeyup = renderProductsAR;
 
-    document.getElementById('publishForm').onsubmit = (e) => { 
-      e.preventDefault(); 
-      const nombre = document.getElementById('prodName').value;
-      const precio = document.getElementById('prodPrice').value;
-      const ciudad = document.getElementById('sellerCity').value;
-      const whatsapp = document.getElementById('prodWhatsapp').value;
-      alert(`Solicitud enviada!\nProducto: ${nombre}\nPrecio: $${precio}\nCiudad: ${ciudad}\nTe contactamos al ${whatsapp}`);
-      closePublishModal(); 
-      document.getElementById('publishForm').reset();
-      document.getElementById('previewImg').src = "https://via.placeholder.com/150/222/FFFFFF?text=Foto";
-      document.getElementById('previewTitle').textContent = "Nombre del producto";
-      document.getElementById('previewPrice').textContent = "$0";
-    }
-
-    // INICIALIZAR
-    renderProducts(); 
-    renderProductsAR(); 
+    // INICIALIZAR TODO
+    renderProducts();
+    renderProductsAR();
     showStore('international');
   </script>
 </body>
