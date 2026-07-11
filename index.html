@@ -2,116 +2,134 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MARKET - El Marketplace Global y Argentina</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #FFFFFF; --bg-light: #F5F5F5; --card: #FFFFFF;
-      --text: #333; --text-muted: #666; --green: #00A650; --red: #E63946; --blue-ar: #3483FA; --gold: #D4AF37;
+      --bg: #EB; --bg-light: #FFF; --card: #FFF;
+      --text: #333; --text-muted: #666; --green: #00A650; --red: #E63946; --blue-ar: #3483FA; --border: #E5E5E5;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg-light); color: var(--text); }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+    body { background: var(--bg); color: var(--text); }
     a { text-decoration: none; color: inherit; }
 
-    .country-selector { background: #FFF; padding: 10px 12px; border-bottom: 1px solid #E5E5E5; position: sticky; top: 0; z-index: 101; }
-    .country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 10px; justify-content: center; }
-    .country-btn { background: #F5F5F5; border: 2px solid #DDD; color: var(--text); padding: 10px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 12px; flex: 1; text-align: center; transition: 0.3s; }
-    .country-btn.active.int { border-color: var(--gold); background: var(--gold); color: #000; }
+    .country-selector { background: #FFF; padding: 10px 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 101; }
+    .country-buttons { max-width: 1200px; margin: auto; display: flex; gap: 15px; justify-content: center; }
+    .country-btn { background: #F5F5F5; border: 1px solid var(--border); color: var(--text); padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; }
+    .country-btn:hover { border-color: #CCC; }
+    .country-btn.active.int { border-color: var(--green); background: var(--green); color: #FFF; }
     .country-btn.active.ar { border-color: var(--blue-ar); background: var(--blue-ar); color: #FFF; }
 
-    .topbar { background: var(--green); color: #FFF; text-align: center; padding: 10px; font-size: 11px; font-weight: 700; }
+    .topbar { background: var(--green); color: #FFF; text-align: center; padding: 10px; font-size: 12px; font-weight: 600; }
     .topbar.ar { background: var(--blue-ar); color: #fff; }
 
-    header { background: #FFF; padding: 15px 12px; position: sticky; top: 55px; z-index: 100; border-bottom: 1px solid #E5E5E5; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .navbar { display: flex; flex-direction: column; gap: 12px; max-width: 1400px; margin: auto; }
-    .nav-row { display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 24px; font-weight: 900; color: var(--green); letter-spacing: 1px; }
+    header { background: #FFF; padding: 15px 20px; position: sticky; top: 55px; z-index: 100; border-bottom: 1px solid var(--border); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: auto; gap: 20px; }
+    .logo { font-size: 28px; font-weight: 900; color: var(--green); letter-spacing: -0.5px; }
     
-    .search-row { display: flex; gap: 10px; align-items: center; width: 100%; }
+    .search-row { flex: 1; max-width: 700px; display: flex; gap: 10px; align-items: center; }
     .search-bar { flex: 1; }
-    .search-bar input { width: 100%; padding: 12px 15px; background: #F5F5F5; border: 2px solid #DDD; border-radius: 8px; color: var(--text); font-size: 14px; }
-    .btn-publish { background: var(--green); color: #FFF; padding: 12px 18px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; white-space: nowrap; }
+    .search-bar input { width: 100%; padding: 12px 20px; background: #FFF; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .search-bar input:focus { border-color: var(--green); outline: none; box-shadow: 0 0 0 2px rgba(0,166,80,0.1); }
+    .btn-publish { background: var(--green); color: #FFF; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; white-space: nowrap; transition: 0.2s; }
+    .btn-publish:hover { background: #009245; }
 
-    .header-actions { display: flex; gap: 15px; align-items: center; }
-    .cart-btn { position: relative; font-size: 24px; cursor: pointer; }
-    .cart-count { position: absolute; top: -6px; right: -6px; background: var(--red); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .header-actions { display: flex; gap: 20px; align-items: center; }
+    .cart-btn { position: relative; font-size: 26px; cursor: pointer; color: var(--text); }
+    .cart-count { position: absolute; top: -6px; right: -6px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-    .categories-bar { background: #FFF; padding: 12px; position: sticky; top: 135px; z-index: 99; border-bottom: 1px solid #E5E5E5; overflow-x: auto; }
-    .cat-scroll { display: flex; gap: 10px; max-width: 1400px; margin: auto; }
-    .cat-btn { padding: 8px 16px; background: #F5F5F5; border: 1px solid #DDD; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; white-space: nowrap; }
+    .categories-bar { background: #FFF; padding: 15px 20px; position: sticky; top: 130px; z-index: 99; border-bottom: 1px solid var(--border); }
+    .cat-scroll { max-width: 1200px; margin: auto; display: flex; gap: 12px; overflow-x: auto; }
+    .cat-scroll::-webkit-scrollbar { height: 4px; }
+    .cat-scroll::-webkit-scrollbar-thumb { background: #CCC; border-radius: 10px; }
+    .cat-btn { padding: 10px 20px; background: #F5F5F5; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; transition: 0.2s; color: var(--text-muted); }
+    .cat-btn:hover { border-color: #CCC; }
     .cat-btn.active { background: var(--green); color: #FFF; border-color: var(--green); }
     .cat-btn.ar.active { background: var(--blue-ar); border-color: var(--blue-ar); }
 
-    .badge { display: inline-block; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; margin-right: 5px; margin-bottom: 5px; }
+    .badge { display: inline-block; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-right: 5px; margin-bottom: 5px; }
     .badge.envio { background: var(--green); color: #FFF; }
     .badge.full { background: var(--blue-ar); color: #fff; }
-    .badge.nuevo { background: var(--gold); color: #000; }
+    .badge.nuevo { background: #FFF0C7; color: #735B00; border: 1px solid #FFE082; }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 300; display: none; }
-    .modal-overlay.active { display: flex; align-items: center; justify-content: center; }
-    .modal-content { background: var(--card); width: 100%; height: 100vh; padding: 15px; overflow-y: auto; position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); z-index: 10; }
-    .modal-img { width: 100%; height: 300px; object-fit: cover; border-radius: 10px; }
-    .modal-info h2 { font-size: 22px; margin: 15px 0 10px; }
-    .modal-price { font-size: 32px; font-weight: 900; margin: 15px 0; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: var(--card); border-radius: 8px; max-width: 1000px; width: 100%; display: flex; gap: 30px; padding: 30px; position: relative; }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+    .modal-close:hover { color: var(--text); }
+    .modal-img { width: 400px; height: 400px; object-fit: cover; border-radius: 8px; }
+    .modal-info { flex: 1; }
+    .modal-info h2 { font-size: 26px; margin-bottom: 10px; font-weight: 600; }
+    .modal-price { font-size: 38px; font-weight: 700; margin: 15px 0; }
     .modal-price.ar { color: var(--blue-ar); }
     .modal-price.usd { color: var(--green); }
-    .seller-box { background: #F5F5F5; padding: 15px; border-radius: 10px; margin: 15px 0; }
-    .store-link { color: var(--green); cursor: pointer; text-decoration: underline; font-weight: 700; }
-    .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; }
+    .seller-box { background: #F5F5F5; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid var(--border); }
+    .store-link { color: var(--green); cursor: pointer; text-decoration: none; font-weight: 600; }
+    .store-link:hover { text-decoration: underline; }
+    .contact-seller { background: var(--blue-ar); color: #fff; padding: 14px; width: 100%; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 15px; transition: 0.3s; }
+    .contact-seller:hover { opacity: 0.8; }
 
-    .modal-content-publish { background: var(--card); width: 100%; height: 100vh; padding: 20px; overflow-y: auto; }
-    .form-preview { display: flex; flex-direction: column; gap: 15px; background: #F5F5F5; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 2px dashed #DDD; }
-    .form-preview img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; }
+    .modal-content-publish { background: var(--card); border-radius: 8px; max-width: 850px; width: 100%; padding: 30px; }
+    .form-preview { display: flex; gap: 20px; background: #F5F5F5; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px dashed var(--border); }
+    .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
+    .form-preview-info { flex: 1; }
     .form-group { margin-bottom: 18px; }
     .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
-    .form-group input,.form-group select { width: 100%; padding: 12px; background: #FFF; border: 1px solid #DDD; border-radius: 8px; color: var(--text); font-size: 15px; }
+    .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 12px; background: #FFF; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 15px; }
+    .form-group input:focus, .form-group select:focus { border-color: var(--green); outline: none; }
+    .form-row { display: flex; gap: 15px; }
+    .form-row .form-group { flex: 1; }
 
-    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 199; display: none; }
     .cart-overlay.active { display: block; }
-    .cart-sidebar { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; }
+    .cart-sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; box-shadow: -2px 0 10px rgba(0,0,0,0.1); }
     .cart-sidebar.active { right: 0; }
     .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #E5E5E5; position: relative; }
-    .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+    .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border); position: relative; }
+    .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; }
     .remove-item { background: none; border: none; color: var(--red); font-size: 20px; cursor: pointer; position: absolute; right: 0; top: 0; }
 
-    .hero { position: relative; height: 45vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .hero { position: relative; height: 55vh; display: flex; align-items: center; justify-content: center; text-align: center; }
     .hero img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
-    .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: -1; }
-    .hero-content h1 { font-size: 32px; margin-bottom: 20px; color: #FFF; }
-    .btn { background: var(--green); color: #FFF; padding: 14px 35px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 15px; }
+    .hero::after { content: ''; position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: -1; }
+    .hero-content h1 { font-size: 52px; margin-bottom: 20px; color: #FFF; font-weight: 900; }
+    .btn { background: var(--green); color: #FFF; padding: 16px 45px; border-radius: 6px; font-weight: 700; border: none; cursor: pointer; font-size: 16px; transition: 0.2s; }
+    .btn:hover { background: #009245; transform: translateY(-2px); }
 
-    section { padding: 30px 12px; max-width: 1400px; margin: auto; }
-    .section-title { font-size: 24px; font-weight: 900; margin-bottom: 20px; }
-    .prod-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .prod-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #E5E5E5; }
-    .prod-card img { width: 100%; height: 200px; object-fit: cover; cursor: pointer; }
-    .prod-info { padding: 12px; }
-    .prod-store { font-size: 11px; color: var(--text-muted); cursor: pointer; margin-bottom: 5px; }
-    .prod-info h3 { font-size: 14px; margin-bottom: 8px; height: 36px; overflow: hidden; }
-    .price { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+    section { padding: 60px 20px; max-width: 1200px; margin: auto; }
+    .section-title { font-size: 28px; font-weight: 700; margin-bottom: 30px; }
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .prod-card { background: var(--card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .prod-card:hover { border-color: #CCC; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .prod-card img { width: 100%; height: 240px; object-fit: cover; cursor: pointer; }
+    .prod-info { padding: 18px; }
+    .prod-store { font-size: 12px; color: var(--text-muted); cursor: pointer; margin-bottom: 5px; }
+    .prod-store:hover { color: var(--green); }
+    .prod-info h3 { font-size: 16px; margin-bottom: 8px; min-height: 40px; font-weight: 400; }
+    .price { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
     .price.ar { color: var(--blue-ar); }
     .price.usd { color: var(--green); }
-    .btn-small { padding: 10px; font-size: 13px; border-radius: 8px; width: 100%; background: var(--green); color: #FFF; border: none; font-weight: 700; cursor: pointer; }
+    .btn-small { padding: 12px; font-size: 14px; border-radius: 6px; width: 100%; background: var(--green); color: #FFF; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .btn-small:hover { background: #009245; }
     .btn-small.added { background: var(--blue-ar); }
-    .mp-btn { width: 100%; margin-top: 8px; padding: 10px; background: #00B1EA; color: #FFF; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    .mp-btn { width: 100%; margin-top: 8px; padding: 12px; background: #00B1EA; color: #FFF; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
 
-    #argentina { background: var(--bg-light); display: none; }
-    footer { background: #FFF; padding: 30px 12px; text-align: center; border-top: 1px solid #E5E5E5; color: var(--text-muted); }
+    #argentina { display: none; }
+    .envio-tag { font-size: 12px; color: var(--green); margin-bottom: 5px; font-weight: 600; }
 
-    @media(min-width: 768px) {
-      .navbar { flex-direction: row; }
-      .prod-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-      .prod-card img { height: 240px; }
-      .modal-content { max-width: 1000px; height: auto; border-radius: 15px; margin: 50px auto; display: flex; gap: 30px; padding: 30px; }
-      .modal-img { width: 400px; height: 400px; }
-      .cart-sidebar { width: 400px; right: -400px; }
-      .form-preview { flex-direction: row; }
-      .hero-content h1 { font-size: 52px; }
-      .section-title { font-size: 32px; }
+    footer { background: #FFF; padding: 40px 20px; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); }
+
+    @media(max-width: 768px) { 
+      .navbar { flex-wrap: wrap; }
+      .search-row { order: 3; width: 100%; max-width: 100%; }
+      .modal-content { flex-direction: column; }
+      .modal-img { width: 100%; height: 300px; }
+      .form-preview { flex-direction: column; }
+      .cart-sidebar { width: 100%; } 
+      .hero-content h1 { font-size: 36px; }
+      .form-row { flex-direction: column; gap: 0; }
     }
   </style>
 </head>
@@ -128,18 +146,16 @@
 
   <header>
     <div class="navbar">
-      <div class="nav-row">
-        <div class="logo">MARKET</div>
-        <div class="header-actions">
-          <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
-        </div>
-      </div>
+      <div class="logo">MARKET</div>
       <div class="search-row">
         <div class="search-bar">
-          <input type="text" id="productSearch" placeholder="Buscar productos, marcas...">
+          <input type="text" id="productSearch" placeholder="Buscar productos, marcas y más...">
           <input type="text" id="searchAR" placeholder="Buscar en Argentina..." style="display:none;">
         </div>
         <button class="btn-publish" onclick="openPublishModal()">+ VENDER</button>
+      </div>
+      <div class="header-actions">
+        <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
       </div>
     </div>
   </header>
@@ -165,6 +181,7 @@
     </div>
   </div>
 
+  <!-- MODAL VER PRODUCTO -->
   <div class="modal-overlay" id="productModal">
     <div class="modal-content">
       <span class="modal-close" onclick="closeProductModal()">×</span>
@@ -188,21 +205,49 @@
     </div>
   </div>
 
+  <!-- MODAL PUBLICAR -->
   <div class="modal-overlay" id="publishModal">
     <div class="modal-content-publish">
       <span class="modal-close" onclick="closePublishModal()">×</span>
       <h2 style="margin-bottom:20px;">PUBLICAR MI PRODUCTO AHORA</h2>
+      <p style="color:var(--text-muted);margin-bottom:20px">Completa y aparece en la tienda al instante</p>
+
       <div class="form-preview" id="previewCard">
         <img id="previewImg" src="https://via.placeholder.com/150/F5F5F5/666?text=Foto">
-        <div><p style="font-size:12px;color:var(--text-muted)">VISTA PREVIA</p><h3 id="previewTitle">Nombre del producto</h3><div class="price ar" id="previewPrice">$0</div></div>
+        <div class="form-preview-info">
+          <p style="font-size:12px;color:var(--text-muted)">VISTA PREVIA</p>
+          <h3 id="previewTitle">Nombre del producto</h3>
+          <div class="price ar" id="previewPrice">$0</div>
+          <p style="font-size:12px" id="previewEnvio">Envio a coordinar</p>
+        </div>
       </div>
+
       <form id="publishForm">
-        <div class="form-group"><label>1. Foto Principal</label><input type="file" id="prodImg" accept="image/*" onchange="previewImage(event)" required></div>
+        <div class="form-group">
+          <label>1. Foto Principal del Producto</label>
+          <input type="file" id="prodImg" accept="image/*" onchange="previewImage(event)" required>
+        </div>
         <div class="form-group"><label>2. Nombre del Producto</label><input type="text" id="prodName" onkeyup="updatePreview()" required></div>
         <div class="form-group"><label>3. Precio ARS</label><input type="number" id="prodPrice" onkeyup="updatePreview()" required></div>
-        <div class="form-group"><label>4. Categoria</label><select id="prodCategory"><option value="artesanias">Artesanias</option><option value="food">Alimentos</option><option value="home">Hogar</option><option value="clothing">Ropa</option><option value="electronics">Tecnologia</option></select></div>
-        <div class="form-group"><label>5. Tu Ciudad</label><select id="sellerCity"><option>Tres Arroyos</option><option>Adolfo Gonzales Chaves</option><option>Bahia Blanca</option><option>CABA</option><option>La Plata</option></select></div>
-        <div class="form-group"><label>6. Tu WhatsApp</label><input type="text" id="prodWhatsapp" placeholder="549387XXXXXXX" required></div>
+        <div class="form-group"><label>4. Categoria</label>
+          <select id="prodCategory">
+            <option value="artesanias">Artesanias</option>
+            <option value="food">Alimentos</option>
+            <option value="home">Hogar</option>
+            <option value="clothing">Ropa</option>
+            <option value="electronics">Tecnologia</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>5. Tu Ciudad</label>
+            <select id="sellerCity">
+              <option>Tres Arroyos</option><option>Adolfo Gonzales Chaves</option><option>Bahia Blanca</option><option>CABA</option><option>La Plata</option>
+            </select>
+          </div>
+          <div class="form-group"><label>6. Stock</label><input type="number" id="prodStock" value="1"></div>
+        </div>
+        <div class="form-group"><label>7. Tu WhatsApp</label><input type="text" id="prodWhatsapp" placeholder="549387XXXXXXX" required></div>
         <button type="submit" class="btn" style="width:100%;">PUBLICAR AHORA</button>
       </form>
     </div>
@@ -210,23 +255,34 @@
 
   <div class="cart-overlay" id="cartOverlay"></div>
   <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header"><h3 id="cartTitle">Tu Carrito</h3><button class="clear-cart" id="clearCartBtn">VACIAR</button></div>
+    <div class="cart-header">
+      <h3 id="cartTitle">Tu Carrito</h3>
+      <button class="clear-cart" id="clearCartBtn">VACIAR</button>
+    </div>
     <div id="cartItems"></div>
-    <div style="font-size:24px; font-weight:900; margin:20px 0; text-align:center;" id="cartTotal">Total: $0</div>
+    <div style="font-size:24px; font-weight:700; margin:20px 0; text-align:center;" id="cartTotal">Total: $0</div>
     <button class="btn" style="width:100%;">FINALIZAR COMPRA</button>
   </div>
 
   <section id="international">
-    <section class="hero"><img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2000"><div class="hero-content"><h1>THE GLOBAL MARKETPLACE</h1><a href="#products" class="btn">COMPRAR AHORA</a></div></section>
-    <section id="products"><h2 class="section-title">OFERTAS DESTACADAS EN USD</h2><div class="prod-grid" id="productGrid"></div></section>
+    <section class="hero">
+      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2000" alt="">
+      <div class="hero-content"><h1>THE GLOBAL MARKETPLACE</h1><a href="#products" class="btn">COMPRAR AHORA</a></div>
+    </section>
+    <section id="products">
+      <h2 class="section-title">Ofertas</h2>
+      <div class="prod-grid" id="productGrid"></div>
+    </section>
   </section>
 
   <section id="argentina">
-    <h2 class="section-title">PRODUCTOS EN ARGENTINA</h2>
+    <h2 class="section-title">Productos en Argentina</h2>
     <div class="prod-grid" id="productGridAR"></div>
   </section>
 
-  <footer><p>© 2026 MARKET. Todos los derechos reservados.</p></footer>
+  <footer>
+    <p>© 2026 MARKET. Todos los derechos reservados.</p>
+  </footer>
 
   <script>
     let currentStore = 'international';
@@ -246,13 +302,16 @@
       {id: 6, name: "Lampara de Sal", price: 25.50, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=600", category: "home", store: "Deco Home", storeId: "deco", city: "La Plata"},
     ];
 
-    let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [
+    let productsAR = [
       {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
       {id: 2, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", store: "Dulceria Don Juan", storeId: "dulce", city: "Adolfo Gonzales Chaves", whatsapp: TU_WHATSAPP},
       {id: 3, name: "Manta Polar", price: 22000, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600", category: "home", store: "Hogar Confort", storeId: "hogar", city: "Bahia Blanca", whatsapp: TU_WHATSAPP},
       {id: 4, name: "Bufanda Alpaca", price: 18000, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
       {id: 5, name: "Remera Basica", price: 12000, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600", category: "clothing", store: "Moda Urbana", storeId: "moda", city: "CABA", whatsapp: TU_WHATSAPP},
     ];
+
+    const savedAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
+    productsAR = [...savedAR,...productsAR];
 
     function showStore(store) {
       currentStore = store;
@@ -286,8 +345,13 @@
       document.getElementById('modalPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
       document.getElementById('modalPrice').className = isAR? 'modal-price ar' : 'modal-price usd';
       document.getElementById('modalStoreLink').textContent = product.store;
-      let envioText = product.city === userCity? 'RETIRO EN ' + userCity : 'Coordinar envio con el vendedor';
+      document.getElementById('modalStoreLink').onclick = () => { alert('Ir a tienda: ' + product.store + ' ID: ' + product.storeId); closeProductModal(); }
+      let envioText = 'Coordinar envio con el vendedor';
       let detalle = 'El vendedor se contactara contigo por WhatsApp';
+      if(product.city === userCity) {
+        envioText = 'RETIRO EN ' + userCity;
+        detalle = 'Vendedor y comprador en la misma ciudad. Envio economico disponible';
+      }
       document.getElementById('modalEnvioEstimado').textContent = envioText;
       document.getElementById('modalEnvioDetalle').textContent = detalle;
       document.getElementById('contactBtn').onclick = () => window.open(`https://wa.me/${product.whatsapp || TU_WHATSAPP}?text=Hola, soy de ${userCity} y quiero consultar por: ${product.name}`,'_blank');
@@ -296,45 +360,153 @@
       document.getElementById('productModal').classList.add('active');
     }
     function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
+
     function openPublishModal() { document.getElementById('publishModal').classList.add('active'); }
     function closePublishModal() { document.getElementById('publishModal').classList.remove('active'); }
-
     let tempImage = "";
-    function previewImage(event) { const reader = new FileReader(); reader.onload = () => { tempImage = reader.result; document.getElementById('previewImg').src = reader.result; } reader.readAsDataURL(event.target.files[0]); }
-    function updatePreview() { document.getElementById('previewTitle').textContent = document.getElementById('prodName').value || 'Nombre del producto'; document.getElementById('previewPrice').textContent = '$' + (document.getElementById('prodPrice').value || '0'); }
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        tempImage = reader.result;
+        document.getElementById('previewImg').src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+    function updatePreview() {
+      document.getElementById('previewTitle').textContent = document.getElementById('prodName').value || 'Nombre del producto';
+      document.getElementById('previewPrice').textContent = '$' + (document.getElementById('prodPrice').value || '0');
+    }
 
     document.getElementById('publishForm').onsubmit = (e) => {
       e.preventDefault();
       const nuevoId = Date.now();
-      const nuevoProducto = {id: nuevoId, name: document.getElementById('prodName').value, price: parseFloat(document.getElementById('prodPrice').value), img: tempImage || "https://via.placeholder.com/300", category: document.getElementById('prodCategory').value, store: "Mi Tienda", storeId: "mi-tienda", city: document.getElementById('sellerCity').value, whatsapp: document.getElementById('prodWhatsapp').value};
+      const nuevoProducto = {
+        id: nuevoId,
+        name: document.getElementById('prodName').value,
+        price: parseFloat(document.getElementById('prodPrice').value),
+        img: tempImage || "https://via.placeholder.com/300",
+        category: document.getElementById('prodCategory').value,
+        store: "Mi Tienda",
+        storeId: "mi-tienda",
+        city: document.getElementById('sellerCity').value,
+        whatsapp: document.getElementById('prodWhatsapp').value
+      };
       productsAR.unshift(nuevoProducto);
       localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
       alert(`¡Producto publicado!\n${nuevoProducto.name}`);
-      closePublishModal(); document.getElementById('publishForm').reset(); renderProductsAR(); showStore('argentina');
+      closePublishModal();
+      document.getElementById('publishForm').reset();
+      document.getElementById('previewImg').src = "https://via.placeholder.com/150/F5F5F5/666?text=Foto";
+      renderProductsAR();
+      showStore('argentina');
     }
 
     function renderProducts() {
-      const grid = document.getElementById('productGrid'); const search = document.getElementById('productSearch').value.toLowerCase(); grid.innerHTML = '';
+      const grid = document.getElementById('productGrid');
+      const search = document.getElementById('productSearch').value.toLowerCase();
+      grid.innerHTML = '';
       allProducts.filter(p => (activeCategory === 'all' || p.category === activeCategory) && p.name.toLowerCase().includes(search)).forEach(p => {
-        grid.innerHTML += `<div class="prod-card"><img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, false)'><div class="prod-info"><div class="prod-store">📍 ${p.store}</div><span class="badge envio">ENVIO A COORDINAR</span><h3>${p.name}</h3><div class="price usd">$${p.price.toFixed(2)}</div><button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id})'>AGREGAR</button></div></div>`;
+        grid.innerHTML += `
+          <div class="prod-card">
+            <img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, false)'>
+            <div class="prod-info">
+              <div class="prod-store" onclick="alert('Ir a tienda: ${p.store}')">📍 ${p.store}</div>
+              <span class="badge envio">ENVIO A COORDINAR</span>
+              <h3>${p.name}</h3>
+              <div class="price usd">$${p.price.toFixed(2)}</div>
+              <button class="btn-small" id="btn-${p.id}" onclick='addToCart(${p.id})'>AGREGAR</button>
+            </div>
+          </div>
+        `;
       });
     }
 
-    function renderProductsAR() {
-      const grid = document.getElementById('productGridAR'); const search = document.getElementById('searchAR').value.toLowerCase(); grid.innerHTML = '';
+     function renderProductsAR() {
+      const grid = document.getElementById('productGridAR');
+      const search = document.getElementById('searchAR').value.toLowerCase();
+      grid.innerHTML = '';
       productsAR.filter(p => (activeCatAR === 'all' || p.category === activeCatAR) && p.name.toLowerCase().includes(search)).forEach(p => {
-        grid.innerHTML += `<div class="prod-card"><img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, true)'><div class="prod-info"><div class="prod-store">📍 ${p.store}</div><span class="badge full">CONSULTAR ENVIO</span><h3>${p.name}</h3><div class="price ar">$${p.price.toLocaleString('es-AR')}</div><button class="btn-small" id="btnAR-${p.id}" onclick='addToCartAR(${p.id})'>AGREGAR</button><button class="mp-btn">MERCADOPAGO</button></div></div>`;
+        grid.innerHTML += `
+          <div class="prod-card">
+            <img src="${p.img}" onclick='openProductModal(${JSON.stringify(p)}, true)'>
+            <div class="prod-info">
+              <div class="prod-store" onclick="alert('Ir a tienda: ${p.store}')">📍 ${p.store}</div>
+              <span class="badge full">CONSULTAR ENVIO</span>
+              <h3>${p.name}</h3>
+              <div class="price ar">$${p.price.toLocaleString('es-AR')}</div>
+              <button class="btn-small" style="background:var(--blue-ar);" id="btnAR-${p.id}" onclick='addToCartAR(${p.id})'>AGREGAR</button>
+              <button class="mp-btn">MERCADOPAGO</button>
+            </div>
+          </div>
+        `;
       });
     }
 
-    function addToCart(id) { const product = allProducts.find(p => p.id === id); cart.push(product); localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); showFeedback(`btn-${id}`); }
-    function addToCartAR(id) { const product = productsAR.find(p => p.id === id); cartAR.push(product); localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); showFeedback(`btnAR-${id}`); }
-    function showFeedback(btnId) { const btn = document.getElementById(btnId); if(btn){ btn.classList.add('added'); btn.textContent = '✓ AGREGADO'; setTimeout(() => { btn.classList.remove('added'); btn.textContent = 'AGREGAR'; }, 1500); } }
-    function removeItem(index) { if(currentStore === 'international') { cart.splice(index, 1); localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); } else { cartAR.splice(index, 1); localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); } }
-    function clearCart() { if(currentStore === 'international') { cart = []; localStorage.setItem('marketCart', JSON.stringify(cart)); updateCart(); } else { cartAR = []; localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); updateCartAR(); } }
-    function updateCart() { document.querySelector('.cart-count').textContent = cart.length; document.getElementById('cartItems').innerHTML = cart.map((item, i) => `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toFixed(2)} USD</p></div><button class="remove-item" onclick="removeItem(${i})">×</button></div>`).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>'; document.getElementById('cartTotal').textContent = `Total: $${cart.reduce((a,b)=>a+b.price,0).toFixed(2)} USD`; }
-      function updateCartAR() { 
-      document.querySelector('.cart-count').textContent = cartAR.length; 
+    function addToCart(id) {
+      const product = allProducts.find(p => p.id === id);
+      cart.push(product);
+      localStorage.setItem('marketCart', JSON.stringify(cart));
+      updateCart();
+      showFeedback(`btn-${id}`);
+    }
+    function addToCartAR(id) {
+      const product = productsAR.find(p => p.id === id);
+      cartAR.push(product);
+      localStorage.setItem('marketCartAR', JSON.stringify(cartAR));
+      updateCartAR();
+      showFeedback(`btnAR-${id}`);
+    }
+
+    function showFeedback(btnId) {
+      const btn = document.getElementById(btnId);
+      if(btn){
+        btn.classList.add('added');
+        btn.textContent = '✓ AGREGADO';
+        setTimeout(() => { btn.classList.remove('added'); btn.textContent = 'AGREGAR'; }, 1500);
+      }
+    }
+
+    function removeItem(index) {
+      if(currentStore === 'international') {
+        cart.splice(index, 1);
+        localStorage.setItem('marketCart', JSON.stringify(cart));
+        updateCart();
+      } else {
+        cartAR.splice(index, 1);
+        localStorage.setItem('marketCartAR', JSON.stringify(cartAR));
+        updateCartAR();
+      }
+    }
+
+    function clearCart() {
+      if(currentStore === 'international') { 
+        cart = []; 
+        localStorage.setItem('marketCart', JSON.stringify(cart)); 
+        updateCart(); 
+      } else { 
+        cartAR = []; 
+        localStorage.setItem('marketCartAR', JSON.stringify(cartAR)); 
+        updateCartAR(); 
+      }
+    }
+
+    function updateCart() {
+      document.querySelector('.cart-count').textContent = cart.length;
+      document.getElementById('cartItems').innerHTML = cart.map((item, i) => `
+        <div class="cart-item">
+          <img src="${item.img}">
+          <div>
+            <h4>${item.name}</h4>
+            <p>$${item.price.toFixed(2)} USD</p>
+          </div>
+          <button class="remove-item" onclick="removeItem(${i})">×</button>
+        </div>
+      `).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>';
+      document.getElementById('cartTotal').textContent = `Total: $${cart.reduce((a,b)=>a+b.price,0).toFixed(2)} USD`;
+    }
+    
+    function updateCartAR() {
+      document.querySelector('.cart-count').textContent = cartAR.length;
       document.getElementById('cartItems').innerHTML = cartAR.map((item, i) => `
         <div class="cart-item">
           <img src="${item.img}">
@@ -344,8 +516,8 @@
           </div>
           <button class="remove-item" onclick="removeItem(${i})">×</button>
         </div>
-      `).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>'; 
-      document.getElementById('cartTotal').textContent = `Total: $${cartAR.reduce((a,b)=>a+b.price,0).toLocaleString('es-AR')} ARS`; 
+      `).join('') || '<p style="text-align:center; color:var(--text-muted)">Carrito vacio</p>';
+      document.getElementById('cartTotal').textContent = `Total: $${cartAR.reduce((a,b)=>a+b.price,0).toLocaleString('es-AR')} ARS`;
     }
 
     document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
@@ -356,7 +528,7 @@
         renderProducts(); 
       }
     });
-
+    
     document.querySelectorAll('#catFilterAR .cat-btn').forEach(btn => {
       btn.onclick = () => { 
         document.querySelectorAll('#catFilterAR .cat-btn').forEach(b => b.classList.remove('active')); 
