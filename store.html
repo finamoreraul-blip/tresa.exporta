@@ -1,212 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="pageTitle">Store - MARKET</title>
+  <title>Tienda - MARKET</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0A0A0A; --bg-light: #141414; --card: #1C1C1C;
-      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --red: #E63946; --blue-ar: #75AADB; --green: #2ECC71;
+      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --red: #E63946; --blue-ar: #3483FA; --green: #00A650;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
     body { background: var(--bg); color: var(--text); }
-    a { text-decoration: none; color: inherit; }
 
-    .topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 600; }
-    header { background: #000; padding: 15px 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; }
-    .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; gap: 20px; }
-    .logo { font-size: 26px; font-weight: 900; color: var(--gold); }
-    .back { color: var(--text-muted); font-weight: 600; }
-    .back:hover { color: var(--gold); }
-    .cart-btn { position: relative; font-size: 24px; cursor: pointer; }
-    .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    header { background: #000; padding: 15px 20px; border-bottom: 1px solid #222; }
+   .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; }
+   .logo { font-size: 28px; font-weight: 900; color: var(--gold); cursor: pointer; }
+   .btn-volver { background: #222; color: #fff; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
 
-    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
-    .cart-overlay.active { display: block; }
-    .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: var(--card); z-index: 200; transition: 0.3s; padding: 20px; overflow-y: auto; }
-    .cart-sidebar.active { right: 0; }
-    .cart-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
-    .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
-    .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; position: relative; }
-    .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
-    .remove-item { background: none; border: none; color: var(--red); font-size: 18px; cursor: pointer; position: absolute; right: 0; }
-    .cart-total { font-size: 22px; color: var(--gold); font-weight: 700; margin: 20px 0; text-align: center; }
+   .store-banner { height: 250px; background: linear-gradient(135deg, var(--gold) 0%, #B8941F 100%); position: relative; }
+   .store-banner.ar { background: linear-gradient(135deg, var(--blue-ar) 0%, #2A75E8 100%); }
 
-    .store-banner { height: 280px; background-size: cover; background-position: center; position: relative; }
-    .store-banner::after { content: ''; position: absolute; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)); }
-    .store-info { position: relative; max-width: 1400px; margin: -60px auto 0; padding: 0 20px; display: flex; gap: 30px; align-items: center; z-index: 2; }
-    .store-logo-big { width: 120px; height: 120px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 45px; font-weight: 900; color: #000; border: 4px solid var(--bg); }
-    .store-details h1 { font-size: 36px; margin-bottom: 5px; }
-    .store-details p { color: var(--text-muted); }
+   .store-info { max-width: 1400px; margin: -60px auto 0; padding: 0 20px; position: relative; z-index: 10; }
+   .store-card { background: var(--card); border-radius: 12px; padding: 30px; border: 1px solid #222; display: flex; gap: 25px; align-items: center; flex-wrap: wrap; }
+   .store-logo { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--gold); object-fit: cover; }
+   .store-details { flex: 1; }
+   .store-details h1 { font-size: 32px; margin-bottom: 8px; }
+   .store-details p { color: var(--text-muted); margin-bottom: 10px; }
+   .store-stats { display: flex; gap: 20px; font-size: 14px; }
+   .store-stats span { background: #222; padding: 8px 12px; border-radius: 6px; }
+   .store-actions { display: flex; gap: 10px; }
+   .btn-whatsapp { background: var(--green); color: #000; padding: 14px 25px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 15px; }
+   .btn-whatsapp:hover { opacity: 0.8; }
 
-    section { padding: 60px 20px; max-width: 1400px; margin: auto; }
-    .section-title { font-size: 32px; font-weight: 900; margin-bottom: 30px; }
-    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-    .prod-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
-    .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-    .prod-card img { width: 100%; height: 260px; object-fit: cover; }
-    .prod-info { padding: 20px; }
-    .prod-info h3 { font-size: 17px; margin-bottom: 10px; min-height: 40px; }
-    .price { font-size: 21px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
-    .btn { background: var(--gold); color: #000; padding: 12px 20px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; width: 100%; }
-    .btn.added { background: var(--green); }
+    section { max-width: 1400px; margin: 40px auto; padding: 0 20px; }
+   .section-title { font-size: 28px; font-weight: 900; margin-bottom: 25px; }
+   .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+   .prod-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
+   .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+   .prod-card img { width: 100%; height: 240px; object-fit: cover; cursor: pointer; }
+   .prod-info { padding: 18px; }
+   .price { font-size: 24px; font-weight: 900; margin: 10px 0; }
+   .price.ar { color: var(--blue-ar); }
+   .price.usd { color: var(--gold); }
+   .badge { display: inline-block; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; margin-bottom: 8px; }
+   .badge.envio { background: var(--green); color: #000; }
+   .badge.full { background: var(--blue-ar); color: #fff; }
+   .btn-small { padding: 12px; font-size: 14px; border-radius: 8px; width: 100%; background: var(--gold); color: #000; border: none; font-weight: 700; cursor: pointer; }
+   .btn-small.transferir { background: var(--green); margin-top: 8px; }
 
-    footer { background: #000; padding: 60px 20px; border-top: 1px solid #222; text-align: center; color: var(--text-muted); }
-
-    @media(max-width: 768px) { .cart-sidebar { width: 100%; } }
+    footer { background: #000; padding: 40px 20px; text-align: center; border-top: 1px solid #222; color: var(--text-muted); margin-top: 60px; }
   </style>
 </head>
 <body>
 
-  <div class="topbar">🌍 WORLDWIDE SHIPPING | SECURE PAYMENT</div>
-
   <header>
     <div class="navbar">
-      <a href="index.html" class="logo">MARKET</a>
-      <a href="index.html" class="back">← Volver al Inicio</a>
-      <div class="cart-btn" id="cartBtn">🛒<span class="cart-count">0</span></div>
+      <div class="logo" onclick="window.location.href='index.html'">MARKET</div>
+      <button class="btn-volver" onclick="window.location.href='index.html'">← Volver al inicio</button>
     </div>
   </header>
 
-  <div class="cart-overlay" id="cartOverlay"></div>
-  <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-      <h3>Your Cart</h3>
-      <button class="clear-cart" id="clearCartBtn">VACIAR</button>
-    </div>
-    <div id="cartItems"></div>
-    <div class="cart-total" id="cartTotal">Total: $0.00</div>
-    <button class="btn" style="width:100%;">CHECKOUT</button>
-  </div>
-
   <div class="store-banner" id="storeBanner"></div>
+
   <div class="store-info">
-    <div class="store-logo-big" id="storeLogo">R</div>
-    <div class="store-details">
-      <h1 id="storeName">Loading...</h1>
-      <p id="storeDesc">Loading...</p>
-      <span id="productCount" style="color: var(--text-muted);">0 Products</span>
+    <div class="store-card">
+      <img class="store-logo" id="storeLogo" src="https://via.placeholder.com/120">
+      <div class="store-details">
+        <h1 id="storeName">Cargando tienda...</h1>
+        <p id="storeCity">📍 Cargando ubicación</p>
+        <div class="store-stats">
+          <span>📦 <b id="productCount">0</b> Productos</span>
+          <span>⭐ <b>4.9</b> Reputación</span>
+          <span>✅ <b>Vendedor Verificado</b></span>
+        </div>
+      </div>
+      <div class="store-actions">
+        <button class="btn-whatsapp" id="whatsappBtn">💬 CONSULTAR POR WHATSAPP</button>
+      </div>
     </div>
   </div>
 
-  <section id="products">
-    <h2 class="section-title">PRODUCTOS DE LA TIENDA</h2>
-    <div class="prod-grid" id="productGrid"></div>
+  <section>
+    <h2 class="section-title">Productos de la tienda</h2>
+    <div class="prod-grid" id="storeProducts"></div>
   </section>
 
   <footer>
-    <p>© 2026 MARKET. All rights reserved.</p>
+    <p>© 2026 MARKET. Todos los derechos reservados.</p>
   </footer>
 
   <script>
-    const stores = {
-      raices: { 
-        name: "Raíces Argentinas", 
-        logo: "R", 
-        banner: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=2000", 
-        desc: "Artesanías argentinas auténticas. Cuero, madera y textiles hechos por artesanos.",
-        products: [
-          {id: 101, name: "Set Matero de Cuero", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600"},
-          {id: 102, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"},
-          {id: 103, name: "Cuenco de Madera Tallado", price: 28.50, img: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600"},
-          {id: 104, name: "Mate de Cerámica Pintado", price: 22.99, img: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?q=80&w=600"},
-          {id: 105, name: "Canasta Tejida", price: 31.00, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600"},
-          {id: 106, name: "Bombilla de Alpaca", price: 18.99, img: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?q=80&w=600"}
-        ]
-      },
-      artisan: { 
-        name: "Artisan Gold", 
-        logo: "A", 
-        banner: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2000", 
-        desc: "Joyería artesanal de Argentina.",
-        products: [
-          {id: 201, name: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"},
-          {id: 202, name: "Collar Luna Plata", price: 45.00, img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600"}
-        ]
+    const params = new URLSearchParams(window.location.search);
+    const storeId = params.get('store');
+    const TU_WHATSAPP = '54911XXXXXXXX';
+    let userCity = 'Tres Arroyos';
+
+    // Cargar productos del index
+    let allProducts = JSON.parse(localStorage.getItem('marketAllProducts')) || [
+      {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos"},
+      {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos"},
+      {id: 3, name: "Auriculares Inalambricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "TechWorld", storeId: "tech", city: "CABA"},
+      {id: 4, name: "Pulsera Hilo Dorado", price: 29.99, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "jewelry", store: "Artisan Gold", storeId: "artisan", city: "Bahia Blanca"},
+      {id: 5, name: "Campera de Cuero", price: 120.00, img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600", category: "clothing", store: "Moda Urbana", storeId: "moda", city: "CABA"},
+      {id: 6, name: "Lampara de Sal", price: 25.50, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=600", category: "home", store: "Deco Home", storeId: "deco", city: "La Plata"},
+    ];
+
+    let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [
+      {id: 1, name: "Set Matero Premium", price: 25000, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "Raices Argentinas", storeId: "raices", city: "Tres Arroyos", whatsapp: TU_WHATSAPP},
+      {id: 2, name: "Dulce de Leche 1kg", price: 8500, img: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?q=80&w=600", category: "food", store: "Dulceria Don Juan", storeId: "dulce", city: "Adolfo Gonzales Chaves", whatsapp: TU_WHATSAPP},
+      {id: 3, name: "Manta Polar", price: 22000, img: "https://images.unsplash.com/photo-1584188245383-b9f1b85b7b20?q=80&w=600", category: "home", store: "Hogar Confort", storeId: "hogar", city: "Bahia Blanca", whatsapp: TU_WHATSAPP},
+    ];
+
+    const allStoreProducts = [...allProducts,...productsAR];
+    const storeProducts = allStoreProducts.filter(p => p.storeId === storeId);
+    const storeInfo = storeProducts[0];
+
+    if(storeInfo) {
+      document.getElementById('storeName').textContent = storeInfo.store;
+      document.getElementById('storeCity').textContent = '📍 ' + storeInfo.city;
+      document.getElementById('productCount').textContent = storeProducts.length;
+      document.getElementById('storeLogo').src = `https://ui-avatars.com/api/?name=${storeInfo.store}&background=D4AF37&color=000&size=120`;
+
+      // Si es de Argentina poner banner azul
+      if(productsAR.find(p => p.storeId === storeId)) {
+        document.getElementById('storeBanner').classList.add('ar');
       }
-    };
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const storeId = urlParams.get('id') || 'raices';
-    const store = stores[storeId] || stores['raices'];
-    let cart = JSON.parse(localStorage.getItem('marketCart')) || [];
+      const whatsapp = storeInfo.whatsapp || TU_WHATSAPP;
+      document.getElementById('whatsappBtn').onclick = () => {
+        window.open(`https://wa.me/${whatsapp}?text=Hola, vi tu tienda ${storeInfo.store} en MARKET`,'_blank');
+      }
 
-    function loadStore() {
-      document.getElementById('storeName').textContent = store.name;
-      document.getElementById('storeDesc').textContent = store.desc;
-      document.getElementById('storeLogo').textContent = store.logo;
-      document.getElementById('productCount').textContent = `${store.products.length} Products`;
-      document.getElementById('pageTitle').textContent = `${store.name} - MARKET`;
-      document.getElementById('storeBanner').style.backgroundImage = `url('${store.banner}')`;
-      renderProducts();
-      updateCart();
-    }
-
-    function renderProducts() {
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML = '';
-      store.products.forEach(p => {
+      // Renderizar productos
+      const grid = document.getElementById('storeProducts');
+      storeProducts.forEach(p => {
+        const isAR = productsAR.find(ar => ar.id === p.id);
         grid.innerHTML += `
           <div class="prod-card">
-            <img src="${p.img}" alt="">
+            <img src="${p.img}">
             <div class="prod-info">
+              <span class="badge ${isAR? 'full' : 'envio'}">${isAR? 'CONSULTAR ENVIO' : 'ENVIO A COORDINAR'}</span>
               <h3>${p.name}</h3>
-              <div class="price">$${p.price.toFixed(2)} USD</div>
-              <button class="btn" id="btn-${p.id}" onclick='addToCart(${p.id}, "${p.name}", ${p.price}, "${p.img}")'>AGREGAR AL CARRITO</button>
+              <div class="price ${isAR? 'ar' : 'usd'}">${isAR? '$'+p.price.toLocaleString('es-AR') : '$'+p.price.toFixed(2)}</div>
+              ${isAR? `<button class="btn-small transferir" onclick="transferir(${p.id})">🌍 TRANSFERIR A USD</button>` : ''}
             </div>
           </div>
         `;
       });
+    } else {
+      document.getElementById('storeName').textContent = 'Tienda no encontrada';
     }
 
-    function addToCart(id, name, price, img) {
-      cart.push({id, name, price, img});
-      localStorage.setItem('marketCart', JSON.stringify(cart));
-      updateCart();
-      showFeedback(`btn-${id}`);
+    async function transferir(id) {
+      const product = productsAR.find(p => p.id === id);
+      let dolar = 1500;
+      try {
+        const res = await fetch('https://dolarapi.com/v1/dolares/oficial');
+        const data = await res.json();
+        dolar = data.venta;
+      } catch(e) {}
+      const precioUSD = (product.price / dolar).toFixed(2);
+      alert(`Producto: ${product.name}\n$${product.price.toLocaleString('es-AR')} ARS = $${precioUSD} USD`);
     }
-
-    function showFeedback(btnId) {
-      const btn = document.getElementById(btnId);
-      btn.classList.add('added');
-      btn.textContent = '✓ AGREGADO';
-      setTimeout(() => {
-        btn.classList.remove('added');
-        btn.textContent = 'AGREGAR AL CARRITO';
-      }, 1500);
-    }
-
-    function removeItem(index) {
-      cart.splice(index, 1);
-      localStorage.setItem('marketCart', JSON.stringify(cart));
-      updateCart();
-    }
-
-    function clearCart() {
-      cart = [];
-      localStorage.setItem('marketCart', JSON.stringify(cart));
-      updateCart();
-    }
-
-    function updateCart() {
-      document.querySelector('.cart-count').textContent = cart.length;
-      let cartHTML = ''; let total = 0;
-      cart.forEach((item, index) => {
-        total += item.price;
-        cartHTML += `<div class="cart-item"><img src="${item.img}"><div><h4>${item.name}</h4><p>$${item.price.toFixed(2)} USD</p></div><button class="remove-item" onclick="removeItem(${index})">×</button></div>`;
-      });
-      document.getElementById('cartItems').innerHTML = cartHTML || 'Cart is empty';
-      document.getElementById('cartTotal').textContent = `Total: $${total.toFixed(2)} USD`;
-    }
-
-    document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
-    document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
-    document.getElementById('clearCartBtn').onclick = clearCart;
-
-    loadStore();
   </script>
-
 </body>
 </html>
