@@ -3,30 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YOUR BRAND - Premium Handmade Products Worldwide</title>
+  <title data-en="YOUR BRAND - Premium Handmade Products Worldwide" data-es="TU MARCA - Productos Artesanales Premium Mundial">YOUR BRAND - Premium Handmade Products Worldwide</title>
   <meta name="description" content="Premium handmade products. Worldwide shipping. Secure payments with PayPal & Stripe.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0A0A0A;
-      --bg-light: #141414;
-      --card: #1C1C1C;
-      --text: #F5F5F5;
-      --text-muted: #A0A0A0;
-      --gold: #D4AF37;
-      --gold-hover: #B8941F;
-      --red: #E63946;
+      --bg: #0A0A0A; --bg-light: #141414; --card: #1C1C1C;
+      --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --gold-hover: #B8941F; --red: #E63946;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
     body { background: var(--bg); color: var(--text); scroll-behavior: smooth; }
     a { text-decoration: none; color: inherit; }
     img { max-width: 100%; display: block; }
 
-    /* TOPBAR */
     .topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 600; letter-spacing: 1px; }
-
-    /* HEADER */
     header { background: rgba(10,10,10,0.8); backdrop-filter: blur(10px); padding: 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; }
     .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; }
     .logo { font-size: 28px; font-weight: 900; letter-spacing: 3px; color: var(--gold); }
@@ -34,11 +24,11 @@
     .menu a { font-weight: 600; font-size: 14px; transition: 0.3s; }
     .menu a:hover { color: var(--gold); }
     .header-actions { display: flex; gap: 20px; align-items: center; }
-    .lang { border: 1px solid #333; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
-    .cart { position: relative; cursor: pointer; }
+    .lang { border: 1px solid #333; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; background: #222; color: var(--text); }
+    .lang:hover { border-color: var(--gold); }
+    .cart { position: relative; cursor: pointer; font-size: 20px; }
     .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
 
-    /* HERO BANNER WITH PHOTO */
     .hero { position: relative; height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
     .hero img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
     .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.95) 100%); z-index: -1; }
@@ -49,19 +39,16 @@
     .btn-outline { background: transparent; color: var(--text); border: 2px solid var(--text); margin-left: 15px; }
     .btn-outline:hover { background: var(--text); color: #000; }
 
-    /* SECTION */
     section { padding: 100px 20px; max-width: 1400px; margin: auto; }
     .section-title { text-align: center; font-size: 42px; font-weight: 900; margin-bottom: 20px; }
     .section-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 60px; }
 
-    /* BENEFITS */
     .benefits { background: var(--bg-light); }
     .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
     .benefit { text-align: center; padding: 30px; background: var(--card); border-radius: 15px; border: 1px solid #222; }
     .benefit .icon { font-size: 40px; margin-bottom: 15px; }
     .benefit h3 { margin-bottom: 10px; }
 
-    /* CATEGORIES */
     .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
     .cat-card { position: relative; border-radius: 20px; overflow: hidden; height: 350px; }
     .cat-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
@@ -69,7 +56,6 @@
     .cat-card .overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px; background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 100%); }
     .cat-card h3 { font-size: 24px; margin-bottom: 10px; }
 
-    /* PRODUCTS */
     .prod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
     .prod-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
     .prod-card:hover { border-color: var(--gold); transform: translateY(-5px); }
@@ -78,13 +64,11 @@
     .prod-info h3 { margin-bottom: 10px; }
     .price { font-size: 24px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
 
-    /* SELL WITH US FORM */
     .sell { background: var(--bg-light); }
     .form-container { max-width: 800px; margin: auto; background: var(--card); padding: 50px; border-radius: 20px; border: 1px solid #222; }
     input, textarea, select { width: 100%; padding: 15px; margin: 10px 0 20px; background: #0A0A0A; border: 1px solid #333; border-radius: 8px; color: var(--text); font-size: 15px; }
     label { font-weight: 600; font-size: 14px; }
 
-    /* FOOTER */
     footer { background: #000; padding: 80px 20px 30px; border-top: 1px solid #222; }
     .footer-grid { max-width: 1400px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 50px; }
     .footer-col h4 { color: var(--gold); margin-bottom: 20px; }
@@ -102,7 +86,8 @@
 <body>
 
   <!-- TOPBAR -->
-  <div class="topbar">
+  <div class="topbar" data-en="🌍 WORLDWIDE SHIPPING | SECURE PAYMENT WITH PAYPAL & STRIPE | 30 DAYS RETURNS" 
+                      data-es="🌍 ENVÍOS A TODO EL MUNDO | PAGO SEGURO CON PAYPAL & STRIPE | 30 DÍAS DEVOLUCIÓN">
     🌍 WORLDWIDE SHIPPING | SECURE PAYMENT WITH PAYPAL & STRIPE | 30 DAYS RETURNS
   </div>
 
@@ -111,14 +96,14 @@
     <div class="navbar">
       <div class="logo">YOUR BRAND</div>
       <nav class="menu">
-        <a href="#shop">SHOP</a>
-        <a href="#categories">CATEGORIES</a>
-        <a href="#bestsellers">BESTSELLERS</a>
-        <a href="#sell">BECOME A SELLER</a>
-        <a href="#about">ABOUT</a>
+        <a href="#shop" data-en="SHOP" data-es="TIENDA">SHOP</a>
+        <a href="#categories" data-en="CATEGORIES" data-es="CATEGORÍAS">CATEGORIES</a>
+        <a href="#bestsellers" data-en="BESTSELLERS" data-es="MÁS VENDIDOS">BESTSELLERS</a>
+        <a href="#sell" data-en="BECOME A SELLER" data-es="VENDE CON NOSOTROS">BECOME A SELLER</a>
+        <a href="#about" data-en="ABOUT" data-es="NOSOTROS">ABOUT</a>
       </nav>
       <div class="header-actions">
-        <div class="lang">EN / ES</div>
+        <button class="lang" id="langBtn">ES</button>
         <div class="cart">🛒<span class="cart-count">0</span></div>
       </div>
     </div>
@@ -128,10 +113,13 @@
   <section class="hero">
     <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2000" alt="Hero">
     <div class="hero-content">
-      <h1>CRAFTED FOR THE WORLD</h1>
-      <p>Premium handmade products. Each piece tells a story. Shipped to 180+ countries.</p>
-      <a href="#shop" class="btn">SHOP COLLECTION</a>
-      <a href="#sell" class="btn btn-outline">SELL WITH US</a>
+      <h1 data-en="CRAFTED FOR THE WORLD" data-es="HECHO PARA EL MUNDO">CRAFTED FOR THE WORLD</h1>
+      <p data-en="Premium handmade products. Each piece tells a story. Shipped to 180+ countries." 
+         data-es="Productos artesanales premium. Cada pieza cuenta una historia. Envíos a más de 180 países.">
+         Premium handmade products. Each piece tells a story. Shipped to 180+ countries.
+      </p>
+      <a href="#shop" class="btn" data-en="SHOP COLLECTION" data-es="VER COLECCIÓN">SHOP COLLECTION</a>
+      <a href="#sell" class="btn btn-outline" data-en="SELL WITH US" data-es="VENDE CON NOSOTROS">SELL WITH US</a>
     </div>
   </section>
 
@@ -140,78 +128,90 @@
     <div class="benefits-grid">
       <div class="benefit">
         <div class="icon">🌍</div>
-        <h3>Worldwide Shipping</h3>
-        <p>Fast & tracked delivery to 180+ countries</p>
+        <h3 data-en="Worldwide Shipping" data-es="Envíos Mundiales">Worldwide Shipping</h3>
+        <p data-en="Fast & tracked delivery to 180+ countries" data-es="Envío rápido y con seguimiento a +180 países">Fast & tracked delivery to 180+ countries</p>
       </div>
       <div class="benefit">
         <div class="icon">🔒</div>
-        <h3>Secure Payments</h3>
-        <p>PayPal, Stripe, Credit Cards. 100% Safe</p>
+        <h3 data-en="Secure Payments" data-es="Pagos Seguros">Secure Payments</h3>
+        <p data-en="PayPal, Stripe, Credit Cards. 100% Safe" data-es="PayPal, Stripe, Tarjetas. 100% Seguro">PayPal, Stripe, Credit Cards. 100% Safe</p>
       </div>
       <div class="benefit">
         <div class="icon">✋</div>
-        <h3>100% Handmade</h3>
-        <p>Unique pieces crafted by artisans</p>
+        <h3 data-en="100% Handmade" data-es="100% Hecho a Mano">100% Handmade</h3>
+        <p data-en="Unique pieces crafted by artisans" data-es="Piezas únicas creadas por artesanos">Unique pieces crafted by artisans</p>
       </div>
       <div class="benefit">
         <div class="icon">📦</div>
-        <h3>Free Shipping</h3>
-        <p>On all orders over $100 USD</p>
+        <h3 data-en="Free Shipping" data-es="Envío Gratis">Free Shipping</h3>
+        <p data-en="On all orders over $100 USD" data-es="En compras mayores a $100 USD">On all orders over $100 USD</p>
       </div>
     </div>
   </section>
 
   <!-- CATEGORIES -->
   <section id="categories">
-    <h2 class="section-title">SHOP BY CATEGORY</h2>
-    <p class="section-subtitle">Discover our curated collections</p>
+    <h2 class="section-title" data-en="SHOP BY CATEGORY" data-es="COMPRA POR CATEGORÍA">SHOP BY CATEGORY</h2>
+    <p class="section-subtitle" data-en="Discover our curated collections" data-es="Descubre nuestras colecciones">Discover our curated collections</p>
     <div class="cat-grid">
       <a href="#" class="cat-card">
         <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800" alt="Bracelets">
-        <div class="overlay"><h3>BRACELETS</h3><p>Shop Now →</p></div>
+        <div class="overlay">
+          <h3 data-en="BRACELETS" data-es="PULSERAS">BRACELETS</h3>
+          <p data-en="Shop Now →" data-es="Comprar Ahora →">Shop Now →</p>
+        </div>
       </a>
       <a href="#" class="cat-card">
         <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800" alt="Necklaces">
-        <div class="overlay"><h3>NECKLACES</h3><p>Shop Now →</p></div>
+        <div class="overlay">
+          <h3 data-en="NECKLACES" data-es="COLLARES">NECKLACES</h3>
+          <p data-en="Shop Now →" data-es="Comprar Ahora →">Shop Now →</p>
+        </div>
       </a>
       <a href="#" class="cat-card">
         <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800" alt="Sets">
-        <div class="overlay"><h3>SETS</h3><p>Shop Now →</p></div>
+        <div class="overlay">
+          <h3 data-en="SETS" data-es="SETS">SETS</h3>
+          <p data-en="Shop Now →" data-es="Comprar Ahora →">Shop Now →</p>
+        </div>
       </a>
       <a href="#" class="cat-card">
         <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=800" alt="Gifts">
-        <div class="overlay"><h3>GIFTS</h3><p>Shop Now →</p></div>
+        <div class="overlay">
+          <h3 data-en="GIFTS" data-es="REGALOS">GIFTS</h3>
+          <p data-en="Shop Now →" data-es="Comprar Ahora →">Shop Now →</p>
+        </div>
       </a>
     </div>
   </section>
 
   <!-- BESTSELLERS -->
   <section id="bestsellers">
-    <h2 class="section-title">BESTSELLERS</h2>
-    <p class="section-subtitle">Our most loved products</p>
+    <h2 class="section-title" data-en="BESTSELLERS" data-es="MÁS VENDIDOS">BESTSELLERS</h2>
+    <p class="section-subtitle" data-en="Our most loved products" data-es="Nuestros productos favoritos">Our most loved products</p>
     <div class="prod-grid">
       <div class="prod-card">
         <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600" alt="Product">
         <div class="prod-info">
-          <h3>Golden Thread Bracelet</h3>
+          <h3 data-en="Golden Thread Bracelet" data-es="Pulsera Hilo Dorado">Golden Thread Bracelet</h3>
           <div class="price">$29.99 USD</div>
-          <button class="btn" style="width:100%; padding:14px;">ADD TO CART</button>
+          <button class="btn" style="width:100%; padding:14px;" data-en="ADD TO CART" data-es="AGREGAR AL CARRITO">ADD TO CART</button>
         </div>
       </div>
       <div class="prod-card">
         <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600" alt="Product">
         <div class="prod-info">
-          <h3>Boho Necklace Set</h3>
+          <h3 data-en="Boho Necklace Set" data-es="Set Collar Boho">Boho Necklace Set</h3>
           <div class="price">$45.00 USD</div>
-          <button class="btn" style="width:100%; padding:14px;">ADD TO CART</button>
+          <button class="btn" style="width:100%; padding:14px;" data-en="ADD TO CART" data-es="AGREGAR AL CARRITO">ADD TO CART</button>
         </div>
       </div>
       <div class="prod-card">
         <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600" alt="Product">
         <div class="prod-info">
-          <h3>Premium Gift Box</h3>
+          <h3 data-en="Premium Gift Box" data-es="Caja Regalo Premium">Premium Gift Box</h3>
           <div class="price">$59.99 USD</div>
-          <button class="btn" style="width:100%; padding:14px;">ADD TO CART</button>
+          <button class="btn" style="width:100%; padding:14px;" data-en="ADD TO CART" data-es="AGREGAR AL CARRITO">ADD TO CART</button>
         </div>
       </div>
     </div>
@@ -219,38 +219,41 @@
 
   <!-- SELL WITH US -->
   <section class="sell" id="sell">
-    <h2 class="section-title">BECOME A SELLER</h2>
-    <p class="section-subtitle">Join our global marketplace. We handle shipping & payments.</p>
+    <h2 class="section-title" data-en="BECOME A SELLER" data-es="VENDE CON NOSOTROS">BECOME A SELLER</h2>
+    <p class="section-subtitle" data-en="Join our global marketplace. We handle shipping & payments." 
+                              data-es="Únete a nuestro marketplace global. Nosotros gestionamos envíos y pagos.">
+       Join our global marketplace. We handle shipping & payments.
+    </p>
     <div class="form-container">
       <form id="sellerForm">
-        <label>Full Name</label>
-        <input type="text" placeholder="John Doe" required>
+        <label data-en="Full Name" data-es="Nombre Completo">Full Name</label>
+        <input type="text" placeholder="John Doe / Juan Pérez" required>
         
-        <label>Email</label>
+        <label data-en="Email" data-es="Email">Email</label>
         <input type="email" placeholder="john@email.com" required>
         
-        <label>Product Name</label>
-        <input type="text" placeholder="Handmade Bracelet" required>
+        <label data-en="Product Name" data-es="Nombre del Producto">Product Name</label>
+        <input type="text" placeholder="Handmade Bracelet / Pulsera Artesanal" required>
         
-        <label>Category</label>
+        <label data-en="Category" data-es="Categoría">Category</label>
         <select required>
-          <option value="">Select Category</option>
-          <option>Bracelets</option>
-          <option>Necklaces</option>
-          <option>Sets</option>
-          <option>Gifts</option>
+          <option value="" data-en="Select Category" data-es="Seleccionar Categoría">Select Category</option>
+          <option data-en="Bracelets" data-es="Pulseras">Bracelets</option>
+          <option data-en="Necklaces" data-es="Collares">Necklaces</option>
+          <option data-en="Sets" data-es="Sets">Sets</option>
+          <option data-en="Gifts" data-es="Regalos">Gifts</option>
         </select>
         
-        <label>Price USD</label>
+        <label data-en="Price USD" data-es="Precio USD">Price USD</label>
         <input type="number" step="0.01" placeholder="29.99" required>
         
-        <label>Product Description</label>
+        <label data-en="Product Description" data-es="Descripción del Producto">Product Description</label>
         <textarea rows="4" placeholder="Describe your product..." required></textarea>
         
-        <label>Upload Photo</label>
+        <label data-en="Upload Photo" data-es="Subir Foto">Upload Photo</label>
         <input type="file" accept="image/*" required>
         
-        <button type="submit" class="btn" style="width:100%;">SUBMIT FOR REVIEW</button>
+        <button type="submit" class="btn" style="width:100%;" data-en="SUBMIT FOR REVIEW" data-es="ENVIAR PARA REVISIÓN">SUBMIT FOR REVIEW</button>
       </form>
     </div>
   </section>
@@ -260,48 +263,69 @@
     <div class="footer-grid">
       <div class="footer-col">
         <h4>YOUR BRAND</h4>
-        <p style="color: var(--text-muted); font-size: 14px;">Premium handmade products shipped worldwide. Quality and authenticity guaranteed.</p>
+        <p style="color: var(--text-muted); font-size: 14px;" data-en="Premium handmade products shipped worldwide. Quality and authenticity guaranteed." 
+                                             data-es="Productos artesanales premium enviados a todo el mundo. Calidad y autenticidad garantizada.">
+           Premium handmade products shipped worldwide. Quality and authenticity guaranteed.
+        </p>
       </div>
       <div class="footer-col">
-        <h4>SHOP</h4>
-        <a href="#">All Products</a>
-        <a href="#">Bestsellers</a>
-        <a href="#">New Arrivals</a>
-        <a href="#">Gift Cards</a>
+        <h4 data-en="SHOP" data-es="TIENDA">SHOP</h4>
+        <a href="#" data-en="All Products" data-es="Todos los Productos">All Products</a>
+        <a href="#" data-en="Bestsellers" data-es="Más Vendidos">Bestsellers</a>
+        <a href="#" data-en="New Arrivals" data-es="Nuevos Ingresos">New Arrivals</a>
+        <a href="#" data-en="Gift Cards" data-es="Tarjetas de Regalo">Gift Cards</a>
       </div>
       <div class="footer-col">
-        <h4>SUPPORT</h4>
-        <a href="#">Contact Us</a>
-        <a href="#">Shipping Policy</a>
-        <a href="#">Returns</a>
-        <a href="#">FAQ</a>
+        <h4 data-en="SUPPORT" data-es="AYUDA">SUPPORT</h4>
+        <a href="#" data-en="Contact Us" data-es="Contáctanos">Contact Us</a>
+        <a href="#" data-en="Shipping Policy" data-es="Política de Envíos">Shipping Policy</a>
+        <a href="#" data-en="Returns" data-es="Devoluciones">Returns</a>
+        <a href="#" data-en="FAQ" data-es="Preguntas Frecuentes">FAQ</a>
       </div>
       <div class="footer-col">
-        <h4>LEGAL</h4>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Seller Agreement</a>
+        <h4 data-en="LEGAL" data-es="LEGAL">LEGAL</h4>
+        <a href="#" data-en="Privacy Policy" data-es="Política de Privacidad">Privacy Policy</a>
+        <a href="#" data-en="Terms of Service" data-es="Términos de Servicio">Terms of Service</a>
+        <a href="#" data-en="Seller Agreement" data-es="Acuerdo de Vendedor">Seller Agreement</a>
       </div>
     </div>
-    <div class="copyright">
+    <div class="copyright" data-en="© 2026 YOUR BRAND. All rights reserved. | We Accept: PayPal, Stripe, Visa, Mastercard" 
+                          data-es="© 2026 TU MARCA. Todos los derechos reservados. | Aceptamos: PayPal, Stripe, Visa, Mastercard">
       © 2026 YOUR BRAND. All rights reserved. | We Accept: PayPal, Stripe, Visa, Mastercard
     </div>
   </footer>
 
   <script>
-    // Simple cart counter
+    // TRADUCCIÓN EN/ES
+    let currentLang = 'en';
+    const langBtn = document.getElementById('langBtn');
+    
+    function translate(lang) {
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = el.getAttribute(`data-${lang}`);
+      });
+      document.documentElement.lang = lang;
+      langBtn.textContent = lang === 'en' ? 'ES' : 'EN';
+    }
+    
+    langBtn.addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'es' : 'en';
+      translate(currentLang);
+    });
+
+    // Carrito
     document.querySelectorAll('.prod-card .btn').forEach(btn => {
       btn.addEventListener('click', () => {
         let count = document.querySelector('.cart-count');
         count.textContent = parseInt(count.textContent) + 1;
-        alert('Added to cart!');
+        alert(currentLang === 'en' ? 'Added to cart!' : '¡Agregado al carrito!');
       });
     });
     
-    // Form submit
+    // Formulario
     document.getElementById('sellerForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      alert('Thank you! We will review your product in 24-48 hours.');
+      alert(currentLang === 'en' ? 'Thank you! We will review your product in 24-48 hours.' : '¡Gracias! Revisaremos tu producto en 24-48 horas.');
     });
   </script>
 
