@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,8 +10,19 @@
       --bg: #0A0A0A; --bg-light: #141414; --card: #1C1C1C;
       --text: #F5F5F5; --text-muted: #A0A0A0; --gold: #D4AF37; --red: #E63946; --blue-ar: #3483FA; --green: #00A650;
     }
+    
+    /* TEMA CLARO - Solo se activa con ?theme=light */
+    body.light {
+      --bg: #FFFFFF; --bg-light: #F5F5F5; --card: #FFFFFF;
+      --text: #333; --text-muted: #666;
+    }
+    body.light .topbar { color: #000; }
+    body.light .prod-card, body.light .modal-content, body.light .cart-sidebar, body.light .modal-content-checkout { border: 1px solid #E0E0E0; }
+    body.light .search-bar input { background: #F5F5F5; border-color: #DDD; color: #333; }
+    body.light .country-selector, body.light header, body.light .categories-bar { background: #FFF; border-color: #E0E0E0; }
+
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 80px; transition: 0.3s; }
     a { text-decoration: none; color: inherit; }
  .country-selector { background: #000; padding: 10px 20px; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 101; }
  .country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 15px; justify-content: center; }
@@ -60,14 +70,17 @@
  .modal-price.ar { color: var(--blue-ar); }
  .modal-price.usd { color: var(--gold); }
  .seller-box { background: #222; padding: 15px; border-radius: 10px; margin: 15px 0; }
+ body.light .seller-box { background: #F5F5F5; }
  .store-link { color: var(--gold); cursor: pointer; text-decoration: underline; font-weight: 700; }
  .store-link:hover { color: #fff; }
  .modal-content-checkout { background: var(--card); border-radius: 15px; max-width: 700px; width: 100%; padding: 30px; }
  .checkout-form { display: flex; flex-direction: column; gap: 15px; }
  .checkout-form input,.checkout-form select { padding: 14px; background: #111; border: 1px solid #333; border-radius: 8px; color: var(--text); }
+ body.light .checkout-form input { background: #F5F5F5; border-color: #DDD; color: #333; }
  .checkout-form input:focus { border-color: var(--gold); outline: none; }
  .form-row { display: flex; gap: 15px; }
  .shipping-result { background: #222; padding: 15px; border-radius: 8px; margin-top: 10px; display: none; }
+ body.light .shipping-result { background: #F5F5F5; }
  .btn-pay { background: var(--green); color: #000; padding: 16px; border: none; border-radius: 8px; font-weight: 900; font-size: 16px; cursor: pointer; width: 100%; }
  .btn-pay.paypal { background: #0070BA; color: #fff; }
  .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 199; display: none; }
@@ -77,6 +90,7 @@
  .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
  .clear-cart { background: var(--red); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; }
  .cart-item { display: flex; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #222; position: relative; }
+ body.light .cart-item { border-color: #EEE; }
  .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
  .remove-item { background: none; border: none; color: var(--red); font-size: 20px; cursor: pointer; position: absolute; right: 0; top: 0; }
     section { padding: 40px 20px; max-width: 1400px; margin: auto; }
@@ -101,12 +115,21 @@
     #argentina { background: var(--bg-light); display: none; }
  .envio-tag { font-size: 12px; color: var(--green); margin-bottom: 5px; font-weight: 600; }
     footer { background: #000; padding: 40px 20px; text-align: center; border-top: 1px solid #222; color: var(--text-muted); }
+    body.light footer { background: #F5F5F5; border-color: #E0E0E0; }
+
+    /* RESPONSIVE TIPO MERCADO LIBRE */
     @media(max-width: 768px) {
-   .modal-content { flex-direction: column; }
+   .prod-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+   .prod-card img { height: 160px; }
+   .section-title { font-size: 22px; }
+   .modal-content { flex-direction: column; padding: 20px; }
    .modal-img { width: 100%; height: 300px; }
    .cart-sidebar { width: 100%; }
    .form-row { flex-direction: column; gap: 0; }
    .cart-float { bottom: 15px; right: 15px; padding: 12px 16px; font-size: 12px; }
+   .navbar { gap: 10px; }
+   .logo { font-size: 22px; }
+   .btn-publish { padding: 10px 14px; font-size: 12px; }
     }
   </style>
 </head>
@@ -233,6 +256,11 @@
   </footer>
 
   <script>
+    // TEMA CLARO: agrega ?theme=light a la url para activarlo
+    if(window.location.search.includes('theme=light')) {
+      document.body.classList.add('light');
+    }
+
     let currentStore = 'international';
     let cart = JSON.parse(localStorage.getItem('marketCart')) || [];
     let cartAR = JSON.parse(localStorage.getItem('marketCartAR')) || [];
@@ -246,12 +274,16 @@
 
     function getImg(p) { return p.imgs ? p.imgs[0] : p.img; }
 
-    // 1. FUNCION NUEVA: BAJAR DE LA NUBE CADA 3 SEG
+    // BAJAR DE LA NUBE CADA 3 SEG
     async function cargarDesdeNube() {
+        if(typeof getCloudData === 'undefined') return;
         const data = await getCloudData();
         if(!data) return;
 
-        // SOLO SOBRESCRIBIR SI LA NUBE TIENE ALGO
+        // BORRAR LOCAL VIEJO PARA QUE NO VUELVAN LOS FANTASMAS
+        localStorage.removeItem('marketProductsAR');
+        localStorage.removeItem('marketProductsINT');
+
         if(data.AR && data.AR.length > 0) {
             localStorage.setItem('marketProductsAR', JSON.stringify(data.AR));
         }
@@ -259,36 +291,9 @@
             localStorage.setItem('marketProductsINT', JSON.stringify(data.INT));
         }
         
-        // Refrescar vista
         if(currentStore === 'international') renderProductsINT(); 
         else renderProductsAR();
     }
-
-    // MIGRAR TUS 10 PRODUCTOS VIEJOS 1 SOLA VEZ
-    function migrarProductosIniciales() {
-      let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
-      let productsINT = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
-      if(productsAR.length > 0 || productsINT.length > 0) return;
-
-      const productosARViejos = [
-        {id: 101, name: "Mate Imperial Cuero", price: 15000, imgs: ["https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 102, name: "Bombilla Alpaca", price: 8000, imgs: ["https://images.unsplash.com/photo-1597318181409-cf64d0b87830?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 103, name: "Yerbera de Madera", price: 12000, imgs: ["https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600"], category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 104, name: "Remera MARKET", price: 18000, imgs: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600"], category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 105, name: "Buzo Canguro", price: 35000, imgs: ["https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600"], category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 106, name: "Cuadro Decorativo", price: 22000, imgs: ["https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600"], category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 107, name: "Pulsera Cuero", price: 9500, imgs: ["https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-      ];
-
-      const productosINTViejos = [
-        {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, imgs: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-        {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, imgs: ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-        {id: 3, name: "Auriculares Inalambricos", price: 89.99, imgs: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600"], category: "electronics", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-      ];
-      localStorage.setItem('marketProductsAR', JSON.stringify(productosARViejos));
-      localStorage.setItem('marketProductsINT', JSON.stringify(productosINTViejos));
-    }
-    migrarProductosIniciales();
 
     function saveStoreLogin(store) {
       let tiendas = JSON.parse(localStorage.getItem('marketUsers')) || [];
@@ -316,8 +321,6 @@
       currentStore = store;
       saveStoreLogin(store);
       clearInterval(updateInterval);
-      
-      // 2. CAMBIO: ahora actualiza cada 3 seg bajando de la nube
       updateInterval = setInterval(cargarDesdeNube, 3000);
 
       document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
@@ -492,7 +495,7 @@
       }
     }
 
-    function removeItem(index) {
+   function removeItem(index) {
       if(currentStore === 'international') {
         cart.splice(index, 1);
         localStorage.setItem('marketCart', JSON.stringify(cart));
