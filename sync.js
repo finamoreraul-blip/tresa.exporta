@@ -1,38 +1,49 @@
-const BIN_ID = "6a541343da38895dfe54002e";
-const API_KEY = "$2a$10$xx.ZhcaKOoj009xsukO5.eusXb2ArLeDIbX32Qotrl4yrcJ4L/YO6";
-const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
+const BIN_ID = '6a541343da38895dfe54002e'; 
+const API_KEY = '$2a$10$xx.ZhcaKOoj009xsukO5.eusXb2ArLeDIbX32Qotrl4yrcJ4L/YO6';
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
+// BAJAR DATOS DE LA NUBE
 async function getCloudData() {
-  try {
-    const res = await fetch(API_URL, { headers: { "X-Master-Key": API_KEY } });
-    const data = await res.json();
-    return data.record;
-  } catch(e) { console.error("Error leyendo nube", e); return {AR:[], INT:[]} }
+    try {
+        const res = await fetch(`${BIN_URL}/latest`, {
+            headers: { 'X-Master-Key': API_KEY }
+        });
+        const data = await res.json();
+        return data.record; // { AR: [...], INT: [...] }
+    } catch(e) {
+        console.error("Error bajando de la nube:", e);
+        return null;
+    }
 }
 
+// SUBIR DATOS A LA NUBE
 async function setCloudData(data) {
-  try {
-    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-      method: 'PUT',
-      headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
-      body: JSON.stringify(data)
-    });
-  } catch(e) { console.error("Error guardando en nube", e); }
+    try {
+        await fetch(BIN_URL, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': API_KEY
+            },
+            body: JSON.stringify(data)
+        });
+        console.log("Datos subidos a la nube ✓");
+    } catch(e) {
+        console.error("Error subiendo a la nube:", e);
+    }
 }
 
-// CADA 3 SEG TRAE DE LA NUBE
-setInterval(async () => {
-  const data = await getCloudData();
-  localStorage.setItem('marketProductsAR', JSON.stringify(data.AR));
-  localStorage.setItem('marketProductsINT', JSON.stringify(data.INT));
-  
-  if(typeof loadData === 'function') loadData();
-  if(typeof loadStore === 'function') loadStore();
-  if(typeof renderProductsINT === 'function') renderProductsINT();
-  if(typeof renderProductsAR === 'function') renderProductsAR();
-}, 3000);
+// FUNCION PARA MIGRAR 1 SOLA VEZ
+function migrarALaNube() {
+    const dataAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
+    const dataINT = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
+    
+    if(dataAR.length === 0 && dataINT.length === 0) {
+        alert("No hay productos en localStorage para migrar");
+        return;
+    }
 
-// FIX CELU
-const style = document.createElement('style');
-style.innerHTML = `@media(max-width: 768px) {.btn, .btn-small, .nav-btn { min-height: 44px !important; font-size: 16px !important; } input, select { font-size: 16px !important; }}`;
-document.head.appendChild(style);
+    setCloudData({ AR: dataAR, INT: dataINT }).then(() => {
+        alert(`Productos migrados a la nube!\nARS: ${dataAR.length}\nUSD: ${dataINT.length}`);
+    });
+}
