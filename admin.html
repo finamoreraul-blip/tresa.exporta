@@ -255,13 +255,23 @@
         tienda: tienda,
         fecha: new Date().toLocaleString('es-AR')
       };
-      const key = tienda === 'international'? 'marketProductsINT' : 'marketProductsAR';
-      let productos = JSON.parse(localStorage.getItem(key)) || [];
-      if(editingId) productos = productos.map(p => p.id === editingId? producto : p); else productos.unshift(producto);
-      localStorage.setItem(key, JSON.stringify(productos));
-      alert('Producto guardado!');
-      resetForm(); loadData();
-    }
+
+      async function guardarProducto() { // si se llama distinto cambia el nombre
+    const key = tienda === 'international'? 'marketProductsINT' : 'marketProductsAR';
+    let productos = JSON.parse(localStorage.getItem(key)) || [];
+    if(editingId) productos = productos.map(p => p.id === editingId? producto : p); else productos.unshift(producto);
+    
+    localStorage.setItem(key, JSON.stringify(productos));
+    
+    // ESTAS 2 LINEAS NUEVAS MANDAN A LA NUBE
+    const dataAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
+    const dataINT = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
+    await setCloudData({ AR: dataAR, INT: dataINT }); // <-- CLAVE
+    
+    alert('Producto guardado en la nube ✓');
+    resetForm(); 
+    loadData();
+}
 
     function resetForm() {
       document.getElementById('productForm').reset();
