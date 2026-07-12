@@ -421,7 +421,8 @@
         fecha: new Date().toLocaleString('es-AR')
       };
 
-      if(editId) {
+   async function guardarProducto() { // si tu funcion se llama distinto, deja el mismo nombre
+    if(editId) {
         const index = productsAR.findIndex(p => p.id === parseInt(editId));
         productsAR[index] = nuevo;
         showAlert('Producto actualizado!');
@@ -429,6 +430,14 @@
         productsAR.unshift(nuevo);
         showAlert('Producto publicado en MARKET!');
       }
+
+    // GUARDAR EN LOCAL
+    localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
+    localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
+
+    // MANDAR A LA NUBE - ESTA ES LA CLAVE
+    await setCloudData({ AR: productsAR, INT: productsINT });
+}
 
       localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
       closeProductModal(); loadData();
