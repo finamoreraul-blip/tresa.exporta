@@ -13,62 +13,54 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
     html, body { width: 100%; overflow-x: hidden; background: var(--bg); }
     body { color: var(--text); }
- .container { max-width: 1200px; margin: auto; padding: 20px; width: 100%; }
+.container { max-width: 1200px; margin: auto; padding: 20px; width: 100%; }
     header { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
- .logo { font-size: 20px; font-weight: 900; color: var(--blue); }
- .btn { background: var(--blue); color: #fff; padding: 12px 25px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
- .btn:hover { background: var(--blue-dark); }
- .btn.green { background: var(--green); }
- .btn.red { background: var(--red); color: #fff; }
- .btn.gray { background: #E5E7EB; color: var(--text); }
- .btn.gold { background: var(--gold); color: #000; }
-
- .auth-box { background: var(--card); padding: 30px 20px; border-radius: 12px; max-width: 500px; margin: 40px auto; border: 1px solid var(--border); }
- .tabs { display: flex; gap: 10px; margin-bottom: 30px; background: #F3F4F6; padding: 5px; border-radius: 10px; }
- .tab-btn { flex: 1; padding: 12px; background: transparent; border: none; color: var(--subtext); border-radius: 8px; font-weight: 700; cursor: pointer; }
- .tab-btn.active { background: var(--card); color: var(--blue); }
- .form-group { margin-bottom: 20px; }
- .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
- .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 14px; background: #F9FAFB; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; }
-
- .dashboard-nav { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid var(--border); overflow-x: auto; }
- .nav-btn { padding: 15px 20px; background: none; border: none; color: var(--subtext); font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
- .nav-btn.active { color: var(--blue); border-color: var(--blue); }
-
- .dashboard-section { display: none; }
- .dashboard-section.active { display: block; }
-
- .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
- .stat-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
- .stat-card h3 { font-size: 12px; color: var(--subtext); margin-bottom: 10px; text-transform: uppercase; }
- .stat-card p { font-size: 28px; font-weight: 900; color: var(--blue); }
-
- .store-preview { background: var(--card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
- .store-cover { height: 180px; background: #E5E7EB; position: relative; background-size: cover; background-position: center; }
- .store-cover input,.store-avatar input { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
- .store-header { padding: 20px; display: flex; gap: 15px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
- .store-avatar { width: 80px; height: 80px; border-radius: 50%; background: #E5E7EB; background-size: cover; background-position: center; border: 3px solid var(--blue); flex-shrink: 0; position: relative; }
- .store-info h2 { font-size: 22px; }
- .store-info p { color: var(--subtext); font-size: 14px; }
- .store-desc { padding: 20px; }
-
- .prod-table { background: var(--card); border-radius: 12px; padding: 15px; border: 1px solid var(--border); overflow-x: auto; }
- .prod-row { display: grid; grid-template-columns: 50px 1fr 100px 100px 230px; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; min-width: 700px; }
- .prod-row.header { font-weight: 700; color: var(--subtext); font-size: 12px; }
- .prod-row img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
- .badge { background: var(--green); color: #fff; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
- .badge.off { background: #D1D5DB; color: #333; }
-
- .form-preview { display: flex; gap: 15px; background: #F9FAFB; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed var(--border); }
- .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
- .price { font-size: 24px; font-weight: 900; color: var(--blue); }
-
- .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
- .modal.active { display: flex; }
- .modal-content { background: var(--card); padding: 25px 20px; border-radius: 12px; width: 100%; max-width: 600px; }
- .alert { background: var(--green); color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 700; display: none; }
- .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
- .saved-badge { color: var(--green); font-size: 12px; font-weight: 600; display: none; }
+.logo { font-size: 20px; font-weight: 900; color: var(--blue); }
+.btn { background: var(--blue); color: #fff; padding: 12px 25px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+.btn:hover { background: var(--blue-dark); }
+.btn.green { background: var(--green); }
+.btn.red { background: var(--red); color: #fff; }
+.btn.gray { background: #E5E7EB; color: var(--text); }
+.btn.gold { background: var(--gold); color: #000; }
+.auth-box { background: var(--card); padding: 30px 20px; border-radius: 12px; max-width: 500px; margin: 40px auto; border: 1px solid var(--border); }
+.tabs { display: flex; gap: 10px; margin-bottom: 30px; background: #F3F4F6; padding: 5px; border-radius: 10px; }
+.tab-btn { flex: 1; padding: 12px; background: transparent; border: none; color: var(--subtext); border-radius: 8px; font-weight: 700; cursor: pointer; }
+.tab-btn.active { background: var(--card); color: var(--blue); }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+.form-group input,.form-group select,.form-group textarea { width: 100%; padding: 14px; background: #F9FAFB; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; }
+.dashboard-nav { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid var(--border); overflow-x: auto; }
+.nav-btn { padding: 15px 20px; background: none; border: none; color: var(--subtext); font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+.nav-btn.active { color: var(--blue); border-color: var(--blue); }
+.dashboard-section { display: none; }
+.dashboard-section.active { display: block; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+.stat-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
+.stat-card h3 { font-size: 12px; color: var(--subtext); margin-bottom: 10px; text-transform: uppercase; }
+.stat-card p { font-size: 28px; font-weight: 900; color: var(--blue); }
+.store-preview { background: var(--card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+.store-cover { height: 180px; background: #E5E7EB; position: relative; background-size: cover; background-position: center; }
+.store-cover input,.store-avatar input { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+.store-header { padding: 20px; display: flex; gap: 15px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.store-avatar { width: 80px; height: 80px; border-radius: 50%; background: #E5E7EB; background-size: cover; background-position: center; border: 3px solid var(--blue); flex-shrink: 0; position: relative; }
+.store-info h2 { font-size: 22px; }
+.store-info p { color: var(--subtext); font-size: 14px; }
+.store-desc { padding: 20px; }
+.prod-table { background: var(--card); border-radius: 12px; padding: 15px; border: 1px solid var(--border); overflow-x: auto; }
+.prod-row { display: grid; grid-template-columns: 50px 1fr 100px 100px 230px; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; min-width: 700px; }
+.prod-row.header { font-weight: 700; color: var(--subtext); font-size: 12px; }
+.prod-row img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+.badge { background: var(--green); color: #fff; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+.badge.off { background: #D1D5DB; color: #333; }
+.form-preview { display: flex; gap: 15px; background: #F9FAFB; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed var(--border); }
+.form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
+.price { font-size: 24px; font-weight: 900; color: var(--blue); }
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
+.modal.active { display: flex; }
+.modal-content { background: var(--card); padding: 25px 20px; border-radius: 12px; width: 100%; max-width: 600px; }
+.alert { background: var(--green); color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 700; display: none; }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.saved-badge { color: var(--green); font-size: 12px; font-weight: 600; display: none; }
     #dashboard { display: none; }
   </style>
 </head>
@@ -83,7 +75,6 @@
     </div>
   </header>
 
-  <!-- LOGIN / REGISTRO -->
   <div class="container" id="authScreen">
     <div class="auth-box">
       <div class="alert" id="alertMsg"></div>
@@ -114,7 +105,6 @@
     </div>
   </div>
 
-  <!-- DASHBOARD -->
   <div class="container" id="dashboard">
     <h1 style="margin-bottom: 10px; font-size: 24px;">Hola, <span id="storeNameTitle"></span></h1>
 
@@ -124,7 +114,6 @@
       <button class="nav-btn" onclick="showSection('productos', event)">PRODUCTOS</button>
     </div>
 
-    <!-- 1. RESUMEN -->
     <div class="dashboard-section active" id="resumen">
       <h2 style="margin-bottom:20px;">Resumen de tu tienda</h2>
       <div class="stats">
@@ -138,7 +127,6 @@
       </div>
     </div>
 
-    <!-- 2. MI TIENDA -->
     <div class="dashboard-section" id="tienda">
       <h2 style="margin-bottom:20px;">Personaliza tu Tienda</h2>
       <div class="store-preview">
@@ -161,7 +149,6 @@
       </div>
     </div>
 
-    <!-- 3. PRODUCTOS -->
     <div class="dashboard-section" id="productos">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h2>Mis Productos</h2>
@@ -176,7 +163,6 @@
     </div>
   </div>
 
-  <!-- MODAL PUBLICAR/EDITAR -->
   <div class="modal" id="productModal">
     <div class="modal-content">
       <h2 id="modalTitle">Publicar Producto</h2>
@@ -216,9 +202,7 @@
     let saveTimeout;
     let updateInterval;
 
-    function getImg(p) {
-      return p.imgs? p.imgs[0] : p.img;
-    }
+    function getImg(p) { return p.imgs? p.imgs[0] : p.img; }
 
     function showTab(tab) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -317,7 +301,20 @@
       if(currentUser.cover) document.getElementById('previewCover').style.backgroundImage = `url(${currentUser.cover})`;
       document.getElementById('viewStoreBtn').onclick = () => window.open(`store.html?store=${currentUser.storeId}`, '_blank');
       loadData();
-      updateInterval = setInterval(loadData, 3000); // TIEMPO REAL CADA 3 SEG
+      updateInterval = setInterval(cargarDesdeNube, 3000);
+    }
+
+    // FUNCION NUEVA: BAJAR DE LA NUBE
+    async function cargarDesdeNube() {
+        const data = await getCloudData();
+        if(!data) return;
+        if(data.AR && data.AR.length > 0) {
+            localStorage.setItem('marketProductsAR', JSON.stringify(data.AR));
+        }
+        if(data.INT && data.INT.length > 0) {
+            localStorage.setItem('marketProductsINT', JSON.stringify(data.INT));
+        }
+        loadData();
     }
 
     function loadData() {
@@ -407,66 +404,73 @@
       document.getElementById('productModal').classList.add('active');
     }
 
-    document.getElementById('productForm').onsubmit = (e) => {
-      e.preventDefault();
-      const editId = document.getElementById('editId').value;
-      const nuevo = {
-        id: editId? parseInt(editId) : Date.now(),
-        name: document.getElementById('pName').value,
-        price: parseFloat(document.getElementById('pPrice').value),
-        imgs: [tempProdImg || getImg({img: document.getElementById('previewImg').src})],
-        category: document.getElementById('pCategory').value,
-        store: currentUser.storeName, storeId: currentUser.storeId, city: currentUser.city,
-        tienda: 'argentina',
-        fecha: new Date().toLocaleString('es-AR')
-      };
+    // FUNCION ARREGLADA CON NUBE
+    async function guardarProducto(nuevo, editId) {
+        if(editId) {
+            const index = productsAR.findIndex(p => p.id === parseInt(editId));
+            productsAR[index] = nuevo;
+            showAlert('Producto actualizado!');
+        } else {
+            productsAR.unshift(nuevo);
+            showAlert('Producto publicado en MARKET!');
+        }
 
-   async function guardarProducto() { // si tu funcion se llama distinto, deja el mismo nombre
-    if(editId) {
-        const index = productsAR.findIndex(p => p.id === parseInt(editId));
-        productsAR[index] = nuevo;
-        showAlert('Producto actualizado!');
-      } else {
-        productsAR.unshift(nuevo);
-        showAlert('Producto publicado en MARKET!');
-      }
-
-    // GUARDAR EN LOCAL
-    localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
-    localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-
-    // MANDAR A LA NUBE - ESTA ES LA CLAVE
-    await setCloudData({ AR: productsAR, INT: productsINT });
-}
-
-      localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
-      closeProductModal(); loadData();
-    }
-
-    function deleteProduct(id) {
-      if(confirm('¿Borrar producto?')) {
-        productsAR = productsAR.filter(p => p.id!== id);
-        productsINT = productsINT.filter(p => p.id!== id);
+        // GUARDAR EN LOCAL
         localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
         localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-        loadData();
-      }
+
+        // MANDAR A LA NUBE
+        await setCloudData({ AR: productsAR, INT: productsINT });
+    }
+
+    document.getElementById('productForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const editId = document.getElementById('editId').value;
+        const nuevo = {
+            id: editId? parseInt(editId) : Date.now(),
+            name: document.getElementById('pName').value,
+            price: parseFloat(document.getElementById('pPrice').value),
+            imgs: [tempProdImg || document.getElementById('previewImg').src],
+            category: document.getElementById('pCategory').value,
+            store: currentUser.storeName, storeId: currentUser.storeId, city: currentUser.city,
+            tienda: 'argentina',
+            paymentLink: document.getElementById('pPaymentLink').value,
+            fecha: new Date().toLocaleString('es-AR')
+        };
+        await guardarProducto(nuevo, editId);
+        closeProductModal(); loadData();
+    }
+
+    async function deleteProduct(id) {
+        if(confirm('¿Borrar producto?')) {
+            productsAR = productsAR.filter(p => p.id!== id);
+            productsINT = productsINT.filter(p => p.id!== id);
+            localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
+            localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
+
+            // SUBIR A LA NUBE AL BORRAR
+            await setCloudData({ AR: productsAR, INT: productsINT });
+            loadData();
+        }
     }
 
     async function transferir(id) {
-      let dolar = 1500;
-      try { const res = await fetch('https://dolarapi.com/v1/dolares/oficial'); const data = await res.json(); dolar = data.venta; } catch(e) {}
-      const p = productsAR.find(x => x.id === id);
-      const precioUSD = (p.price / dolar).toFixed(2);
-      const link = prompt(`Precio USD: $${precioUSD}\nPega tu link de PayPal/Stripe:`);
-      if(link) {
-        const prodIntl = {...p, price: parseFloat(precioUSD), imgs: p.imgs, store: 'MARKET', storeId: 'market', city: 'Miami', tienda: 'international'};
-        const index = productsINT.findIndex(ap => ap.id === id);
-        if(index > -1) productsINT[index] = prodIntl; else productsINT.push(prodIntl);
-        localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-        loadData();
-        alert('Publicado en Internacional!');
-      }
+        let dolar = 1500;
+        try { const res = await fetch('https://dolarapi.com/v1/dolares/oficial'); const data = await res.json(); dolar = data.venta; } catch(e) {}
+        const p = productsAR.find(x => x.id === id);
+        const precioUSD = (p.price / dolar).toFixed(2);
+        const link = prompt(`Precio USD: $${precioUSD}\nPega tu link de PayPal/Stripe:`);
+        if(link) {
+            const prodIntl = {...p, price: parseFloat(precioUSD), imgs: p.imgs, store: 'MARKET', storeId: 'market', city: 'Miami', tienda: 'international'};
+            const index = productsINT.findIndex(ap => ap.id === id);
+            if(index > -1) productsINT[index] = prodIntl; else productsINT.push(prodIntl);
+            localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
+
+            // SUBIR A LA NUBE
+            await setCloudData({ AR: productsAR, INT: productsINT });
+            loadData();
+            alert('Publicado en Internacional!');
+        }
     }
 
     window.addEventListener('beforeunload', () => { saveStoreData(); clearInterval(updateInterval); });
