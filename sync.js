@@ -1,29 +1,20 @@
-// SYNC.JS V2 - FUERZA ACTUALIZACION CADA 3 SEG
+// SYNC.JS V4 - ANTI CACHE + AUTO ACTUALIZAR
 (function() {
-  console.log('MARKET SYNC V2 CARGADO');
+  console.log('MARKET SYNC V4', new Date().toLocaleTimeString());
+  let lastUpdate = localStorage.getItem('marketLastUpdate') || 0;
 
-  // ACTUALIZAR CADA 3 SEG SIEMPRE - INCLUSO EN 2DO PLANO
+  // Revisa cada 2 seg si hay productos nuevos
   setInterval(() => {
-    if(typeof loadData === 'function') loadData(); // admin y panel
-    if(typeof loadStore === 'function') loadStore(); // store
-    if(typeof renderProductsINT === 'function') renderProductsINT(); // index
-    if(typeof renderProductsAR === 'function') renderProductsAR(); // index
-  }, 3000);
-
-  // FORZAR RECARGA AL HACER FOCUS - ARREGLA LOCALSTORAGE EN CELU
-  window.addEventListener('focus', () => {
-    location.reload();
-  });
-
-  // FIX BOTONES PEQUEÑOS EN CELU
-  const style = document.createElement('style');
-  style.innerHTML = `
-    @media(max-width: 768px) {
-      .btn, .btn-small, .nav-btn { min-height: 44px !important; font-size: 16px !important; }
-      .prod-row { grid-template-columns: 50px 1fr 80px !important; min-width: 100% !important; }
-      input, select, textarea { font-size: 16px !important; }
+    const newUpdate = localStorage.getItem('marketLastUpdate') || 0;
+    if(newUpdate > lastUpdate) {
+      console.log('NUEVOS PRODUCTOS! Recargando...');
+      lastUpdate = newUpdate;
+      location.reload(true);
     }
-  `;
-  document.head.appendChild(style);
+  }, 2000);
 
+  // Fix botones y zoom en celu
+  const style = document.createElement('style');
+  style.innerHTML = `@media(max-width: 768px) {.btn, .btn-small, .nav-btn { min-height: 44px !important; font-size: 16px !important; } input, select { font-size: 16px !important; }}`;
+  document.head.appendChild(style);
 })();
