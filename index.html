@@ -181,7 +181,7 @@
         <h2 id="modalTitle"></h2>
         <div class="modal-price" id="modalPrice"></div>
         <div class="seller-box">
-          <p><b>Vendido por:</b> <span class="store-link" id="modalStoreLink" onclick="goToStore()"></span></p>
+          <p><b>Vendido por:</b> <span class="store-link" id="modalStoreLink"></span></p>
           <p style="color:var(--text-muted); font-size:13px;" id="modalStoreCity"></p>
         </div>
         <button class="btn-small comprar" id="modalComprarBtn">COMPRAR</button>
@@ -254,8 +254,8 @@
     let currentCheckoutProduct = null;
     let currentIsAR = false;
     let currentStoreProfile = null;
+    let updateInterval;
 
-    // FUNCION PARA OBTENER IMAGEN COMPATIBLE CON AMBOS
     function getImg(p) {
       return p.imgs ? p.imgs[0] : p.img;
     }
@@ -267,26 +267,25 @@
       if(productsAR.length > 0 || productsINT.length > 0) return;
 
       const productosARViejos = [
-        {id: 101, name: "Mate Imperial Cuero", price: 15000, img: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=600", category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 102, name: "Bombilla Alpaca", price: 8000, img: "https://images.unsplash.com/photo-1597318181409-cf64d0b87830?q=80&w=600", category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 103, name: "Yerbera de Madera", price: 12000, img: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600", category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 104, name: "Remera MARKET", price: 18000, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600", category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 105, name: "Buzo Canguro", price: 35000, img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600", category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 106, name: "Cuadro Decorativo", price: 22000, img: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600", category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
-        {id: 107, name: "Pulsera Cuero", price: 9500, img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600", category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 101, name: "Mate Imperial Cuero", price: 15000, imgs: ["https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 102, name: "Bombilla Alpaca", price: 8000, imgs: ["https://images.unsplash.com/photo-1597318181409-cf64d0b87830?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 103, name: "Yerbera de Madera", price: 12000, imgs: ["https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=600"], category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 104, name: "Remera MARKET", price: 18000, imgs: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600"], category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 105, name: "Buzo Canguro", price: 35000, imgs: ["https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600"], category: "clothing", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 106, name: "Cuadro Decorativo", price: 22000, imgs: ["https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600"], category: "home", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
+        {id: 107, name: "Pulsera Cuero", price: 9500, imgs: ["https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=600"], category: "artesanias", store: "Mi Tienda", storeId: "mi-tienda", city: "Tres Arroyos", tienda: 'argentina'},
       ];
 
       const productosINTViejos = [
-        {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600", category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-        {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600", category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
-        {id: 3, name: "Auriculares Inalambricos", price: 89.99, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600", category: "electronics", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+        {id: 1, name: "Set Matero de Cuero Premium", price: 35.99, imgs: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+        {id: 2, name: "Bufanda Lana Alpaca", price: 42.00, imgs: ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600"], category: "artesanias", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
+        {id: 3, name: "Auriculares Inalambricos", price: 89.99, imgs: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600"], category: "electronics", store: "MARKET", storeId: "market", city: "Miami", tienda: 'international'},
       ];
       localStorage.setItem('marketProductsAR', JSON.stringify(productosARViejos));
       localStorage.setItem('marketProductsINT', JSON.stringify(productosINTViejos));
     }
     migrarProductosIniciales();
 
-    // TIEMPO REAL: AVISA CADA 5 SEG QUE ESTA ONLINE
     function saveStoreLogin(store) {
       let tiendas = JSON.parse(localStorage.getItem('marketUsers')) || [];
       const storeData = {
@@ -302,17 +301,21 @@
       else tiendas.push(storeData);
       localStorage.setItem('marketUsers', JSON.stringify(tiendas));
     }
-    setInterval(() => saveStoreLogin(currentStore), 5000);
 
     function goToStore() {
       if(currentStoreProfile) {
-        alert(`Ir a la tienda: ${currentStoreProfile.storeName}\nCiudad: ${currentStoreProfile.city}`);
+        window.open(`store.html?store=${currentStoreProfile.storeId}`, '_blank');
       }
     }
 
     function showStore(store) {
       currentStore = store;
       saveStoreLogin(store);
+      clearInterval(updateInterval);
+      updateInterval = setInterval(() => {
+        if(store === 'international') renderProductsINT(); else renderProductsAR();
+      }, 5000);
+
       document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
       if(store === 'international') {
         document.getElementById('international').style.display = 'block';
@@ -349,6 +352,7 @@
       document.getElementById('modalPrice').textContent = isAR? `$${product.price.toLocaleString('es-AR')}` : `$${product.price.toFixed(2)}`;
       document.getElementById('modalPrice').className = isAR? 'modal-price ar' : 'modal-price usd';
       document.getElementById('modalStoreLink').textContent = product.store;
+      document.getElementById('modalStoreLink').onclick = goToStore;
       document.getElementById('modalStoreCity').textContent = `📍 ${product.city}`;
       document.getElementById('modalComprarBtn').onclick = () => openCheckoutModal(product, isAR);
       document.getElementById('modalAddBtn').onclick = () => isAR? addToCartAR(product.id) : addToCart(product.id);
@@ -388,28 +392,18 @@
       const envio = document.querySelector('input[name="envio"]:checked');
       if(!envio) return alert('Elegi un método de envío');
       const pedido = {
-        id: Date.now(),
-        fecha: new Date().toLocaleString(),
+        id: Date.now(), fecha: new Date().toLocaleString(),
         cliente: {
-          nombre: document.getElementById('buyerName').value,
-          dni: document.getElementById('buyerDni').value,
-          email: document.getElementById('buyerEmail').value,
-          telefono: document.getElementById('buyerPhone').value,
-          direccion: document.getElementById('buyerAddress').value,
-          ciudad: document.getElementById('buyerCity').value,
-          cp: document.getElementById('buyerZip').value,
+          nombre: document.getElementById('buyerName').value, dni: document.getElementById('buyerDni').value,
+          email: document.getElementById('buyerEmail').value, telefono: document.getElementById('buyerPhone').value,
+          direccion: document.getElementById('buyerAddress').value, ciudad: document.getElementById('buyerCity').value, cp: document.getElementById('buyerZip').value,
         },
-        producto: currentCheckoutProduct.name,
-        vendedor: currentCheckoutProduct.store,
-        subtotal: currentCheckoutProduct.price,
-        envio: parseFloat(envio.value),
-        total: currentCheckoutProduct.price + parseFloat(envio.value),
-        moneda: currentIsAR? 'ARS' : 'USD',
-        estado: 'pagado'
+        producto: currentCheckoutProduct.name, vendedor: currentCheckoutProduct.store,
+        subtotal: currentCheckoutProduct.price, envio: parseFloat(envio.value),
+        total: currentCheckoutProduct.price + parseFloat(envio.value), moneda: currentIsAR? 'ARS' : 'USD', estado: 'pagado'
       };
       let pedidos = JSON.parse(localStorage.getItem('marketPedidos')) || [];
-      pedidos.unshift(pedido);
-      localStorage.setItem('marketPedidos', JSON.stringify(pedidos));
+      pedidos.unshift(pedido); localStorage.setItem('marketPedidos', JSON.stringify(pedidos));
       alert(`Pedido #${pedido.id} creado!\nTotal: ${pedido.total.toLocaleString()} ${pedido.moneda}`);
       closeCheckoutModal();
     }
@@ -440,7 +434,7 @@
       });
     }
 
-    function renderProductsAR() {
+       function renderProductsAR() {
       let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
       const grid = document.getElementById('productGridAR');
       const search = document.getElementById('searchAR').value.toLowerCase();
