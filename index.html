@@ -8,28 +8,46 @@
   <style>
     :root {
       --bg: #FFFFFF; --bg-light: #F5F5F5; --card: #FFFFFF;
-      --text: #333; --text-muted: #666; --gold: #D4AF37; --red: #E63946; --blue-ar: #3483FA; --green: #00A650;
+      --text: #333; --text-muted: #666; --gold: #D4AF37; --red: #E63946; --blue-ar: #3483FA; --green: #00A650; --dark: #0A0A0A;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
     body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
     a { text-decoration: none; color: inherit; }
-.country-selector { background: #FFF; padding: 10px 20px; border-bottom: 1px solid #E0E0E0; position: sticky; top: 0; z-index: 101; }
-.country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 15px; justify-content: center; }
-.country-btn { background: #F5F5F5; border: 2px solid #DDD; color: var(--text); padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 13px; }
+
+ /* 1. BARRA NEGRA ARRIBA CON LOGO */
+.top-logo-bar { background: var(--dark); padding: 15px 20px; position: sticky; top: 0; z-index: 102; }
+.logo { font-size: 32px; font-weight: 900; color: var(--gold); letter-spacing: 1px; text-align: center; }
+
+/* 2. BARRA DE PAIS CHICA */
+.country-selector { background: #FFF; padding: 8px 20px; border-bottom: 1px solid #E0E0E0; z-index: 101; }
+.country-buttons { max-width: 1400px; margin: auto; display: flex; gap: 10px; justify-content: center; }
+.country-btn { background: #F5F5F5; border: 1px solid #DDD; color: var(--text); padding: 6px 14px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.3s; }
+.country-btn:hover { background: #EEE; }
 .country-btn.active.int { border-color: var(--gold); background: var(--gold); color: #000; }
 .country-btn.active.ar { border-color: var(--blue-ar); background: var(--blue-ar); color: #FFF; }
-.topbar { background: var(--gold); color: #000; text-align: center; padding: 10px; font-size: 12px; font-weight: 700; }
-.topbar.ar { background: var(--blue-ar); color: #fff; }
-    header { background: #FFF; padding: 12px 20px; position: sticky; top: 55px; z-index: 100; border-bottom: 1px solid #E0E0E0; }
-.navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; gap: 15px; position: relative; }
-.logo { font-size: 28px; font-weight: 900; color: var(--gold); }
 
- /* BUSCADOR */
+.topbar { background: var(--gold); color: #000; text-align: center; padding: 8px; font-size: 12px; font-weight: 700; }
+.topbar.ar { background: var(--blue-ar); color: #fff; }
+
+    header { background: #FFF; padding: 12px 20px; position: sticky; top: 105px; z-index: 100; border-bottom: 1px solid #E0E0E0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto; gap: 15px; position: relative; }
+
+/* 3. BUSCADOR QUE SE DESPLIEGA ENCIMA */
 .search-container { flex: 1; max-width: 600px; position: relative; }
 .search-bar input { width: 100%; padding: 12px 20px; background: #F5F5F5; border: 2px solid #DDD; border-radius: 8px; font-size: 15px; }
-.search-dropdown { display: none; position: absolute; top: 50px; left: 0; right: 0; background: #FFF; border: 1px solid #DDD; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 15px; z-index: 200; }
+.search-dropdown {
+  display: none;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: #FFF;
+  border: 1px solid #DDD;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  padding: 15px;
+  z-index: 250;
+}
 .search-dropdown.active { display: block; }
-.search-cats { display: flex; gap: 8px; overflow-x: auto; margin-top: 10px; }
+.search-cats { display: flex; gap: 8px; overflow-x: auto; margin-top: 10px; padding-bottom: 5px; }
 
 .header-actions { display: flex; gap: 10px; align-items: center; }
 .icon-btn { background: none; border: none; font-size: 24px; cursor: pointer; padding: 8px 12px; border-radius: 8px; }
@@ -38,7 +56,6 @@
 .cart-btn { position: relative; }
 .cart-count { position: absolute; top: 2px; right: 2px; background: var(--red); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
- /* MENU 3 PUNTITOS */
 .menu-wrap { position: relative; }
 .menu-dropdown { display: none; position: absolute; top: 45px; right: 0; background: #FFF; border: 1px solid #DDD; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 240px; z-index: 201; }
 .menu-dropdown.active { display: block; }
@@ -97,27 +114,34 @@
     footer { background: #F5F5F5; padding: 40px 20px; text-align: center; border-top: 1px solid #E0E0E0; color: var(--text-muted); }
 
     @media(max-width: 768px) {
-   header { padding: 10px 15px; top: 50px; }
-  .logo { font-size: 22px; }
-  .search-bar { display: none; }
-  .search-bar.mobile { display: flex; }
-  .categories-bar { display: none; }
-  .prod-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-  .prod-card img { height: 180px; }
-  .modal-content { flex-direction: column; padding: 20px; }
-  .modal-img { width: 100%; height: 280px; }
-  .cart-sidebar { width: 100%; }
-  .btn-publish { display: none; }
-  .form-row { flex-direction: column; gap: 10px; }
+ .top-logo-bar { padding: 12px 15px; }
+ .logo { font-size: 24px; }
+  header { top: 95px; padding: 10px 15px; }
+ .search-bar { display: none; }
+ .search-bar.mobile { display: flex; }
+ .categories-bar { display: none; }
+ .prod-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+ .prod-card img { height: 180px; }
+ .modal-content { flex-direction: column; padding: 20px; }
+ .modal-img { width: 100%; height: 280px; }
+ .cart-sidebar { width: 100%; }
+ .btn-publish { display: none; }
+ .form-row { flex-direction: column; gap: 10px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- 1. LOGO ARRIBA FONDO OSCURO -->
+  <div class="top-logo-bar">
+    <div class="logo">MARKET</div>
+  </div>
+
+  <!-- 2. SELECTOR DE PAIS CHICO -->
   <div class="country-selector">
     <div class="country-buttons">
-      <button class="country-btn int active" id="btnInt" onclick="showStore('international')">🌍 INTERNACIONAL USD</button>
-      <button class="country-btn ar" id="btnAr" onclick="showStore('argentina')">🇦🇷 ARGENTINA ARS</button>
+      <button class="country-btn int active" id="btnInt" onclick="showStore('international')">🌍 INT</button>
+      <button class="country-btn ar" id="btnAr" onclick="showStore('argentina')">🇦🇷 AR</button>
     </div>
   </div>
 
@@ -125,7 +149,6 @@
 
   <header>
     <div class="navbar">
-      <div class="logo">MARKET</div>
       <div class="search-container">
         <div class="search-bar">
           <input type="text" id="productSearch" placeholder="Buscar productos, marcas...">
@@ -178,7 +201,7 @@
     </div>
   </div>
 
-  <!-- MODAL DETALLE PRODUCTO -->
+  <!-- MODALES IGUALES -->
   <div class="modal-overlay" id="productModal">
     <div class="modal-content">
       <span class="modal-close" onclick="closeProductModal()">×</span>
@@ -197,12 +220,10 @@
     </div>
   </div>
 
-  <!-- MODAL CHECKOUT -->
   <div class="modal-overlay" id="checkoutModal">
     <div class="modal-content-checkout">
       <span class="modal-close" onclick="closeCheckoutModal()">×</span>
       <h2>Finalizar Compra</h2>
-      <p style="color:var(--text-muted); margin-bottom:20px;">Completa tus datos para cotizar el envío</p>
       <div id="checkoutProductsList" style="margin-bottom:20px;"></div>
       <form class="checkout-form" id="checkoutForm">
         <input type="text" id="buyerName" placeholder="Nombre y Apellido *" required>
@@ -472,7 +493,7 @@
     }
 
     window.onload = function() {
-      // LUPA
+      // LUPA QUE SE DESPLIEGA Y SE CIERRA SOLA
       document.getElementById('searchToggle').onclick = (e) => {
         e.stopPropagation();
         const dropdown = document.getElementById('searchDropdown');
@@ -481,17 +502,21 @@
         document.getElementById('searchCats').innerHTML = cats;
       }
 
+      // Se cierra al clickear afuera o al buscar
+      document.addEventListener('click', () => {
+        document.getElementById('searchDropdown').classList.remove('active');
+      })
+      document.getElementById('productSearchMobile').onkeyup = () => {
+        if(currentStore === 'international') renderProductsINT(); else renderProductsAR();
+        setTimeout(() => document.getElementById('searchDropdown').classList.remove('active'), 500);
+      }
+
       // MENU
       document.getElementById('menuToggle').onclick = (e) => {
         e.stopPropagation();
         document.getElementById('menuDropdown').classList.toggle('active');
       }
       document.getElementById('menuVender').onclick = () => window.location.href='panel.html';
-
-      document.addEventListener('click', () => {
-        document.getElementById('searchDropdown').classList.remove('active');
-        document.getElementById('menuDropdown').classList.remove('active');
-      })
 
       // FINALIZAR COMPRA DESDE CARRITO
       document.getElementById('checkoutCartBtn').onclick = () => {
@@ -511,10 +536,36 @@
       document.getElementById('clearCartBtn').onclick = clearCart;
       document.getElementById('productSearch').onkeyup = renderProductsINT;
       document.getElementById('searchAR').onkeyup = renderProductsAR;
-      document.getElementById('productSearchMobile').onkeyup = () => currentStore === 'international'? renderProductsINT() : renderProductsAR();
 
-      cargarDesdeNube();
+         cargarDesdeNube();
       showStore('international');
+
+      // FILTROS CATEGORIAS
+      document.querySelectorAll('#catFilter .cat-btn').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('#catFilter .cat-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeCategory = btn.getAttribute('data-cat');
+          renderProductsINT();
+        }
+      });
+
+      document.querySelectorAll('#catFilterAR .cat-btn').forEach(btn => {
+        btn.onclick = () => {
+          document.querySelectorAll('#catFilterAR .cat-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeCatAR = btn.getAttribute('data-cat-ar');
+          renderProductsAR();
+        }
+      });
+
+      // CERRAR MODALES AL CLICK AFUERA
+      document.getElementById('productModal').onclick = (e) => {
+        if(e.target.id === 'productModal') closeProductModal();
+      }
+      document.getElementById('checkoutModal').onclick = (e) => {
+        if(e.target.id === 'checkoutModal') closeCheckoutModal();
+      }
     }
   </script>
  <script src="./sync.js"></script>
