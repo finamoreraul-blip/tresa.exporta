@@ -7,61 +7,395 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F5F7FA; --card: #FFFFFF; --text: #1A1A1A; --subtext: #6B7280;
-      --blue: #3483FA; --blue-dark: #2968C8; --green: #00A650; --red: #E63946; --border: #E5E7EB; --gold: #D4AF37;
+      --bg: #F5F7FA;
+      --card: #FFFFFF;
+      --text: #1A1A1A;
+      --subtext: #6B7280;
+      --blue: #3483FA;
+      --blue-dark: #2968C8;
+      --green: #00A650;
+      --red: #E63946;
+      --border: #E5E7EB;
+      --gold: #D4AF37;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-    html, body { width: 100%; overflow-x: hidden; background: var(--bg); }
-    body { color: var(--text); }
-   .container { max-width: 1200px; margin: auto; padding: 20px; width: 100%; }
-    header { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
-   .logo { font-size: 20px; font-weight: 900; color: var(--blue); }
-   .btn { background: var(--blue); color: #fff; padding: 12px 25px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-   .btn:hover { background: var(--blue-dark); }
-   .btn.green { background: var(--green); }
-   .btn.red { background: var(--red); color: #fff; }
-   .btn.gray { background: #E5E7EB; color: var(--text); }
-   .btn.gold { background: var(--gold); color: #000; }
-   .auth-box { background: var(--card); padding: 30px 20px; border-radius: 12px; max-width: 500px; margin: 40px auto; border: 1px solid var(--border); }
-   .tabs { display: flex; gap: 10px; margin-bottom: 30px; background: #F3F4F6; padding: 5px; border-radius: 10px; }
-   .tab-btn { flex: 1; padding: 12px; background: transparent; border: none; color: var(--subtext); border-radius: 8px; font-weight: 700; cursor: pointer; }
-   .tab-btn.active { background: var(--card); color: var(--blue); }
-   .form-group { margin-bottom: 20px; }
-   .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
-   .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 14px; background: #F9FAFB; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; }
-   .dashboard-nav { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid var(--border); overflow-x: auto; }
-   .nav-btn { padding: 15px 20px; background: none; border: none; color: var(--subtext); font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
-   .nav-btn.active { color: var(--blue); border-color: var(--blue); }
-   .dashboard-section { display: none; }
-   .dashboard-section.active { display: block; }
-   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
-   .stat-card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
-   .stat-card h3 { font-size: 12px; color: var(--subtext); margin-bottom: 10px; text-transform: uppercase; }
-   .stat-card p { font-size: 28px; font-weight: 900; color: var(--blue); }
-   .store-preview { background: var(--card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
-   .store-cover { height: 180px; background: #E5E7EB; position: relative; background-size: cover; background-position: center; }
-   .store-cover input,.store-avatar input { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
-   .store-header { padding: 20px; display: flex; gap: 15px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-   .store-avatar { width: 80px; height: 80px; border-radius: 50%; background: #E5E7EB; background-size: cover; background-position: center; border: 3px solid var(--blue); flex-shrink: 0; position: relative; }
-   .store-info h2 { font-size: 22px; }
-   .store-info p { color: var(--subtext); font-size: 14px; }
-   .store-desc { padding: 20px; }
-   .prod-table { background: var(--card); border-radius: 12px; padding: 15px; border: 1px solid var(--border); overflow-x: auto; }
-   .prod-row { display: grid; grid-template-columns: 50px 1fr 100px 100px 150px; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; min-width: 700px; }
-   .prod-row.header { font-weight: 700; color: var(--subtext); font-size: 12px; }
-   .prod-row img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
-   .badge { background: var(--green); color: #fff; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
-   .badge.off { background: #D1D5DB; color: #333; }
-   .form-preview { display: flex; gap: 15px; background: #F9FAFB; padding: 15px; border-radius: 10px; margin-bottom: 25px; border: 2px dashed var(--border); }
-   .form-preview img { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
-   .price { font-size: 24px; font-weight: 900; color: var(--blue); }
-   .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
-   .modal.active { display: flex; }
-   .modal-content { background: var(--card); padding: 25px 20px; border-radius: 12px; width: 100%; max-width: 600px; }
-   .alert { background: var(--green); color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 700; display: none; }
-   .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-   .saved-badge { color: var(--green); font-size: 12px; font-weight: 600; display: none; }
-    #dashboard { display: none; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      color: var(--text);
+    }
+
+   .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+      width: 100%;
+    }
+
+    header {
+      background: var(--card);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+
+   .logo {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+   .btn {
+      background: var(--blue);
+      color: #fff;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+   .btn:hover {
+      background: var(--blue-dark);
+    }
+
+   .btn.green {
+      background: var(--green);
+    }
+
+   .btn.red {
+      background: var(--red);
+      color: #fff;
+    }
+
+   .btn.gray {
+      background: #E5E7EB;
+      color: var(--text);
+    }
+
+   .btn.gold {
+      background: var(--gold);
+      color: #000;
+    }
+
+   .auth-box {
+      background: var(--card);
+      padding: 30px 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 40px auto;
+      border: 1px solid var(--border);
+    }
+
+   .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      background: #F3F4F6;
+      padding: 5px;
+      border-radius: 10px;
+    }
+
+   .tab-btn {
+      flex: 1;
+      padding: 12px;
+      background: transparent;
+      border: none;
+      color: var(--subtext);
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+   .tab-btn.active {
+      background: var(--card);
+      color: var(--blue);
+    }
+
+   .form-group {
+      margin-bottom: 20px;
+    }
+
+   .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+   .form-group input,
+   .form-group select,
+   .form-group textarea {
+      width: 100%;
+      padding: 14px;
+      background: #F9FAFB;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+   .dashboard-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid var(--border);
+      overflow-x: auto;
+    }
+
+   .nav-btn {
+      padding: 15px 20px;
+      background: none;
+      border: none;
+      color: var(--subtext);
+      font-weight: 700;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+    }
+
+   .nav-btn.active {
+      color: var(--blue);
+      border-color: var(--blue);
+    }
+
+   .dashboard-section {
+      display: none;
+    }
+
+   .dashboard-section.active {
+      display: block;
+    }
+
+   .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+   .stat-card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+   .stat-card h3 {
+      font-size: 12px;
+      color: var(--subtext);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+   .stat-card p {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+   .store-preview {
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+   .store-cover {
+      height: 180px;
+      background: #E5E7EB;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+    }
+
+   .store-cover input,
+   .store-avatar input {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+   .store-header {
+      padding: 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+   .store-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #E5E7EB;
+      background-size: cover;
+      background-position: center;
+      border: 3px solid var(--blue);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+   .store-info h2 {
+      font-size: 22px;
+    }
+
+   .store-info p {
+      color: var(--subtext);
+      font-size: 14px;
+    }
+
+   .store-desc {
+      padding: 20px;
+    }
+
+   .prod-table {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+   .prod-row {
+      display: grid;
+      grid-template-columns: 50px 1fr 100px 100px 150px;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      min-width: 700px;
+    }
+
+   .prod-row.header {
+      font-weight: 700;
+      color: var(--subtext);
+      font-size: 12px;
+    }
+
+   .prod-row img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+   .badge {
+      background: var(--green);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+   .badge.off {
+      background: #D1D5DB;
+      color: #333;
+    }
+
+   .form-preview {
+      display: flex;
+      gap: 15px;
+      background: #F9FAFB;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      border: 2px dashed var(--border);
+    }
+
+   .form-preview img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+   .price {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+   .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 20px;
+    }
+
+   .modal.active {
+      display: flex;
+    }
+
+   .modal-content {
+      background: var(--card);
+      padding: 25px 20px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+   .alert {
+      background: var(--green);
+      color: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 700;
+      display: none;
+    }
+
+   .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+   .saved-badge {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 600;
+      display: none;
+    }
+
+    #dashboard {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -85,21 +419,47 @@
 
       <form id="loginForm">
         <h2 style="margin-bottom: 20px;">Ingresar a mi Tienda</h2>
-        <div class="form-group"><label>Mail o Usuario</label><input type="text" id="loginUser" required></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="loginPass" required></div>
+        <div class="form-group">
+          <label>Mail o Usuario</label>
+          <input type="text" id="loginUser" required>
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="loginPass" required>
+        </div>
         <button type="submit" class="btn" style="width:100%;">INGRESAR</button>
       </form>
 
       <form id="registerForm" style="display:none;">
         <h2 style="margin-bottom: 20px;">Crear mi Tienda</h2>
-        <div class="form-group"><label>Nombre de la Tienda</label><input type="text" id="rStoreName" required></div>
-        <div class="form-group"><label>Tu Nombre</label><input type="text" id="rName" required></div>
-        <div class="form-group"><label>Mail</label><input type="email" id="rEmail" required></div>
-        <div class="form-group"><label>WhatsApp</label><input type="text" id="rWhatsapp" placeholder="5492983XXXXXX" required></div>
-        <div class="form-group"><label>Ciudad</label>
-          <select id="rCity"><option>Tres Arroyos</option><option>CABA</option><option>La Plata</option></select>
+        <div class="form-group">
+          <label>Nombre de la Tienda</label>
+          <input type="text" id="rStoreName" required>
         </div>
-        <div class="form-group"><label>Crear Contraseña</label><input type="password" id="rPass" required></div>
+        <div class="form-group">
+          <label>Tu Nombre</label>
+          <input type="text" id="rName" required>
+        </div>
+        <div class="form-group">
+          <label>Mail</label>
+          <input type="email" id="rEmail" required>
+        </div>
+        <div class="form-group">
+          <label>WhatsApp</label>
+          <input type="text" id="rWhatsapp" placeholder="5492983XXXXXX" required>
+        </div>
+        <div class="form-group">
+          <label>Ciudad</label>
+          <select id="rCity">
+            <option>Tres Arroyos</option>
+            <option>CABA</option>
+            <option>La Plata</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Crear Contraseña</label>
+          <input type="password" id="rPass" required>
+        </div>
         <button type="submit" class="btn green" style="width:100%;">CREAR TIENDA GRATIS</button>
       </form>
     </div>
@@ -117,9 +477,18 @@
     <div class="dashboard-section active" id="resumen">
       <h2 style="margin-bottom:20px;">Resumen de tu tienda</h2>
       <div class="stats">
-        <div class="stat-card"><h3>PRODUCTOS PUBLICADOS</h3><p id="statProducts">0</p></div>
-        <div class="stat-card"><h3>VISITAS HOY</h3><p id="statVisits">0</p></div>
-        <div class="stat-card"><h3>VISITAS TOTAL</h3><p id="statVisitsTotal">0</p></div>
+        <div class="stat-card">
+          <h3>PRODUCTOS PUBLICADOS</h3>
+          <p id="statProducts">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>VISITAS HOY</h3>
+          <p id="statVisits">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>VISITAS TOTAL</h3>
+          <p id="statVisitsTotal">0</p>
+        </div>
       </div>
       <div class="btn-group">
         <button class="btn green" onclick="openProductModal()">+ PUBLICAR PRODUCTO</button>
@@ -156,7 +525,11 @@
       </div>
       <div class="prod-table">
         <div class="prod-row header">
-          <div>IMG</div><div>PRODUCTO</div><div>PRECIO ARS</div><div>ESTADO</div><div>ACCIONES</div>
+          <div>IMG</div>
+          <div>PRODUCTO</div>
+          <div>PRECIO ARS</div>
+          <div>ESTADO</div>
+          <div>ACCIONES</div>
         </div>
         <div id="myProductsList"></div>
       </div>
@@ -178,12 +551,30 @@
 
       <form id="productForm">
         <input type="hidden" id="editId">
-        <div class="form-group"><label>Foto del Producto</label><input type="file" id="pImgFile" accept="image/*" onchange="previewProdImg(event)"></div>
-        <div class="form-group"><label>Nombre</label><input type="text" id="pName" onkeyup="updateProdPreview()" required></div>
-        <div class="form-group"><label>Precio ARS</label><input type="number" id="pPrice" onkeyup="updateProdPreview()" required></div>
-        <div class="form-group"><label>Link de Pago MercadoPago</label><input type="text" id="pPaymentLink" placeholder="https://mpago.la/... opcional"></div>
-        <div class="form-group"><label>Categoria</label>
-          <select id="pCategory"><option value="artesanias">Artesanias</option><option value="food">Alimentos</option><option value="home">Hogar</option><option value="clothing">Ropa</option></select>
+        <div class="form-group">
+          <label>Foto del Producto</label>
+          <input type="file" id="pImgFile" accept="image/*" onchange="previewProdImg(event)">
+        </div>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="pName" onkeyup="updateProdPreview()" required>
+        </div>
+        <div class="form-group">
+          <label>Precio ARS</label>
+          <input type="number" id="pPrice" onkeyup="updateProdPreview()" required>
+        </div>
+        <div class="form-group">
+          <label>Link de Pago MercadoPago</label>
+          <input type="text" id="pPaymentLink" placeholder="https://mpago.la/... opcional">
+        </div>
+        <div class="form-group">
+          <label>Categoria</label>
+          <select id="pCategory">
+            <option value="artesanias">Artesanias</option>
+            <option value="food">Alimentos</option>
+            <option value="home">Hogar</option>
+            <option value="clothing">Ropa</option>
+          </select>
         </div>
         <div style="display:flex; gap:10px;">
           <button type="submit" class="btn green" style="flex:1;">GUARDAR</button>
@@ -193,8 +584,47 @@
     </div>
   </div>
 
-  <script src="./sync.js"></script>
   <script>
+    // CONFIG NUBE - PEGA TU BIN_ID Y API_KEY AQUI
+    const BIN_ID = '6a56ce97f5f4af5e299000c2';
+    const API_KEY = '$2a$10$B1K/L0dBd09SArO06y5gQOa6bCi52crjbHvBwXJFahIHEp9Tvh3d6';
+
+    async function getCloudData() {
+        try {
+            const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': API_KEY }
+            });
+            const data = await res.json();
+            return data.record || { AR: [], INT: [], USERS: [] };
+        } catch(e) {
+            console.error("Error leyendo nube:", e);
+            return { AR: [], INT: [], USERS: [] };
+        }
+    }
+
+    async function setCloudData(data) {
+        try {
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                body: JSON.stringify(data)
+            });
+        } catch(e) {
+            console.error("Error guardando nube:", e);
+        }
+    }
+
+    async function getVendedores() {
+        const data = await getCloudData();
+        return data.USERS || [];
+    }
+
+    async function setVendedores(users) {
+        const data = await getCloudData();
+        data.USERS = users;
+        await setCloudData(data);
+    }
+
     let currentUser = JSON.parse(localStorage.getItem('marketSeller')) || null;
     let USERS = [];
     let productsAR = [];
@@ -203,7 +633,9 @@
     let saveTimeout;
     let updateInterval;
 
-    function getImg(p) { return p.imgs? p.imgs[0] : 'https://via.placeholder.com/50/E5E7EB/6B7280'; }
+    function getImg(p) {
+        return p.imgs? p.imgs[0] : 'https://via.placeholder.com/50/E5E7EB/6B7280';
+    }
 
     function showTab(tab) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -227,7 +659,9 @@
 
     function showAlert(msg, color='green') {
       const alert = document.getElementById('alertMsg');
-      alert.textContent = msg; alert.style.background = color === 'green'? 'var(--green)' : 'var(--red)'; alert.style.display = 'block';
+      alert.textContent = msg;
+      alert.style.background = color === 'green'? 'var(--green)' : 'var(--red)';
+      alert.style.display = 'block';
       setTimeout(() => alert.style.display = 'none', 3000);
     }
 
@@ -261,7 +695,9 @@
             const isInternational = productsINT.find(ap => ap.id === p.id);
             list.innerHTML += `
               <div class="prod-row">
-                <img src="${getImg(p)}"><div>${p.name}</div><div>$${p.price.toLocaleString('es-AR')}</div>
+                <img src="${getImg(p)}">
+                <div>${p.name}</div>
+                <div>$${p.price.toLocaleString('es-AR')}</div>
                 <div><span class="badge ${isInternational? '' : 'off'}">${isInternational? 'EN USD' : 'SOLO ARS'}</span></div>
                 <div>
                   <button class="btn" style="padding:8px 10px; font-size:12px;" onclick='editarProducto(${p.id})'>EDITAR</button>
@@ -271,10 +707,41 @@
         });
     }
 
-    function previewCover(e) { const reader = new FileReader(); reader.onload = () => { document.getElementById('previewCover').style.backgroundImage = `url(${reader.result})`; currentUser.cover = reader.result; saveStoreData(); } reader.readAsDataURL(e.target.files[0]); }
-    function previewAvatar(e) { const reader = new FileReader(); reader.onload = () => { document.getElementById('previewAvatar').style.backgroundImage = `url(${reader.result})`; currentUser.avatar = reader.result; saveStoreData(); } reader.readAsDataURL(e.target.files[0]); }
-    function debounceSave() { currentUser.desc = document.getElementById('storeDesc').value; clearTimeout(saveTimeout); saveTimeout = setTimeout(saveStoreData, 800); }
-    async function saveStoreData() { USERS = await getVendedores(); const index = USERS.findIndex(u => u.storeId === currentUser.storeId); if(index!== -1) { USERS[index] = currentUser; await setVendedores(USERS); localStorage.setItem('marketSeller', JSON.stringify(currentUser)); } }
+    function previewCover(e) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            document.getElementById('previewCover').style.backgroundImage = `url(${reader.result})`;
+            currentUser.cover = reader.result;
+            saveStoreData();
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    }
+
+    function previewAvatar(e) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            document.getElementById('previewAvatar').style.backgroundImage = `url(${reader.result})`;
+            currentUser.avatar = reader.result;
+            saveStoreData();
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    }
+
+    function debounceSave() {
+        currentUser.desc = document.getElementById('storeDesc').value;
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(saveStoreData, 800);
+    }
+
+    async function saveStoreData() {
+        USERS = await getVendedores();
+        const index = USERS.findIndex(u => u.storeId === currentUser.storeId);
+        if(index!== -1) {
+            USERS[index] = currentUser;
+            await setVendedores(USERS);
+            localStorage.setItem('marketSeller', JSON.stringify(currentUser));
+        }
+    }
 
     document.getElementById('registerForm').onsubmit = async (e) => {
       e.preventDefault();
@@ -282,29 +749,105 @@
       const email = document.getElementById('rEmail').value.trim();
       if(USERS.find(u => u.email === email)) return showAlert('Este mail ya tiene una tienda', 'red');
       const storeId = document.getElementById('rStoreName').value.toLowerCase().replace(/\s/g,'-');
-      const newUser = { user: storeId, email: email, pass: document.getElementById('rPass').value, storeId: storeId, storeName: document.getElementById('rStoreName').value, name: document.getElementById('rName').value, city: document.getElementById('rCity').value, whatsapp: document.getElementById('rWhatsapp').value, avatar: '', cover: '', desc: '', visits: 0, visitsToday: 0, lastVisitDate: '', lastLogin: new Date().toLocaleString('es-AR'), bloqueada: false };
-      USERS.push(newUser); await setVendedores(USERS); showAlert('¡Tienda creada!'); showTab('login'); document.getElementById('registerForm').reset();
+      const newUser = {
+          user: storeId,
+          email: email,
+          pass: document.getElementById('rPass').value,
+          storeId: storeId,
+          storeName: document.getElementById('rStoreName').value,
+          name: document.getElementById('rName').value,
+          city: document.getElementById('rCity').value,
+          whatsapp: document.getElementById('rWhatsapp').value,
+          avatar: '',
+          cover: '',
+          desc: '',
+          visits: 0,
+          visitsToday: 0,
+          lastVisitDate: '',
+          lastLogin: new Date().toLocaleString('es-AR'),
+          bloqueada: false
+      };
+      USERS.push(newUser);
+      await setVendedores(USERS);
+      showAlert('¡Tienda creada!');
+      showTab('login');
+      document.getElementById('registerForm').reset();
     }
 
     document.getElementById('loginForm').onsubmit = async (e) => {
       e.preventDefault();
       USERS = await getVendedores();
       const found = USERS.find(u => (u.email === document.getElementById('loginUser').value) && u.pass === document.getElementById('loginPass').value);
-      if(found) { currentUser = found; localStorage.setItem('marketSeller', JSON.stringify(found)); showDashboard(); } else { showAlert('Usuario o contraseña incorrectos', 'red'); }
+      if(found) {
+          currentUser = found;
+          localStorage.setItem('marketSeller', JSON.stringify(found));
+          showDashboard();
+      } else {
+          showAlert('Usuario o contraseña incorrectos', 'red');
+      }
     }
 
-    function logout() { clearInterval(updateInterval); currentUser = null; localStorage.removeItem('marketSeller'); document.getElementById('dashboard').style.display = 'none'; document.getElementById('authScreen').style.display = 'block'; }
+    function logout() {
+        clearInterval(updateInterval);
+        currentUser = null;
+        localStorage.removeItem('marketSeller');
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('authScreen').style.display = 'block';
+    }
 
-    function previewProdImg(e) { const reader = new FileReader(); reader.readAsDataURL(e.target.files[0]); reader.onload = () => { tempProdImg = reader.result; document.getElementById('previewImg').src = reader.result; } }
-    function updateProdPreview() { document.getElementById('previewTitle').textContent = document.getElementById('pName').value || 'Nombre del producto'; document.getElementById('previewPrice').textContent = '$' + (document.getElementById('pPrice').value || '0'); document.getElementById('previewStore').textContent = currentUser.storeName; }
-    function openProductModal() { document.getElementById('modalTitle').textContent = 'Publicar Producto'; document.getElementById('productModal').classList.add('active'); document.getElementById('productForm').reset(); document.getElementById('editId').value = ''; document.getElementById('previewImg').src = "https://via.placeholder.com/150/E5E7EB/6B7280?text=Foto"; tempProdImg = ""; }
-    function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
-    function editarProducto(id) { const p = productsAR.find(x => x.id === id); document.getElementById('modalTitle').textContent = 'Editar Producto'; document.getElementById('editId').value = p.id; document.getElementById('pName').value = p.name; document.getElementById('pPrice').value = p.price; document.getElementById('pCategory').value = p.category; document.getElementById('pPaymentLink').value = p.paymentLink || ''; document.getElementById('previewImg').src = getImg(p); document.getElementById('previewTitle').textContent = p.name; document.getElementById('previewPrice').textContent = '$' + p.price; tempProdImg = getImg(p); document.getElementById('productModal').classList.add('active'); }
+    function previewProdImg(e) {
+        const reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            tempProdImg = reader.result;
+            document.getElementById('previewImg').src = reader.result;
+        }
+    }
+
+    function updateProdPreview() {
+        document.getElementById('previewTitle').textContent = document.getElementById('pName').value || 'Nombre del producto';
+        document.getElementById('previewPrice').textContent = '$' + (document.getElementById('pPrice').value || '0');
+        document.getElementById('previewStore').textContent = currentUser.storeName;
+    }
+
+    function openProductModal() {
+        document.getElementById('modalTitle').textContent = 'Publicar Producto';
+        document.getElementById('productModal').classList.add('active');
+        document.getElementById('productForm').reset();
+        document.getElementById('editId').value = '';
+        document.getElementById('previewImg').src = "https://via.placeholder.com/150/E5E7EB/6B7280?text=Foto";
+        tempProdImg = "";
+    }
+
+    function closeProductModal() {
+        document.getElementById('productModal').classList.remove('active');
+    }
+
+    function editarProducto(id) {
+        const p = productsAR.find(x => x.id === id);
+        document.getElementById('modalTitle').textContent = 'Editar Producto';
+        document.getElementById('editId').value = p.id;
+        document.getElementById('pName').value = p.name;
+        document.getElementById('pPrice').value = p.price;
+        document.getElementById('pCategory').value = p.category;
+        document.getElementById('pPaymentLink').value = p.paymentLink || '';
+        document.getElementById('previewImg').src = getImg(p);
+        document.getElementById('previewTitle').textContent = p.name;
+        document.getElementById('previewPrice').textContent = '$' + p.price;
+        tempProdImg = getImg(p);
+        document.getElementById('productModal').classList.add('active');
+    }
 
     async function guardarProducto(nuevo, editId) {
         const data = await getCloudData();
-        if(editId) { const index = data.AR.findIndex(p => p.id === parseInt(editId)); if(index > -1) data.AR[index] = nuevo; showAlert('Producto actualizado!'); }
-        else { data.AR.unshift(nuevo); showAlert('Producto publicado en MARKET!'); }
+        if(editId) {
+            const index = data.AR.findIndex(p => p.id === parseInt(editId));
+            if(index > -1) data.AR[index] = nuevo;
+            showAlert('Producto actualizado!');
+        } else {
+            data.AR.unshift(nuevo);
+            showAlert('Producto publicado en MARKET!');
+        }
         await setCloudData(data);
         setTimeout(syncAndLoad, 1200);
     }
@@ -312,8 +855,21 @@
     document.getElementById('productForm').onsubmit = async (e) => {
         e.preventDefault();
         const editId = document.getElementById('editId').value;
-        const nuevo = { id: editId? parseInt(editId) : Date.now(), name: document.getElementById('pName').value, price: parseFloat(document.getElementById('pPrice').value), imgs: [tempProdImg], category: document.getElementById('pCategory').value, store: currentUser.storeName, storeId: currentUser.storeId, city: currentUser.city, tienda: 'argentina', paymentLink: document.getElementById('pPaymentLink').value, fecha: new Date().toLocaleString('es-AR') };
-        await guardarProducto(nuevo, editId); closeProductModal();
+        const nuevo = {
+            id: editId? parseInt(editId) : Date.now(),
+            name: document.getElementById('pName').value,
+            price: parseFloat(document.getElementById('pPrice').value),
+            imgs: [tempProdImg],
+            category: document.getElementById('pCategory').value,
+            store: currentUser.storeName,
+            storeId: currentUser.storeId,
+            city: currentUser.city,
+            tienda: 'argentina',
+            paymentLink: document.getElementById('pPaymentLink').value,
+            fecha: new Date().toLocaleString('es-AR')
+        };
+        await guardarProducto(nuevo, editId);
+        closeProductModal();
     }
 
     async function deleteProduct(id) {
@@ -326,7 +882,9 @@
         }
     }
 
-    window.onload = async () => { if(currentUser) showDashboard(); }
+    window.onload = async () => {
+        if(currentUser) showDashboard();
+    }
   </script>
 </body>
 </html>
