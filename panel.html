@@ -87,7 +87,7 @@
         <h2 style="margin-bottom: 20px;">Ingresar a mi Tienda</h2>
         <div class="form-group"><label>Mail o Usuario</label><input type="text" id="loginUser" required></div>
         <div class="form-group"><label>Contraseña</label><input type="password" id="loginPass" required></div>
-        <button class="btn" style="width:100%;">INGRESAR</button>
+        <button type="submit" class="btn" style="width:100%;">INGRESAR</button>
       </form>
 
       <form id="registerForm" style="display:none;">
@@ -100,7 +100,7 @@
           <select id="rCity"><option>Tres Arroyos</option><option>CABA</option><option>La Plata</option></select>
         </div>
         <div class="form-group"><label>Crear Contraseña</label><input type="password" id="rPass" required></div>
-        <button class="btn green" style="width:100%;">CREAR TIENDA GRATIS</button>
+        <button type="submit" class="btn green" style="width:100%;">CREAR TIENDA GRATIS</button>
       </form>
     </div>
   </div>
@@ -255,7 +255,7 @@
     document.getElementById('registerForm').onsubmit = async (e) => {
       e.preventDefault();
       USERS = await getVendedores();
-      const email = document.getElementById('rEmail').value;
+      const email = document.getElementById('rEmail').value.trim();
       if(USERS.find(u => u.email === email)) return showAlert('Este mail ya tiene una tienda', 'red');
       const storeId = document.getElementById('rStoreName').value.toLowerCase().replace(/\s/g,'-');
       const newUser = {
@@ -269,13 +269,14 @@
       USERS.push(newUser);
       await setVendedores(USERS);
       showAlert('¡Tienda creada! Ya puedes ingresar'); showTab('login');
+      document.getElementById('registerForm').reset();
     }
 
     document.getElementById('loginForm').onsubmit = async (e) => {
       e.preventDefault();
       USERS = await getVendedores();
-      const userInput = document.getElementById('loginUser').value;
-      const pass = document.getElementById('loginPass').value;
+      const userInput = document.getElementById('loginUser').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
       const found = USERS.find(u => (u.user === userInput || u.email === userInput) && u.pass === pass);
       if(found) {
         currentUser = found;
@@ -416,7 +417,7 @@
         }
         localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
         localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-        await setCloudData({ AR: productsAR, INT: productsINT });
+        await setCloudData({ AR: productsAR, INT: productsINT, USERS: USERS });
     }
 
     document.getElementById('productForm').onsubmit = async (e) => {
@@ -443,7 +444,7 @@
             productsINT = productsINT.filter(p => p.id!== id);
             localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
             localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-            await setCloudData({ AR: productsAR, INT: productsINT });
+            await setCloudData({ AR: productsAR, INT: productsINT, USERS: USERS });
             loadData();
         }
     }
@@ -459,7 +460,7 @@
             const index = productsINT.findIndex(ap => ap.id === id);
             if(index > -1) productsINT[index] = prodIntl; else productsINT.push(prodIntl);
             localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-            await setCloudData({ AR: productsAR, INT: productsINT });
+            await setCloudData({ AR: productsAR, INT: productsINT, USERS: USERS });
             loadData();
             alert('Publicado en Internacional!');
         }
@@ -467,7 +468,12 @@
 
     window.addEventListener('beforeunload', () => { saveStoreData(); clearInterval(updateInterval); });
 
-    if(currentUser) { document.getElementById('authScreen').style.display = 'none'; showDashboard(); }
+    window.onload = async () => {
+        if(currentUser) {
+            document.getElementById('authScreen').style.display = 'none';
+            showDashboard();
+        }
+    }
   </script>
 </body>
 </html>
