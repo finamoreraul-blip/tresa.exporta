@@ -203,7 +203,7 @@
     let saveTimeout;
     let updateInterval;
 
-    function getImg(p) { return p.imgs? p.imgs[0] : p.img; }
+    function getImg(p) { return p.imgs? p.imgs[0] : 'https://via.placeholder.com/50/E5E7EB/6B7280'; }
 
     function showTab(tab) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -231,73 +231,9 @@
       setTimeout(() => alert.style.display = 'none', 3000);
     }
 
-    function showSaved() {
-      document.getElementById('savedBadge').style.display = 'inline';
-      setTimeout(() => document.getElementById('savedBadge').style.display = 'none', 2000);
-    }
-
-    async function saveStoreData() {
-      USERS = await getVendedores();
-      const index = USERS.findIndex(u => u.storeId === currentUser.storeId);
-      if(index!== -1) {
-        USERS[index] = currentUser;
-        await setVendedores(USERS);
-        localStorage.setItem('marketSeller', JSON.stringify(currentUser));
-        showSaved();
-      }
-    }
-    function debounceSave() {
-      currentUser.desc = document.getElementById('storeDesc').value;
-      clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(saveStoreData, 800);
-    }
-
-    document.getElementById('registerForm').onsubmit = async (e) => {
-      e.preventDefault();
-      USERS = await getVendedores();
-      const email = document.getElementById('rEmail').value.trim();
-      if(USERS.find(u => u.email === email)) return showAlert('Este mail ya tiene una tienda', 'red');
-      const storeId = document.getElementById('rStoreName').value.toLowerCase().replace(/\s/g,'-');
-      const newUser = {
-        user: storeId, email: email, pass: document.getElementById('rPass').value,
-        storeId: storeId, storeName: document.getElementById('rStoreName').value,
-        name: document.getElementById('rName').value, city: document.getElementById('rCity').value,
-        whatsapp: document.getElementById('rWhatsapp').value,
-        avatar: '', cover: '', desc: '', visits: 0, visitsToday: 0, lastVisitDate: '',
-        lastLogin: new Date().toLocaleString('es-AR'), bloqueada: false
-      };
-      USERS.push(newUser);
-      await setVendedores(USERS);
-      showAlert('¡Tienda creada! Ya puedes ingresar'); showTab('login');
-      document.getElementById('registerForm').reset();
-    }
-
-    document.getElementById('loginForm').onsubmit = async (e) => {
-      e.preventDefault();
-      USERS = await getVendedores();
-      const userInput = document.getElementById('loginUser').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
-      const found = USERS.find(u => (u.user === userInput || u.email === userInput) && u.pass === pass);
-      if(found) {
-        currentUser = found;
-        currentUser.lastLogin = new Date().toLocaleString('es-AR');
-        await saveStoreData();
-        localStorage.setItem('marketSeller', JSON.stringify(found));
-        document.getElementById('authScreen').style.display = 'none';
-        showDashboard();
-      } else { showAlert('Usuario o contraseña incorrectos', 'red'); }
-    }
-
-    function logout() {
-      saveStoreData();
-      clearInterval(updateInterval);
-      currentUser = null; localStorage.removeItem('marketSeller');
-      document.getElementById('dashboard').style.display = 'none';
-      document.getElementById('authScreen').style.display = 'block';
-    }
-
     async function showDashboard() {
       document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('authScreen').style.display = 'none';
       document.getElementById('logoutBtn').style.display = 'block';
       document.getElementById('storeNameTitle').textContent = currentUser.storeName;
       document.getElementById('previewStoreName').textContent = currentUser.storeName;
@@ -306,142 +242,79 @@
       if(currentUser.avatar) document.getElementById('previewAvatar').style.backgroundImage = `url(${currentUser.avatar})`;
       if(currentUser.cover) document.getElementById('previewCover').style.backgroundImage = `url(${currentUser.cover})`;
       document.getElementById('viewStoreBtn').onclick = () => window.open(`store.html?store=${currentUser.storeId}`, '_blank');
-      await loadData();
-      updateInterval = setInterval(cargarDesdeNube, 3000);
+      await syncAndLoad();
+      updateInterval = setInterval(syncAndLoad, 3000);
     }
 
-    async function cargarDesdeNube() {
+    // ESTA ES LA CLAVE: SIEMPRE LEE DE LA NUBE
+    async function syncAndLoad() {
         const data = await getCloudData();
-        if(!data) return;
-        if(data.AR) localStorage.setItem('marketProductsAR', JSON.stringify(data.AR));
-        if(data.INT) localStorage.setItem('marketProductsINT', JSON.stringify(data.INT));
-        loadData();
+        productsAR = data.AR || [];
+        productsINT = data.INT || [];
+        USERS = data.USERS || [];
+
+        const myProducts = productsAR.filter(p => p.storeId === currentUser.storeId);
+        document.getElementById('statProducts').textContent = myProducts.length;
+
+        const list = document.getElementById('myProductsList');
+        list.innerHTML = myProducts.length === 0? '<p style="text-align:center; padding:20px; color:var(--subtext);">No tienes productos. Publica el primero!</p>' : '';
+        myProducts.forEach(p => {
+            const isInternational = productsINT.find(ap => ap.id === p.id);
+            list.innerHTML += `
+              <div class="prod-row">
+                <img src="${getImg(p)}"><div>${p.name}</div><div>$${p.price.toLocaleString('es-AR')}</div>
+                <div><span class="badge ${isInternational? '' : 'off'}">${isInternational? 'EN USD' : 'SOLO ARS'}</span></div>
+                <div>
+                  <button class="btn" style="padding:8px 10px; font-size:12px;" onclick='editarProducto(${p.id})'>EDITAR</button>
+                  <button class="btn red" style="padding:8px 10px; font-size:12px;" onclick="deleteProduct(${p.id})">BORRAR</button>
+                </div>
+              </div>`;
+        });
     }
 
-    async function loadData() {
-      const data = await getCloudData();
-      productsAR = data.AR || [];
-      productsINT = data.INT || [];
+    function previewCover(e) { const reader = new FileReader(); reader.onload = () => { document.getElementById('previewCover').style.backgroundImage = `url(${reader.result})`; currentUser.cover = reader.result; saveStoreData(); } reader.readAsDataURL(e.target.files[0]); }
+    function previewAvatar(e) { const reader = new FileReader(); reader.onload = () => { document.getElementById('previewAvatar').style.backgroundImage = `url(${reader.result})`; currentUser.avatar = reader.result; saveStoreData(); } reader.readAsDataURL(e.target.files[0]); }
+    function debounceSave() { currentUser.desc = document.getElementById('storeDesc').value; clearTimeout(saveTimeout); saveTimeout = setTimeout(saveStoreData, 800); }
+    async function saveStoreData() { USERS = await getVendedores(); const index = USERS.findIndex(u => u.storeId === currentUser.storeId); if(index!== -1) { USERS[index] = currentUser; await setVendedores(USERS); localStorage.setItem('marketSeller', JSON.stringify(currentUser)); } }
+
+    document.getElementById('registerForm').onsubmit = async (e) => {
+      e.preventDefault();
       USERS = await getVendedores();
-
-      const today = new Date().toISOString().split('T')[0];
-      if(currentUser.lastVisitDate!== today) { currentUser.visitsToday = 0; currentUser.lastVisitDate = today; }
-      document.getElementById('statProducts').textContent = productsAR.filter(p => p.storeId === currentUser.storeId).length;
-      document.getElementById('statVisits').textContent = currentUser.visitsToday || 0;
-      document.getElementById('statVisitsTotal').textContent = currentUser.visits || 0;
-      loadMyProducts();
+      const email = document.getElementById('rEmail').value.trim();
+      if(USERS.find(u => u.email === email)) return showAlert('Este mail ya tiene una tienda', 'red');
+      const storeId = document.getElementById('rStoreName').value.toLowerCase().replace(/\s/g,'-');
+      const newUser = { user: storeId, email: email, pass: document.getElementById('rPass').value, storeId: storeId, storeName: document.getElementById('rStoreName').value, name: document.getElementById('rName').value, city: document.getElementById('rCity').value, whatsapp: document.getElementById('rWhatsapp').value, avatar: '', cover: '', desc: '', visits: 0, visitsToday: 0, lastVisitDate: '', lastLogin: new Date().toLocaleString('es-AR'), bloqueada: false };
+      USERS.push(newUser); await setVendedores(USERS); showAlert('¡Tienda creada!'); showTab('login'); document.getElementById('registerForm').reset();
     }
 
-    function previewCover(e) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        document.getElementById('previewCover').style.backgroundImage = `url(${reader.result})`;
-        currentUser.cover = reader.result;
-        saveStoreData();
-      }
-      reader.readAsDataURL(e.target.files[0]);
-    }
-    function previewAvatar(e) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        document.getElementById('previewAvatar').style.backgroundImage = `url(${reader.result})`;
-        currentUser.avatar = reader.result;
-        saveStoreData();
-      }
-      reader.readAsDataURL(e.target.files[0]);
+    document.getElementById('loginForm').onsubmit = async (e) => {
+      e.preventDefault();
+      USERS = await getVendedores();
+      const found = USERS.find(u => (u.email === document.getElementById('loginUser').value) && u.pass === document.getElementById('loginPass').value);
+      if(found) { currentUser = found; localStorage.setItem('marketSeller', JSON.stringify(found)); showDashboard(); } else { showAlert('Usuario o contraseña incorrectos', 'red'); }
     }
 
-    function loadMyProducts() {
-      const myProducts = productsAR.filter(p => p.storeId === currentUser.storeId);
-      const list = document.getElementById('myProductsList');
-      list.innerHTML = myProducts.length === 0? '<p style="text-align:center; padding:20px; color:var(--subtext);">No tienes productos. Publica el primero!</p>' : '';
-      myProducts.forEach(p => {
-        const isInternational = productsINT.find(ap => ap.id === p.id);
-        list.innerHTML += `
-          <div class="prod-row">
-            <img src="${getImg(p)}"><div>${p.name}</div><div>$${p.price.toLocaleString('es-AR')}</div>
-            <div><span class="badge ${isInternational? '' : 'off'}">${isInternational? 'EN USD' : 'SOLO ARS'}</span></div>
-            <div>
-              <button class="btn" style="padding:8px 10px; font-size:12px;" onclick='editarProducto(${p.id})'>EDITAR</button>
-              <button class="btn red" style="padding:8px 10px; font-size:12px;" onclick="deleteProduct(${p.id})">BORRAR</button>
-            </div>
-          </div>`;
-      });
-    }
+    function logout() { clearInterval(updateInterval); currentUser = null; localStorage.removeItem('marketSeller'); document.getElementById('dashboard').style.display = 'none'; document.getElementById('authScreen').style.display = 'block'; }
 
-    function previewProdImg(e) {
-      const reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onload = () => { tempProdImg = reader.result; document.getElementById('previewImg').src = reader.result; }
-    }
-    function updateProdPreview() {
-      document.getElementById('previewTitle').textContent = document.getElementById('pName').value || 'Nombre del producto';
-      document.getElementById('previewPrice').textContent = '$' + (document.getElementById('pPrice').value || '0');
-      document.getElementById('previewStore').textContent = currentUser.storeName;
-    }
-
-    function openProductModal() {
-      document.getElementById('modalTitle').textContent = 'Publicar Producto';
-      document.getElementById('productModal').classList.add('active');
-      document.getElementById('productForm').reset();
-      document.getElementById('editId').value = '';
-      document.getElementById('previewImg').src = "https://via.placeholder.com/150/E5E7EB/6B7280?text=Foto";
-      tempProdImg = "";
-    }
+    function previewProdImg(e) { const reader = new FileReader(); reader.readAsDataURL(e.target.files[0]); reader.onload = () => { tempProdImg = reader.result; document.getElementById('previewImg').src = reader.result; } }
+    function updateProdPreview() { document.getElementById('previewTitle').textContent = document.getElementById('pName').value || 'Nombre del producto'; document.getElementById('previewPrice').textContent = '$' + (document.getElementById('pPrice').value || '0'); document.getElementById('previewStore').textContent = currentUser.storeName; }
+    function openProductModal() { document.getElementById('modalTitle').textContent = 'Publicar Producto'; document.getElementById('productModal').classList.add('active'); document.getElementById('productForm').reset(); document.getElementById('editId').value = ''; document.getElementById('previewImg').src = "https://via.placeholder.com/150/E5E7EB/6B7280?text=Foto"; tempProdImg = ""; }
     function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
+    function editarProducto(id) { const p = productsAR.find(x => x.id === id); document.getElementById('modalTitle').textContent = 'Editar Producto'; document.getElementById('editId').value = p.id; document.getElementById('pName').value = p.name; document.getElementById('pPrice').value = p.price; document.getElementById('pCategory').value = p.category; document.getElementById('pPaymentLink').value = p.paymentLink || ''; document.getElementById('previewImg').src = getImg(p); document.getElementById('previewTitle').textContent = p.name; document.getElementById('previewPrice').textContent = '$' + p.price; tempProdImg = getImg(p); document.getElementById('productModal').classList.add('active'); }
 
-    function editarProducto(id) {
-      const p = productsAR.find(x => x.id === id);
-      document.getElementById('modalTitle').textContent = 'Editar Producto';
-      document.getElementById('editId').value = p.id;
-      document.getElementById('pName').value = p.name;
-      document.getElementById('pPrice').value = p.price;
-      document.getElementById('pCategory').value = p.category;
-      document.getElementById('pPaymentLink').value = p.paymentLink || '';
-      document.getElementById('previewImg').src = getImg(p);
-      document.getElementById('previewTitle').textContent = p.name;
-      document.getElementById('previewPrice').textContent = '$' + p.price;
-      tempProdImg = getImg(p);
-      document.getElementById('productModal').classList.add('active');
-    }
-
-    // FIX: ESPERA 1 SEG PARA QUE JSONBIN ACTUALICE
     async function guardarProducto(nuevo, editId) {
         const data = await getCloudData();
-
-        if(editId) {
-            const index = data.AR.findIndex(p => p.id === parseInt(editId));
-            if(index > -1) data.AR[index] = nuevo;
-            showAlert('Producto actualizado!');
-        } else {
-            data.AR.unshift(nuevo);
-            showAlert('Producto publicado en MARKET!');
-        }
-
+        if(editId) { const index = data.AR.findIndex(p => p.id === parseInt(editId)); if(index > -1) data.AR[index] = nuevo; showAlert('Producto actualizado!'); }
+        else { data.AR.unshift(nuevo); showAlert('Producto publicado en MARKET!'); }
         await setCloudData(data);
-
-        // ESPERA 1 SEG Y RE-CARGA DE LA NUBE
-        setTimeout(async () => {
-            await cargarDesdeNube();
-        }, 1000);
+        setTimeout(syncAndLoad, 1200);
     }
 
     document.getElementById('productForm').onsubmit = async (e) => {
         e.preventDefault();
         const editId = document.getElementById('editId').value;
-        const nuevo = {
-            id: editId? parseInt(editId) : Date.now(),
-            name: document.getElementById('pName').value,
-            price: parseFloat(document.getElementById('pPrice').value),
-            imgs: [tempProdImg || document.getElementById('previewImg').src],
-            category: document.getElementById('pCategory').value,
-            store: currentUser.storeName, storeId: currentUser.storeId, city: currentUser.city,
-            tienda: 'argentina',
-            paymentLink: document.getElementById('pPaymentLink').value,
-            fecha: new Date().toLocaleString('es-AR')
-        };
-        await guardarProducto(nuevo, editId);
-        closeProductModal();
+        const nuevo = { id: editId? parseInt(editId) : Date.now(), name: document.getElementById('pName').value, price: parseFloat(document.getElementById('pPrice').value), imgs: [tempProdImg], category: document.getElementById('pCategory').value, store: currentUser.storeName, storeId: currentUser.storeId, city: currentUser.city, tienda: 'argentina', paymentLink: document.getElementById('pPaymentLink').value, fecha: new Date().toLocaleString('es-AR') };
+        await guardarProducto(nuevo, editId); closeProductModal();
     }
 
     async function deleteProduct(id) {
@@ -450,20 +323,11 @@
             data.AR = data.AR.filter(p => p.id!== id);
             data.INT = data.INT.filter(p => p.id!== id);
             await setCloudData(data);
-            setTimeout(async () => {
-                await cargarDesdeNube();
-            }, 1000);
+            setTimeout(syncAndLoad, 1200);
         }
     }
 
-    window.addEventListener('beforeunload', () => { saveStoreData(); clearInterval(updateInterval); });
-
-    window.onload = async () => {
-        if(currentUser) {
-            document.getElementById('authScreen').style.display = 'none';
-            showDashboard();
-        }
-    }
+    window.onload = async () => { if(currentUser) showDashboard(); }
   </script>
 </body>
 </html>
