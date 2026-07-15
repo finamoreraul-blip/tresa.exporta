@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -194,11 +193,12 @@
     </div>
   </div>
 
+  <script src="./sync.js"></script>
   <script>
     let currentUser = JSON.parse(localStorage.getItem('marketSeller')) || null;
-    let USERS = JSON.parse(localStorage.getItem('marketUsers')) || [];
-    let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
-    let productsINT = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
+    let USERS = [];
+    let productsAR = [];
+    let productsINT = [];
     let tempProdImg = "";
     let saveTimeout;
     let updateInterval;
@@ -236,11 +236,12 @@
       setTimeout(() => document.getElementById('savedBadge').style.display = 'none', 2000);
     }
 
-    function saveStoreData() {
+    async function saveStoreData() {
+      USERS = await getVendedores();
       const index = USERS.findIndex(u => u.storeId === currentUser.storeId);
       if(index!== -1) {
         USERS[index] = currentUser;
-        localStorage.setItem('marketUsers', JSON.stringify(USERS));
+        await setVendedores(USERS);
         localStorage.setItem('marketSeller', JSON.stringify(currentUser));
         showSaved();
       }
@@ -251,8 +252,9 @@
       saveTimeout = setTimeout(saveStoreData, 800);
     }
 
-    document.getElementById('registerForm').onsubmit = (e) => {
+    document.getElementById('registerForm').onsubmit = async (e) => {
       e.preventDefault();
+      USERS = await getVendedores();
       const email = document.getElementById('rEmail').value;
       if(USERS.find(u => u.email === email)) return showAlert('Este mail ya tiene una tienda', 'red');
       const storeId = document.getElementById('rStoreName').value.toLowerCase().replace(/\s/g,'-');
@@ -264,19 +266,21 @@
         avatar: '', cover: '', desc: '', visits: 0, visitsToday: 0, lastVisitDate: '',
         lastLogin: new Date().toLocaleString('es-AR'), bloqueada: false
       };
-      USERS.push(newUser); localStorage.setItem('marketUsers', JSON.stringify(USERS));
+      USERS.push(newUser);
+      await setVendedores(USERS);
       showAlert('¡Tienda creada! Ya puedes ingresar'); showTab('login');
     }
 
-    document.getElementById('loginForm').onsubmit = (e) => {
+    document.getElementById('loginForm').onsubmit = async (e) => {
       e.preventDefault();
+      USERS = await getVendedores();
       const userInput = document.getElementById('loginUser').value;
       const pass = document.getElementById('loginPass').value;
       const found = USERS.find(u => (u.user === userInput || u.email === userInput) && u.pass === pass);
       if(found) {
         currentUser = found;
         currentUser.lastLogin = new Date().toLocaleString('es-AR');
-        saveStoreData();
+        await saveStoreData();
         localStorage.setItem('marketSeller', JSON.stringify(found));
         document.getElementById('authScreen').style.display = 'none';
         showDashboard();
@@ -291,7 +295,7 @@
       document.getElementById('authScreen').style.display = 'block';
     }
 
-    function showDashboard() {
+    async function showDashboard() {
       document.getElementById('dashboard').style.display = 'block';
       document.getElementById('logoutBtn').style.display = 'block';
       document.getElementById('storeNameTitle').textContent = currentUser.storeName;
@@ -301,27 +305,23 @@
       if(currentUser.avatar) document.getElementById('previewAvatar').style.backgroundImage = `url(${currentUser.avatar})`;
       if(currentUser.cover) document.getElementById('previewCover').style.backgroundImage = `url(${currentUser.cover})`;
       document.getElementById('viewStoreBtn').onclick = () => window.open(`store.html?store=${currentUser.storeId}`, '_blank');
-      loadData();
+      await loadData();
       updateInterval = setInterval(cargarDesdeNube, 3000);
     }
 
-    // FUNCION NUEVA: BAJAR DE LA NUBE
     async function cargarDesdeNube() {
         const data = await getCloudData();
         if(!data) return;
-        if(data.AR && data.AR.length > 0) {
-            localStorage.setItem('marketProductsAR', JSON.stringify(data.AR));
-        }
-        if(data.INT && data.INT.length > 0) {
-            localStorage.setItem('marketProductsINT', JSON.stringify(data.INT));
-        }
+        if(data.AR) localStorage.setItem('marketProductsAR', JSON.stringify(data.AR));
+        if(data.INT) localStorage.setItem('marketProductsINT', JSON.stringify(data.INT));
         loadData();
     }
 
-    function loadData() {
-      productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
-      productsINT = JSON.parse(localStorage.getItem('marketProductsINT')) || [];
-      USERS = JSON.parse(localStorage.getItem('marketUsers')) || [];
+    async function loadData() {
+      const data = await getCloudData();
+      productsAR = data.AR || [];
+      productsINT = data.INT || [];
+      USERS = await getVendedores();
 
       const today = new Date().toISOString().split('T')[0];
       if(currentUser.lastVisitDate!== today) { currentUser.visitsToday = 0; currentUser.lastVisitDate = today; }
@@ -405,7 +405,6 @@
       document.getElementById('productModal').classList.add('active');
     }
 
-    // FUNCION ARREGLADA CON NUBE
     async function guardarProducto(nuevo, editId) {
         if(editId) {
             const index = productsAR.findIndex(p => p.id === parseInt(editId));
@@ -415,12 +414,8 @@
             productsAR.unshift(nuevo);
             showAlert('Producto publicado en MARKET!');
         }
-
-        // GUARDAR EN LOCAL
         localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
         localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-
-        // MANDAR A LA NUBE
         await setCloudData({ AR: productsAR, INT: productsINT });
     }
 
@@ -448,8 +443,6 @@
             productsINT = productsINT.filter(p => p.id!== id);
             localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
             localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-
-            // SUBIR A LA NUBE AL BORRAR
             await setCloudData({ AR: productsAR, INT: productsINT });
             loadData();
         }
@@ -466,8 +459,6 @@
             const index = productsINT.findIndex(ap => ap.id === id);
             if(index > -1) productsINT[index] = prodIntl; else productsINT.push(prodIntl);
             localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-
-            // SUBIR A LA NUBE
             await setCloudData({ AR: productsAR, INT: productsINT });
             loadData();
             alert('Publicado en Internacional!');
@@ -478,6 +469,5 @@
 
     if(currentUser) { document.getElementById('authScreen').style.display = 'none'; showDashboard(); }
   </script>
-  <script src="./sync.js"></script>
 </body>
 </html>
