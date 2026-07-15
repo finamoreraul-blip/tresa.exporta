@@ -47,7 +47,7 @@
 .store-info p { color: var(--subtext); font-size: 14px; }
 .store-desc { padding: 20px; }
 .prod-table { background: var(--card); border-radius: 12px; padding: 15px; border: 1px solid var(--border); overflow-x: auto; }
-.prod-row { display: grid; grid-template-columns: 50px 1fr 100px 100px 230px; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; min-width: 700px; }
+.prod-row { display: grid; grid-template-columns: 50px 1fr 100px 100px 150px; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; min-width: 700px; }
 .prod-row.header { font-weight: 700; color: var(--subtext); font-size: 12px; }
 .prod-row img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
 .badge { background: var(--green); color: #fff; padding: 4px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
@@ -156,7 +156,7 @@
       </div>
       <div class="prod-table">
         <div class="prod-row header">
-          <div>IMG</div><div>PRODUCTO</div><div>PRECIO ARS</div><div>ESTADO USD</div><div>ACCIONES</div>
+          <div>IMG</div><div>PRODUCTO</div><div>PRECIO ARS</div><div>ESTADO</div><div>ACCIONES</div>
         </div>
         <div id="myProductsList"></div>
       </div>
@@ -360,10 +360,9 @@
         list.innerHTML += `
           <div class="prod-row">
             <img src="${getImg(p)}"><div>${p.name}</div><div>$${p.price.toLocaleString('es-AR')}</div>
-            <div><span class="badge ${isInternational? '' : 'off'}">${isInternational? 'PUBLICADO' : 'SOLO ARS'}</span></div>
+            <div><span class="badge ${isInternational? '' : 'off'}">${isInternational? 'EN USD' : 'SOLO ARS'}</span></div>
             <div>
               <button class="btn" style="padding:8px 10px; font-size:12px;" onclick='editarProducto(${p.id})'>EDITAR</button>
-              <button class="btn gold" style="padding:8px 10px; font-size:12px;" onclick="transferir(${p.id})">A USD</button>
               <button class="btn red" style="padding:8px 10px; font-size:12px;" onclick="deleteProduct(${p.id})">BORRAR</button>
             </div>
           </div>`;
@@ -406,21 +405,23 @@
       document.getElementById('productModal').classList.add('active');
     }
 
-    // ARREGLADO: AHORA GUARDA EN LA NUBE
+    // SOLO GUARDA EN NUBE
     async function guardarProducto(nuevo, editId) {
-        const data = await getCloudData(); // 1. BAJA DE LA NUBE
+        const data = await getCloudData();
 
         if(editId) {
             const index = data.AR.findIndex(p => p.id === parseInt(editId));
-            data.AR[index] = nuevo;
+            if(index > -1) data.AR[index] = nuevo;
             showAlert('Producto actualizado!');
         } else {
-            data.AR.unshift(nuevo);
+            if(!data.AR.find(p => p.id === nuevo.id)) {
+                data.AR.unshift(nuevo);
+            }
             showAlert('Producto publicado en MARKET!');
         }
 
-        await setCloudData(data); // 2. SUBE A LA NUBE
-        productsAR = data.AR; // 3. ACTUALIZA LOCAL
+        await setCloudData(data);
+        productsAR = data.AR;
         productsINT = data.INT;
     }
 
@@ -442,7 +443,7 @@
         closeProductModal(); loadData();
     }
 
-    // ARREGLADO: AHORA BORRA DE LA NUBE
+    // SOLO BORRA
     async function deleteProduct(id) {
         if(confirm('¿Borrar producto?')) {
             const data = await getCloudData();
@@ -450,24 +451,6 @@
             data.INT = data.INT.filter(p => p.id!== id);
             await setCloudData(data);
             loadData();
-        }
-    }
-
-    // ARREGLADO: AHORA TRANSFIERE A LA NUBE
-    async function transferir(id) {
-        let dolar = 1500;
-        try { const res = await fetch('https://dolarapi.com/v1/dolares/oficial'); const data = await res.json(); dolar = data.venta; } catch(e) {}
-        const data = await getCloudData();
-        const p = data.AR.find(x => x.id === id);
-        const precioUSD = (p.price / dolar).toFixed(2);
-        const link = prompt(`Precio USD: $${precioUSD}\nPega tu link de PayPal/Stripe:`);
-        if(link) {
-            const prodIntl = {...p, price: parseFloat(precioUSD), imgs: p.imgs, store: 'MARKET', storeId: 'market', city: 'Miami', tienda: 'international'};
-            const index = data.INT.findIndex(ap => ap.id === id);
-            if(index > -1) data.INT[index] = prodIntl; else data.INT.push(prodIntl);
-            await setCloudData(data);
-            loadData();
-            alert('Publicado en Internacional!');
         }
     }
 
