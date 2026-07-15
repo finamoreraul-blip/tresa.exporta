@@ -159,30 +159,30 @@
     <div style="font-size:24px; font-weight:900; margin:20px 0; text-align:center;" id="cartTotal">Total: $0</div>
   </div>
 
+  <script src="./sync.js"></script>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const storeId = urlParams.get('store');
     let cart = JSON.parse(localStorage.getItem('marketCartStore')) || [];
     let currentCheckoutProduct = null;
     let updateInterval;
-    let store = null; // GLOBAL PARA USARLO EN CHECKOUT
+    let store = null;
 
     function getImg(p) { return p.imgs? p.imgs[0] : p.img; }
 
-    // FUNCION NUEVA: BAJAR DE LA NUBE
     async function cargarDesdeNube() {
         const data = await getCloudData();
         if(!data) return;
-        if(data.AR && data.AR.length > 0) {
-            localStorage.setItem('marketProductsAR', JSON.stringify(data.AR));
-        }
-        loadStore(); // refresca
+        if(data.AR) localStorage.setItem('marketProductsAR', JSON.stringify(data.AR));
+        loadStore();
     }
 
     async function loadStore() {
-      let USERS = JSON.parse(localStorage.getItem('marketUsers')) || [];
-      let productsAR = JSON.parse(localStorage.getItem('marketProductsAR')) || [];
-      store = USERS.find(u => u.storeId === storeId); // GUARDAR GLOBAL
+      let USERS = await getVendedores();
+      const data = await getCloudData();
+      let productsAR = data.AR || [];
+
+      store = USERS.find(u => u.storeId === storeId);
 
       if(!store) {
         document.body.innerHTML = '<h1 style="text-align:center; margin-top:100px;">Tienda no encontrada</h1>';
@@ -190,11 +190,11 @@
       }
 
       const today = new Date().toISOString().split('T')[0];
-      if(store.lastVisitDate !== today) { store.visitsToday = 0; store.lastVisitDate = today; }
+      if(store.lastVisitDate!== today) { store.visitsToday = 0; store.lastVisitDate = today; }
       store.visits = (store.visits || 0) + 1; 
       store.visitsToday = (store.visitsToday || 0) + 1;
       USERS[USERS.findIndex(u => u.storeId === storeId)] = store;
-      localStorage.setItem('marketUsers', JSON.stringify(USERS));
+      await setVendedores(USERS);
 
       document.getElementById('storeName').textContent = store.storeName;
       document.getElementById('storeCity').textContent = store.city;
@@ -226,7 +226,7 @@
     }
     
     loadStore();
-    updateInterval = setInterval(cargarDesdeNube, 3000); // AHORA BAJA DE LA NUBE
+    updateInterval = setInterval(cargarDesdeNube, 3000);
 
     let currentProductModal = null;
     function openProductModal(product) {
@@ -328,7 +328,7 @@
       document.getElementById('cartTotal').textContent = `Total: $${total.toLocaleString('es-AR')}`;
     }
 
-    function removeFromCart(id) { cart = cart.filter(item => item.id !== id); localStorage.setItem('marketCartStore', JSON.stringify(cart)); updateCart(); }
+    function removeFromCart(id) { cart = cart.filter(item => item.id!== id); localStorage.setItem('marketCartStore', JSON.stringify(cart)); updateCart(); }
     document.getElementById('clearCartBtn').onclick = () => { cart = []; localStorage.setItem('marketCartStore', JSON.stringify(cart)); updateCart(); }
     document.getElementById('cartBtn').onclick = () => { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); }
     document.getElementById('cartOverlay').onclick = () => { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); }
@@ -337,6 +337,5 @@
 
     updateCart();
   </script>
-<script src="./sync.js"></script>
 </body>
 </html>
