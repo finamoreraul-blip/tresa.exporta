@@ -406,18 +406,22 @@
       document.getElementById('productModal').classList.add('active');
     }
 
+    // ARREGLADO: AHORA GUARDA EN LA NUBE
     async function guardarProducto(nuevo, editId) {
+        const data = await getCloudData(); // 1. BAJA DE LA NUBE
+
         if(editId) {
-            const index = productsAR.findIndex(p => p.id === parseInt(editId));
-            productsAR[index] = nuevo;
+            const index = data.AR.findIndex(p => p.id === parseInt(editId));
+            data.AR[index] = nuevo;
             showAlert('Producto actualizado!');
         } else {
-            productsAR.unshift(nuevo);
+            data.AR.unshift(nuevo);
             showAlert('Producto publicado en MARKET!');
         }
-        localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
-        localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-        await setCloudData({ AR: productsAR, INT: productsINT, USERS: USERS });
+
+        await setCloudData(data); // 2. SUBE A LA NUBE
+        productsAR = data.AR; // 3. ACTUALIZA LOCAL
+        productsINT = data.INT;
     }
 
     document.getElementById('productForm').onsubmit = async (e) => {
@@ -438,29 +442,30 @@
         closeProductModal(); loadData();
     }
 
+    // ARREGLADO: AHORA BORRA DE LA NUBE
     async function deleteProduct(id) {
         if(confirm('¿Borrar producto?')) {
-            productsAR = productsAR.filter(p => p.id!== id);
-            productsINT = productsINT.filter(p => p.id!== id);
-            localStorage.setItem('marketProductsAR', JSON.stringify(productsAR));
-            localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-            await setCloudData({ AR: productsAR, INT: productsINT, USERS: USERS });
+            const data = await getCloudData();
+            data.AR = data.AR.filter(p => p.id!== id);
+            data.INT = data.INT.filter(p => p.id!== id);
+            await setCloudData(data);
             loadData();
         }
     }
 
+    // ARREGLADO: AHORA TRANSFIERE A LA NUBE
     async function transferir(id) {
         let dolar = 1500;
         try { const res = await fetch('https://dolarapi.com/v1/dolares/oficial'); const data = await res.json(); dolar = data.venta; } catch(e) {}
-        const p = productsAR.find(x => x.id === id);
+        const data = await getCloudData();
+        const p = data.AR.find(x => x.id === id);
         const precioUSD = (p.price / dolar).toFixed(2);
         const link = prompt(`Precio USD: $${precioUSD}\nPega tu link de PayPal/Stripe:`);
         if(link) {
             const prodIntl = {...p, price: parseFloat(precioUSD), imgs: p.imgs, store: 'MARKET', storeId: 'market', city: 'Miami', tienda: 'international'};
-            const index = productsINT.findIndex(ap => ap.id === id);
-            if(index > -1) productsINT[index] = prodIntl; else productsINT.push(prodIntl);
-            localStorage.setItem('marketProductsINT', JSON.stringify(productsINT));
-            await setCloudData({ AR: productsAR, INT: productsINT, USERS: USERS });
+            const index = data.INT.findIndex(ap => ap.id === id);
+            if(index > -1) data.INT[index] = prodIntl; else data.INT.push(prodIntl);
+            await setCloudData(data);
             loadData();
             alert('Publicado en Internacional!');
         }
