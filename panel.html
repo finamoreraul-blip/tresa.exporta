@@ -405,7 +405,7 @@
       document.getElementById('productModal').classList.add('active');
     }
 
-    // SOLO GUARDA EN NUBE
+    // FIX: ESPERA 1 SEG PARA QUE JSONBIN ACTUALICE
     async function guardarProducto(nuevo, editId) {
         const data = await getCloudData();
 
@@ -414,15 +414,16 @@
             if(index > -1) data.AR[index] = nuevo;
             showAlert('Producto actualizado!');
         } else {
-            if(!data.AR.find(p => p.id === nuevo.id)) {
-                data.AR.unshift(nuevo);
-            }
+            data.AR.unshift(nuevo);
             showAlert('Producto publicado en MARKET!');
         }
 
         await setCloudData(data);
-        productsAR = data.AR;
-        productsINT = data.INT;
+
+        // ESPERA 1 SEG Y RE-CARGA DE LA NUBE
+        setTimeout(async () => {
+            await cargarDesdeNube();
+        }, 1000);
     }
 
     document.getElementById('productForm').onsubmit = async (e) => {
@@ -440,17 +441,18 @@
             fecha: new Date().toLocaleString('es-AR')
         };
         await guardarProducto(nuevo, editId);
-        closeProductModal(); loadData();
+        closeProductModal();
     }
 
-    // SOLO BORRA
     async function deleteProduct(id) {
         if(confirm('¿Borrar producto?')) {
             const data = await getCloudData();
             data.AR = data.AR.filter(p => p.id!== id);
             data.INT = data.INT.filter(p => p.id!== id);
             await setCloudData(data);
-            loadData();
+            setTimeout(async () => {
+                await cargarDesdeNube();
+            }, 1000);
         }
     }
 
